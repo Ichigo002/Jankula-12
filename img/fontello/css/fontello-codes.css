@@ -1,0 +1,4 @@
+
+.icon-cancel:before { content: '\e801'; } /* '' */
+.icon-minus-1:before { content: '\e802'; } /* '' */
+.icon-window-maximize:before { content: '\f2d0'; } /* '' */
