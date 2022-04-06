@@ -1,17 +1,16 @@
 class Window {
-    
     def_height = 100;
     def_width = 100;
     id_win = 0;
 
     constructor(name, width, height) {
         this.name = name;
-        this.width = width;
-        this.height = height;
-    }
 
-    createGUI() {
-        
+        if(width < 100)
+            width = 100;
+        if(height < 100)
+            height = 100;
+
         let gui = '<div class="win" id="win-' + this.id_win + '">' +
             '<div class="win-top">' + this.name + 
             '<span>' +
@@ -20,7 +19,10 @@ class Window {
             '<i class="icon-minus-1 icon-all" onclick="wins[' + this.id_win + '].action_minimalise()"></i>' +
             '<div style="clear: both;"></div>' +
             '</span> </div> <div class="win-content" id="win-cnt-' + this.id_win + '"></div></div>';
+        
         $('body').append(gui);
+        $('#win-' + this.id_win).css('width', width);
+        $('#win-' + this.id_win).css('height', height);
     }
 
     SetDraggingEvent() {
@@ -44,12 +46,25 @@ class Window {
             {
                 $('#win-' + id).css('left', (e.pageX - offsetX) + 'px');
                 $('#win-' + id).css('top', (e.pageY - offsetY) + 'px');
+                
+                if(parseInt($('#win-' + id).css("left")) < 0)
+                { $('#win-' + id).css("left", 1); }
+
+                if(parseInt($('#win-' + id).css("top")) < 0)
+                { $('#win-' + id).css("top", 1); }
+
+                if(parseInt($('#win-' + id).css("right")) < 0)
+                { $('#win-' + id).css("left", parseInt($('#win-' + id).css("left")) + parseInt($('#win-' + id).css("right")) - 1); }
+
+                if(parseInt($('#win-' + id).css("bottom")) < 0)
+                { $('#win-' + id).css("top", parseInt($('#win-' + id).css("top")) + parseInt($('#win-' + id).css("bottom")) - 1); }
+
             }
         });
     }
 
     setContent(v) {
-        $("#win-cnt-" + this.id_win).innerHTML = v;
+        $("#win-cnt-" + this.id_win).text(v);
     }
 
     setPosition(x, y) {

@@ -11,8 +11,6 @@
 .win {
     position: absolute;
 
-    width: 450px;
-    height: 250px;
     border-radius: 8px;
 
     background-color: rgb(181, 181, 181);
