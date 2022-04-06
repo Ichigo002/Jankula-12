@@ -3,8 +3,9 @@ class Window {
     def_width = 100;
     id_win = 0;
 
-    constructor(name, width, height) {
+    constructor(name, width, height, l) {
         this.name = name;
+        this.id_win = l;
 
         if(width < 100)
             width = 100;
@@ -23,6 +24,15 @@ class Window {
         $('body').append(gui);
         $('#win-' + this.id_win).css('width', width);
         $('#win-' + this.id_win).css('height', height);
+        $('#win' + this.id_win).css('z-index', z_index);
+    }
+
+    ActiveZIndex() {
+        let id = this.id_win;
+        $('#win-' + id).on("mousedown", function() {
+            z_index++;
+            $('#win-' + id).css('z-index', z_index);
+        });
     }
 
     SetDraggingEvent() {
