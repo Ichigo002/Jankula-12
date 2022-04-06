@@ -47,7 +47,7 @@ class Window {
             offsetY = e.pageY - parseInt($('#win-' + id).css("top"));
         });
 
-        $(".win-top").on("mouseup",function() {
+        $("body").on("mouseup",function() {
             drag = false;
         });
 
@@ -91,7 +91,8 @@ class Window {
     }
 
     action_close() {
-        alert('clsoe');
+        $("div").remove('#win-' + this.id_win);
+        wins.splice(wins.indexOf(this));
     }
 
     test() {

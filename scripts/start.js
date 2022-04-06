@@ -3,7 +3,6 @@ window.onload = Start;
 var wins = [];
 var iter = 0;
 var z_index = 10;
-var max_z_index = 100;
 
 function Start() {
     NewWindow("Default win", 450, 250);
