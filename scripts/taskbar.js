@@ -13,12 +13,12 @@ class TaskItem {
         let c = this.name;
 
         $('#task-item-' + id).on("mousemove", function() {
-            ShowInfo(id, c);
+            $('#extra-info').css('display', 'block');
+            $('#extra-info').text(c);
+            $('#extra-info').css('left', (id * 100)); // TO DO
+        });
+        $('#task-item-' + id).on("mouseout", function() {
+            $('#extra-info').css('display', 'none');
         });
     }
-}
-
-function ShowInfo(id, content) 
-{
-    //$('#task-bar').append
 }
