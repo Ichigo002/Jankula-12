@@ -14,7 +14,7 @@ class Window {
 
         let gui = '<div class="win" id="win-' + this.id_win + '">' +
             '<div class="win-top">' + this.name + 
-            '<span>' +
+            '<span style="margin-left: 15px;">' +
             '<i class="icon-cancel icon-all" onclick="wins[' + this.id_win + '].action_close()"></i>' +
             '<i class="icon-window-maximize icon-all" onclick="wins[' + this.id_win + '].action_maxmalise()"></i>' +
             '<i class="icon-minus-1 icon-all" onclick="wins[' + this.id_win + '].action_minimalise()"></i>' +
@@ -29,10 +29,29 @@ class Window {
 
     ActiveZIndex() {
         let id = this.id_win;
+
         $('#win-' + id).on("mousedown", function() {
             z_index++;
-            $('#win-' + id).css('z-index', z_index);
+            if(z_index >= max_z)
+            {
+                wins.forEach(w => {
+                    if(w.id_win != id) {
+                        $('#win-' + w.id_win).css('z-index', z_index - (max_z - min_z));
+                    } else {
+                        $('#win-' + w.id_win).css('z-index', min_z + wins.length);
+                    }
+                });
+                z_index = min_z + wins.length;
+            }
+            else
+            {
+                $('#win-' + id).css('z-index', z_index);
+            }
+            
+           
+            console.log("z-index: " + z_index);
         });
+
     }
 
     SetDraggingEvent() {

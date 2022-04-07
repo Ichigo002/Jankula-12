@@ -2,19 +2,23 @@ window.onload = Start;
 
 var wins = [];
 var iter = 0;
-var z_index = 10;
+// Z-index
+var min_z = 10;
+var max_z = 200;
+var z_index = min_z;
 
 function Start() {
-    NewWindow("Default win", 450, 250);
-    NewWindow("dd win", 450, 250);
-    NewWindow("UWU", 450, 250);
+    NewWindow("1", 300, 100);
+    NewWindow("2", 300, 100);
+    NewWindow("3", 300, 100);
+    NewWindow("4", 300, 100);
 }
 
-function NewWindow(name, width, height)
+
+function NewWindow(name="Default Window", width, height, posX, posY)
 {
     wins.push(new Window(name, width, height, iter));
-    wins[iter].setPosition(100,260);
-    wins[iter].setContent("I love Wiki");
+    wins[iter].setPosition(posX, posY);
     wins[iter].SetDraggingEvent();
     wins[iter].ActiveZIndex();
     iter++;
