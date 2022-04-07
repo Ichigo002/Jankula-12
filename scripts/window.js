@@ -1,19 +1,16 @@
 class Window {
     def_height = 100;
     def_width = 100;
-    id_win = 0;
 
-    constructor(name, width, height, l) {
+    constructor(name, width, height, l, icon) {
         this.name = name;
         this.id_win = l;
 
-        if(width < 100)
-            width = 100;
-        if(height < 100)
-            height = 100;
+        this.task_item = new TaskItem(name, l, icon);
+        this.task_item.AddHoveringEvent();
 
         let gui = '<div class="win" id="win-' + this.id_win + '">' +
-            '<div class="win-top">' + this.name + 
+            '<div class="win-top">'+ icon +' ' + this.name + 
             '<span style="margin-left: 15px;">' +
             '<i class="icon-cancel icon-all" onclick="wins[' + this.id_win + '].action_close()"></i>' +
             '<i class="icon-window-maximize icon-all" onclick="wins[' + this.id_win + '].action_maxmalise()"></i>' +
@@ -47,9 +44,6 @@ class Window {
             {
                 $('#win-' + id).css('z-index', z_index);
             }
-            
-           
-            console.log("z-index: " + z_index);
         });
 
     }
@@ -111,10 +105,15 @@ class Window {
 
     action_close() {
         $("div").remove('#win-' + this.id_win);
-        wins.splice(wins.indexOf(this));
+        wins[this.id_win] = null;
     }
+}
 
-    test() {
-        console.log(this.system_name);
-    }
+function getAllWins() {
+    let c = 0;
+    wins.forEach(w => {
+        if(w != null)
+            c++;
+    });
+    return c;
 }
