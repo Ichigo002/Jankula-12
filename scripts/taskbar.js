@@ -26,8 +26,7 @@ class TaskItem {
     }
 
     AddMaxmaliseEvent() {
-        if($('#task-item-' + id).is("task-item-min"))
-        {
+        if($('#task-item-' + id).is("task-item-min")) {
             $('#task-item-' + id).on("click", function() {
                 
             })
