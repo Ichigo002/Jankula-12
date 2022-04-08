@@ -64,25 +64,21 @@ class Window {
             drag = false;
         });
 
-        $("#win-"+ id).on("mousemove", function(e) {
+        $("#win-"+ id).on("mousemove mouseout", function(e) {
             if(drag)
-            {
-                $('#win-' + id).css('left', (e.pageX - offsetX) + 'px');
-                $('#win-' + id).css('top', (e.pageY - offsetY) + 'px');
-                
-                if(parseInt($('#win-' + id).css("left")) < 0)
-                { $('#win-' + id).css("left", 1); }
-
-                if(parseInt($('#win-' + id).css("top")) < 0)
-                { $('#win-' + id).css("top", 1); }
-
-                if(parseInt($('#win-' + id).css("right")) < 0)
-                { $('#win-' + id).css("left", parseInt($('#win-' + id).css("left")) + parseInt($('#win-' + id).css("right")) - 1); }
-
-                if(parseInt($('#win-' + id).css("bottom")) < 0)
-                { $('#win-' + id).css("top", parseInt($('#win-' + id).css("top")) + parseInt($('#win-' + id).css("bottom")) - 1); }
-
-            }
+        {
+            $('#win-' + id).css('left', (e.pageX - offsetX) + 'px');
+            $('#win-' + id).css('top', (e.pageY - offsetY) + 'px');
+            
+            if(parseInt($('#win-' + id).css("left")) < 0)
+            { $('#win-' + id).css("left", 1); }
+            if(parseInt($('#win-' + id).css("top")) < 0)
+            { $('#win-' + id).css("top", 1); }
+            if(parseInt($('#win-' + id).css("right")) < 0)
+            { $('#win-' + id).css("left", parseInt($('#win-' + id).css("left")) + parseInt($('#win-' + id).css("right")) - 1); }
+            if(parseInt($('#win-' + id).css("bottom")) < 0)
+            { $('#win-' + id).css("top", parseInt($('#win-' + id).css("top")) + parseInt($('#win-' + id).css("bottom")) - 1); }
+        }
         });
     }
 
