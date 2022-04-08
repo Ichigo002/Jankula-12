@@ -5,15 +5,13 @@ function NewWindow(name, width, height, posX, posY, icon)
         name = "Default Window";
     if(icon == null)
         icon = "|Nan|";
-    if(width < 200 || width == null)
-        width = 200;
-    if(height < 100 || height == null)
-        height = 100;
+    if(width < this.min_width_win || width == null)
+        width = this.min_width_win;
+    if(height < this.min_height_win || height == null)
+        height = this.min_height_win;
             
     wins.push(new Window(name, width, height, iter, icon));
     wins[iter].setPosition(posX, posY);
-    wins[iter].SetDraggingEvent();
-    wins[iter].ActiveZIndex();
     iter++;
 }
 

@@ -26,11 +26,15 @@ class TaskItem {
     }
 
     AddMaxmaliseEvent() {
-        if($('#task-item-' + id).is("task-item-min")) {
-            $('#task-item-' + id).on("click", function() {
-                
-            })
-        }
+        let id = this.link_id_win;
+        $('#task-item-' + id).on("click", function() {
+            if($('#task-item-' + id).is(".task-item-min")) {
+                wins[id].action_unminimalise();
+            }
+            else {
+                wins[id].action_minimalise();
+            }
+        });
     }
 
     removeItem() {

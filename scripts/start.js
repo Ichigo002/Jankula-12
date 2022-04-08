@@ -3,6 +3,8 @@ window.onload = Start;
 // windows
 var wins = [];
 var iter = 0;
+var min_width_win = 200;
+var min_height_win = 150;
 // Z-index
 var min_z = 10;
 var max_z = 200;

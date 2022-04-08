@@ -8,6 +8,7 @@ class Window {
 
         this.task_item = new TaskItem(name, l, icon);
         this.task_item.AddHoveringEvent();
+        this.task_item.AddMaxmaliseEvent();
 
         let gui = '<div class="win" id="win-' + this.id_win + '">' +
             '<div class="win-top">'+ icon +' ' + this.name + 
@@ -16,12 +17,18 @@ class Window {
             '<i class="icon-window-maximize icon-all" onclick="wins[' + this.id_win + '].action_maxmalise()"></i>' +
             '<i class="icon-minus-1 icon-all" onclick="wins[' + this.id_win + '].action_minimalise()"></i>' +
             '<div style="clear: both;"></div>' +
-            '</span> </div> <div class="win-content" id="win-cnt-' + this.id_win + '"></div></div>';
+            '</span> </div> <div class="win-content" id="win-cnt-' + this.id_win + '"></div>'+
+            '<div class="win-resize-point" id="win-res-'+this.id_win+'"></div></div>';
         
         $('body').append(gui);
         $('#win-' + this.id_win).css('width', width);
         $('#win-' + this.id_win).css('height', height);
         $('#win' + this.id_win).css('z-index', z_index);
+
+        this.setPositionResizePoint();
+        this.SetDraggingEvent();
+        this.ActiveZIndex();
+        this.SetResizeEvent();
     }
 
     ActiveZIndex() {
@@ -82,8 +89,48 @@ class Window {
         });
     }
 
+    SetResizeEvent() {
+        let id = this.id_win;
+        let resize;
+        let minw = min_width_win, minh = min_height_win;
+
+        $("#win-res-" + id).on('mousedown', function(e) {
+            resize = true;
+        });
+
+        $("#win-res-" + id).on('mouseup', function() {
+            resize = false;
+        });
+
+        $("#win-res-" + id).on("mousemove mouseout", function(e) {
+            if(resize) {
+                let n_w = e.pageX - parseInt($('#win-' + id).css("left")) - 10;
+                let n_h = e.pageY - parseInt($('#win-' + id).css("top")) - 10;
+
+                $('#win-' + id).css("height", n_h);
+                $('#win-' + id).css("width", n_w);
+                
+                if(parseInt($('#win-' + id).css("width")) <= minw) {
+                    $('#win-' + id).css("width", minw + 1);
+                }
+                if(parseInt($('#win-' + id).css("height")) <= minh) {
+                    $('#win-' + id).css("height", minh + 1);
+                }
+
+                wins[id].setPositionResizePoint();
+            }
+        });
+    }
+
     setContent(v) {
         $("#win-cnt-" + this.id_win).text(v);
+    }
+
+    setPositionResizePoint() {
+        let id = this.id_win;
+
+        $("#win-res-" + id).css('left', parseInt($('#win-' + id).css('width')));
+        $("#win-res-" + id).css('top', parseInt($('#win-' + id).css('height'))); 
     }
 
     setPosition(x, y) {
@@ -94,6 +141,11 @@ class Window {
     action_minimalise() {
         this.task_item.min();
         $('#win-' + this.id_win).css('display', 'none');
+    }
+
+    action_unminimalise() {
+        $('#win-' + this.id_win).css('display', 'block');
+        this.task_item.unmin();
     }
 
     action_maxmalise() {
