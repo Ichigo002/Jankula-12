@@ -96,24 +96,18 @@ class Window {
     }
 
     action_minimalise() {
-        alert('min');
+        this.task_item.min();
+        $('#win-' + this.id_win).css('display', 'none');
     }
 
     action_maxmalise() {
-        alert('max');
+        this.task_item.unmin();
+        $('#win-' + this.id_win).css('display', 'block');
     }
 
     action_close() {
+        this.task_item.removeItem();
         $("div").remove('#win-' + this.id_win);
         wins[this.id_win] = null;
     }
-}
-
-function getAllWins() {
-    let c = 0;
-    wins.forEach(w => {
-        if(w != null)
-            c++;
-    });
-    return c;
 }

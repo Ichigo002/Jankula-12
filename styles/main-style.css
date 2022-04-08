@@ -28,6 +28,7 @@ body {
     border-radius: 5px;
     text-align: center;
     line-height: 50px;
+    position: relative;
 
     -webkit-transition: background 0.2s linear;
     -moz-transition: background 0.2s linear;
@@ -41,18 +42,30 @@ body {
     cursor: pointer;
 }
 
-.task-item-extra-info {
-    background-color: rgb(34, 34, 34);
-    position: relative;
-    bottom: 70px;
-}
-
 #extra-info {
     position: absolute;
-    top: -25px;
-    background-color: aquamarine;
-    width: 200px;
+    bottom: 75px;
+    color: rgb(202, 202, 202);
+    background-color: rgb(27, 27, 27);
+    padding: 5px 10px 5px 10px;
+    max-width: 200px;
+    min-width: 50px;
     text-align: center;
     border-radius: 8px;
-    display: none;
+    display: block;
+    opacity: 0%;
+
+    -webkit-transition: opacity 0.2s ease-in;
+    -moz-transition: opacity 0.2s ease-in;
+    -ms-transition: opacity 0.2s ease-in;
+    -o-transition: opacity 0.2s ease-in;
+    transition: opacity 0.2s ease-in;
+}
+
+.task-item-min {
+    background-color: rgb(51, 25, 0);
+}
+
+.task-item-min:hover {
+    background-color: rgb(75, 36, 0);
 }

@@ -13,12 +13,27 @@ class TaskItem {
         let c = this.name;
 
         $('#task-item-' + id).on("mousemove", function() {
-            $('#extra-info').css('display', 'block');
+            let center_item_x = $('#task-item-' + id).offset().left + parseInt($('#task-item-' + id).css('width')) / 2;
+
+            $('#extra-info').css('opacity', '100%');
             $('#extra-info').text(c);
-            $('#extra-info').css('left', (id * 100)); // TO DO
+            $('#extra-info').css('left', center_item_x - parseInt($('#extra-info').css('width')) / 2);
         });
         $('#task-item-' + id).on("mouseout", function() {
-            $('#extra-info').css('display', 'none');
+            $('#extra-info').css('opacity', '0%');
+            $('#extra-info').css('left', -200);
         });
+    }
+
+    removeItem() {
+        $('div').remove('#task-item-' + this.link_id_win);
+    }
+
+    min() {
+        $('#task-item-' + this.link_id_win).addClass("task-item-min");
+    }
+    
+    unmin() {
+        $('#task-item-' + this.link_id_win).removeClass("task-item-min");
     }
 }
