@@ -68,9 +68,9 @@
 }
 
 .task-item-min {
-    background-color: rgb(51, 25, 0);
+    background-color: rgb(43, 41, 65);
 }
 
 .task-item-min:hover {
-    background-color: rgb(75, 36, 0);
+    background-color: rgb(56, 53, 84);
 }
