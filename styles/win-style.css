@@ -51,16 +51,16 @@
 }
 
 .win-resize-point {
-    position:absolute;
-    background-color: #222;
-    border-radius: 1px;
-    width: 10px;
-    height: 10px;
-    color: white;
+    position: absolute;
+    background-color: rgb(137, 137, 137);
+    border-bottom-right-radius: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 .win-resize-point:hover {
     cursor: nwse-resize;
+    background-color: rgb(155, 155, 155);
 }
 
 .icon-all {

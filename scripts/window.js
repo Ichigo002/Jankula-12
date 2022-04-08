@@ -129,7 +129,7 @@ class Window {
     setPositionResizePoint() {
         let id = this.id_win;
 
-        $("#win-res-" + id).css('left', parseInt($('#win-' + id).css('width')));
+        $("#win-res-" + id).css('left', parseInt($('#win-' + id).css('width')) );
         $("#win-res-" + id).css('top', parseInt($('#win-' + id).css('height'))); 
     }
 
