@@ -3,8 +3,8 @@ console.log("---\n For basic commands and variables type command: 'help()'\n---"
 function help() {
     console.log("------ Commands ------ \n"+
     "* func NewWindow(name, width, height, posX, posY, icon) | Create a new Window on the desktop\n" +
-    "* func ExecWin(name, action) | window with 'name' executes 'action'\n" +
     "* func getAmountWins()       | return amount of all windows\n" +
+    "* func CloseWindow(name)     | Close ALL windows with 'name'\n" +
     "------ Vars ------ \n" +
     "* wins[]         | All existing windows in the website\n" +
     "* min_width_win  | Minimal width of window\n" +
@@ -32,23 +32,13 @@ function NewWindow(name, width, height, posX, posY, icon) {
     iter++;
 }
 
-//Execute action of window
-function ExecWin(n, action) {
+function CloseWindow(name) {
     wins.forEach(w => {
-        if(w.name == n) {
-            switch (action) {
-                case "close": w.action_close(); break;
-                case "max": w.action_maxmalise(); break;
-                case "min": w.action_minimalise(); break;
-                default:
-                    console.error("Action '"+action+"' is not handled by window.");
-                    return false;
-            }
-            return true;
+        if(w.name == name)
+        {
+            w.action_close();
         }
     });
-    console.error("Window '"+n+"' not found in list.");
-    return false;
 }
 
 //Return amount of all used windows
