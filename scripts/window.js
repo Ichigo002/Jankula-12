@@ -1,10 +1,13 @@
 class Window {
     def_height = 100;
     def_width = 100;
+    def_left = 0;
+    def_top = 0;
 
     constructor(name, width, height, l, icon) {
         this.name = name;
         this.id_win = l;
+        this.maximized = false;
 
         this.task_item = new TaskItem(name, l, icon);
         this.task_item.AddHoveringEvent();
@@ -14,13 +17,13 @@ class Window {
             '<div class="win-top">'+ icon +' ' + this.name + 
             '<span style="margin-left: 15px;">' +
             '<i class="icon-close icon-all" onclick="wins[' + this.id_win + '].action_close()"></i>' +
-            '<i class="icon-maximize icon-all" onclick="wins[' + this.id_win + '].action_maxmalise()"></i>' +
+            '<i class="icon-maximize icon-all" onclick="wins[' + this.id_win + '].action_full_maximize()"></i>' +
             '<i class="icon-minimize icon-all" onclick="wins[' + this.id_win + '].action_minimalise()"></i>' +
             '<div style="clear: both;"></div>' +
             '</span> </div> <div class="win-content" id="win-cnt-' + this.id_win + '"></div>'+
             '<div class="win-resize-point" id="win-res-'+this.id_win+'"></div></div>';
         
-        $('body').append(gui);
+        $('#desktop').append(gui);
         $('#win-' + this.id_win).css('width', width);
         $('#win-' + this.id_win).css('height', height);
         $('#win' + this.id_win).css('z-index', z_index);
@@ -73,19 +76,25 @@ class Window {
 
         $("#win-"+ id).on("mousemove mouseout", function(e) {
             if(drag)
-        {
-            $('#win-' + id).css('left', (e.pageX - offsetX) + 'px');
-            $('#win-' + id).css('top', (e.pageY - offsetY) + 'px');
-            
-            if(parseInt($('#win-' + id).css("left")) < 0)
-            { $('#win-' + id).css("left", 1); }
-            if(parseInt($('#win-' + id).css("top")) < 0)
-            { $('#win-' + id).css("top", 1); }
-            if(parseInt($('#win-' + id).css("right")) < 0)
-            { $('#win-' + id).css("left", parseInt($('#win-' + id).css("left")) + parseInt($('#win-' + id).css("right")) - 1); }
-            if(parseInt($('#win-' + id).css("bottom")) < 0)
-            { $('#win-' + id).css("top", parseInt($('#win-' + id).css("top")) + parseInt($('#win-' + id).css("bottom")) - 1); }
-        }
+            {
+                if(wins[id].maximized) {
+                    wins[id].action_full_maximize();
+                    offsetX = e.pageX - parseInt($('#win-' + id).css("left"));
+                    offsetY = e.pageY - parseInt($('#win-' + id).css("top"));
+                }
+
+                $('#win-' + id).css('left', (e.pageX - offsetX) + 'px');
+                $('#win-' + id).css('top', (e.pageY - offsetY) + 'px');
+
+                if(parseInt($('#win-' + id).css("left")) < 0)
+                { $('#win-' + id).css("left", 1); }
+                if(parseInt($('#win-' + id).css("top")) < 0)
+                { $('#win-' + id).css("top", 1); }
+                if(parseInt($('#win-' + id).css("right")) < 0)
+                { $('#win-' + id).css("left", parseInt($('#win-' + id).css("left")) + parseInt($('#win-' + id).css("right")) - 1); }
+                if(parseInt($('#win-' + id).css("bottom")) < 0)
+                { $('#win-' + id).css("top", parseInt($('#win-' + id).css("top")) + parseInt($('#win-' + id).css("bottom")) - 1); }
+            }
         });
     }
 
@@ -104,6 +113,7 @@ class Window {
 
         $("#win-res-" + id).on("mousemove mouseout", function(e) {
             if(resize) {
+                wins[id].maximized = false;
                 let n_w = e.pageX - parseInt($('#win-' + id).css("left")) - 10;
                 let n_h = e.pageY - parseInt($('#win-' + id).css("top")) - 10;
 
@@ -152,10 +162,45 @@ class Window {
         this.task_item.unmin();
         $('#win-' + this.id_win).css('display', 'block');
     }
+    action_full_maximize() {
+        if(this.maximized) {
+            this.maximized = false;
+            this.loadDef();
+            this.setPositionResizePoint();
+        } else {
+            this.action_maxmalise();
+            this.maximized = true;
+            this.saveDef();
+
+            $('#win-' + this.id_win).css('width', parseInt($('#desktop').css('width')) - 10);
+            $('#win-' + this.id_win).css('height', parseInt($('#desktop').css('height')) - 10);
+
+            $('#win-' + this.id_win).css('left', 0);
+            $('#win-' + this.id_win).css('top', 0);
+            this.setPositionResizePoint();
+        }
+    }
 
     action_close() {
         this.task_item.removeItem();
         $("div").remove('#win-' + this.id_win);
         wins[this.id_win] = null;
+        }
+
+    saveDef() {
+        this.def_width = $('#win-' + this.id_win).css('width');
+        this.def_height = $('#win-' + this.id_win).css('height');
+
+        this.def_left = $('#win-' + this.id_win).css('left');
+        this.def_top = $('#win-' + this.id_win).css('top');
     }
+
+    loadDef() {
+        $('#win-' + this.id_win).css('width', this.def_width);
+        $('#win-' + this.id_win).css('height', this.def_width);
+        
+        $('#win-' + this.id_win).css('left', this.def_left);
+        $('#win-' + this.id_win).css('top', this.def_top);
+    }
+        
 }
