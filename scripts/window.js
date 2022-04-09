@@ -13,9 +13,9 @@ class Window {
         let gui = '<div class="win" id="win-' + this.id_win + '">' +
             '<div class="win-top">'+ icon +' ' + this.name + 
             '<span style="margin-left: 15px;">' +
-            '<i class="icon-cancel icon-all" onclick="wins[' + this.id_win + '].action_close()"></i>' +
-            '<i class="icon-window-maximize icon-all" onclick="wins[' + this.id_win + '].action_maxmalise()"></i>' +
-            '<i class="icon-minus-1 icon-all" onclick="wins[' + this.id_win + '].action_minimalise()"></i>' +
+            '<i class="icon-close icon-all" onclick="wins[' + this.id_win + '].action_close()"></i>' +
+            '<i class="icon-maximize icon-all" onclick="wins[' + this.id_win + '].action_maxmalise()"></i>' +
+            '<i class="icon-minimize icon-all" onclick="wins[' + this.id_win + '].action_minimalise()"></i>' +
             '<div style="clear: both;"></div>' +
             '</span> </div> <div class="win-content" id="win-cnt-' + this.id_win + '"></div>'+
             '<div class="win-resize-point" id="win-res-'+this.id_win+'"></div></div>';

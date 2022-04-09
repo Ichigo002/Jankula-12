@@ -21,7 +21,7 @@ function NewWindow(name, width, height, posX, posY, icon) {
     if(name == null)
         name = "Default Window";
     if(icon == null)
-        icon = "<i class='icon-doc-inv'></i>";
+        icon = "<i class='icon-default-icon'></i>";
     if(width < this.min_width_win || width == null)
         width = this.min_width_win;
     if(height < this.min_height_win || height == null)
