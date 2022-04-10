@@ -5,9 +5,8 @@ const DIR = "Directory";
 
 class FileSystem {
     constructor() {
-        // Make Dir Follower
         console.log("system");
-        this.root_folder = new Folder("R:");
+        this.root_folder = new Folder(this.begin());
         this.root_folder.pushBinder(new File("Testero.txt"));
         this.root_folder.pushBinder(new File("Wiki.txt"));
         this.root_folder.pushBinder(new Folder("xampp"));
@@ -16,9 +15,10 @@ class FileSystem {
         this.root_folder.getByName("bin").pushBinder(new File("Elo"));
         this.root_folder.getByName("bin").pushBinder(new File("WIKI I love.txt"));
         this.root_folder.getByName("bin").pushBinder(new Folder("Folder"));
+        
         this.printHierarchyTree();
         
-        console.log(this.readPath("R:/ff/Elo"));
+        console.log(this.readPath("R:/bin/"));
         console.log(this.readPath("R:/Testero.txt"));
     }
 
@@ -36,13 +36,24 @@ class FileSystem {
             if(dirs[curr_level] == curr_dir.name)
             {
                 curr_level++;
-                curr_dir = curr_dir.getByName(dirs[curr_level]);
+                if(curr_level < dirs.length)
+                    curr_dir = curr_dir.getByName(dirs[curr_level]);
             }
             else {
+                
                 return ERRFILE;
             }
         } 
         return curr_dir;
+    }
+
+    existPath(path) {
+        let f = this.readPath(path);
+        if(f != ERRFILE) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     printHierarchyTree() {
@@ -60,7 +71,9 @@ class FileSystem {
         console.log(c);
     }
 
-
+    begin() {
+        return "R:";
+    }
 }
 
 class BinderObject {
@@ -74,6 +87,47 @@ class BinderObject {
 
     type() {
         return BINDER;
+    }
+}
+
+class DirFollower {
+    constructor(system) {
+        this.system = system;
+        this.curr_path = system.begin() + '/';
+    }
+
+    goto(dir) {
+        if(dir == "..") {
+            if(this.curr_path == this.system.begin() + '/') {
+                return "Cannot go back directory";
+            } else {
+                let splitp = this.curr_path.split('/');
+                let new_p = "";
+                for (let i = 0; i < splitp.length-2; i++) {
+                    new_p += splitp[i] + '/';
+                }
+                if(this.system.existPath(new_p)) {
+                    this.curr_path = new_p;
+                    return "Successfule executed";
+                } else {
+                    return "Invalid Coming back";
+                }
+            }
+        } else {
+            let new_p = this.curr_path + dir + '/';
+            if(this.system.existPath(new_p)) {
+                this.curr_path = new_p;
+                return "Successfule executed";
+            } else {
+                return "Invalid Directory '" + dir +"'";
+            }
+        }
+
+        
+    }
+
+    print() {
+        return "DirFollower: [current path] is '" + this.curr_path + "'";
     }
 }
 
