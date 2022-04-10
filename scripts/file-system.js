@@ -5,6 +5,7 @@ const DIR = "Directory";
 
 class FileSystem {
     constructor() {
+        // Make Dir Follower
         console.log("system");
         this.root_folder = new Folder("R:");
         this.root_folder.pushBinder(new File("Testero.txt"));
