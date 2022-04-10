@@ -126,8 +126,24 @@ class DirFollower {
         
     }
 
+    mkdir(name_dir) {
+
+    }
+
+    mkfile(name_dir) {
+        
+    }
+
+    del(name_dir) {
+
+    }
+
     print() {
-        return "DirFollower: [current path] is '" + this.curr_path + "'";
+        return "DirFollower: Path is '" + this.curr_path + "'";
+    }
+
+    getPath() {
+        return this.curr_path;
     }
 }
 
