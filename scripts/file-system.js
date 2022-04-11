@@ -76,20 +76,6 @@ class FileSystem {
     }
 }
 
-class BinderObject {
-    constructor(name) {
-        this.name = name;
-    }
-
-    getByName(name) {
-        return 'x-BinderObject-x';
-    }
-
-    type() {
-        return BINDER;
-    }
-}
-
 class DirFollower {
     constructor(system) {
         this.system = system;
@@ -154,6 +140,20 @@ class DirFollower {
 
     getPath() {
         return this.curr_path;
+    }
+}
+
+class BinderObject {
+    constructor(name) {
+        this.name = name;
+    }
+
+    getByName(name) {
+        return 'x-BinderObject-x';
+    }
+
+    type() {
+        return BINDER;
     }
 }
 
