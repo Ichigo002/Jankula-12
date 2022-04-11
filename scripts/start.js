@@ -2,7 +2,7 @@ window.onload = Start;
 
 //file system
 var file_system;
-var pointer;
+var tr;
 // windows
 var wins = [];
 var iter = 0;
@@ -15,7 +15,7 @@ var z_index = min_z;
 
 function Start() {
     file_system = new FileSystem();
-    pointer = new DirFollower(file_system);
+    tr = new DirFollower(file_system);
     
     NewWindow("Lorem ipsum dolor ", 200, 100, 100, 500, '<i class="icon-settings"></i>');
     NewWindow("wdw", 470, 260, 784, 31, '<i class="icon-app-calculator"></i>');
