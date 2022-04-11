@@ -1,19 +1,21 @@
 const ERRFILE = -1;
+
 const BINDER = "Binder Object";
 const FILE = "File";
 const DIR = "Directory";
+const ALL = "dirs&files";
 
 class FileSystem {
     constructor() {
         console.log("system");
         this.root_folder = new Folder(this.begin());
         this.root_folder.pushBinder(new File("Testero.txt"));
-        this.root_folder.pushBinder(new File("Wiki.txt"));
+        this.root_folder.pushBinder(new File("be_be"));
         this.root_folder.pushBinder(new Folder("xampp"));
         this.root_folder.pushBinder(new Folder("bin"));
         this.root_folder.pushBinder(new Folder("user"));
         this.root_folder.getByName("bin").pushBinder(new File("Elo"));
-        this.root_folder.getByName("bin").pushBinder(new File("WIKI I love.txt"));
+        this.root_folder.getByName("bin").pushBinder(new File("W.txt"));
         this.root_folder.getByName("bin").pushBinder(new Folder("Folder"));
         
         this.printHierarchyTree();
@@ -103,7 +105,7 @@ class DirFollower {
             }
         } else {
             let new_p = this.curr_path + dir + '/';
-            if(this.system.existPath(new_p)) {
+            if(this.system.existPath(new_p) && this.system.readPath(new_p).type() == DIR) {
                 this.curr_path = new_p;
                 return "Successfule executed";
             } else {
@@ -116,26 +118,84 @@ class DirFollower {
 
     //create directory in the current path
     mkdir(name_dir) {
-
+        if(this.system.existPath(this.curr_path)) {
+            this.system.readPath(this.curr_path).pushBinder(new Folder(name_dir));
+            return "Directory Created at place '" + this.curr_path + name_dir + "/'";
+        } else {
+            return "ERREXT: Path to make directory doesn't exist";
+        }
     }
 
     //create file in the current path
     mkfile(name_file) {
-        
+        if(this.system.existPath(this.curr_path)) {
+            this.system.readPath(this.curr_path).pushBinder(new File(name_file));
+            return "File Created at place '" + this.curr_path + name_file + "'";
+        } else {
+            return "ERREXT: Path to make directory doesn't exist";
+        }
     }
 
     // delete the binder from current path
     del(name) {
+        if(this.system.existPath(this.curr_path)) {
+            if(this.system.readPath(this.curr_path + name).type() == DIR) {
+                if(this.system.readPath(this.curr_path + name).countAll() != 0) {
+                    let ans = prompt("Are you sure to delete " + name + "? This folder contains other files. [Y/N]");
+                    if(ans.toLowerCase() == 'y') {
+                        return this.__delPerm__(name);
+                    } else if(ans.toLowerCase() == 'n') {
+                        return "Deleting directory cancelled.";
+                    }
+                } else {
+                    return this.__delPerm__(name);
+                }
+            } else {
+                return this.__delPerm__(name);
+            }
+        } else {
+            return "ERREXT: Path to delete directory doesn't exist";
+        }
+    }
 
+    __delPerm__(name) {
+        let index = this.system.readPath(this.curr_path).getIndexOf(name);
+        this.system.readPath(this.curr_path).removeBinder(index);
+        return "Item " + name + " successfuly deleted from '" + this.curr_path + "'";
+
+    }
+
+    // count sepcific items by filterring data
+    count(filter) {
+        switch (filter) {
+            case DIR:
+                return this.system.readPath(this.curr_path).countDirs();
+                break;
+            case FILE:
+                return this.system.readPath(this.curr_path).countFiles();
+            break;
+            case ALL:
+                return this.system.readPath(this.curr_path).countAll();
+                break;
+            default:
+                return "ERRCNT: Invalid filter. Available filters counting: [DIR], [FILE], [ALL]";
+                break;
+        }
+    }
+
+    getBinders() {
+        if(this.system.existPath(this.curr_path)) {
+            return this.system.readPath(this.curr_path).binder_list;
+        }
     }
 
     // print current chosen directory
     pdir() {
-
+        this.system.readPath(this.curr_path).printDirectory();
     }
 
-    print() {
-        return "DirFollower: Path is '" + this.curr_path + "'";
+    path() {
+        return "Path is '" + this.curr_path + "'";
     }
 
     getPath() {
@@ -165,6 +225,18 @@ class Folder extends BinderObject {
 
     pushBinder(ext_binder) {
         this.binder_list.push(ext_binder);
+    }
+
+    removeBinder(index) {
+        this.binder_list.splice(index, 1);
+    }
+
+    getIndexOf(name) {
+        for (let i = 0; i < this.binder_list.length; i++) {
+            if(this.binder_list[i].name == name) {
+                return i;
+            }
+        }
     }
 
     getByIndex(index) {
@@ -216,19 +288,38 @@ class Folder extends BinderObject {
         return c;
     }
 
-    //count all files & dirs. if it contains nothing, It returns -1
+    //count all files & dirs.
     countAll() {
-
+        return this.binder_list.length;
     }
 
-    //count only files. if it contains nothing, It returns -1
+    //count only files.
     countFiles() {
+        let n = 0;
 
+        this.binder_list.forEach(bind => {
+            if(bind.type() == FILE) {
+                n++;
+            }
+        });
+
+        return n;
     }
 
-    //count only dirs. if it contains nothing, It returns -1
+    //count only dirs.
     countDirs(){
+        let n = -1;
 
+        this.binder_list.forEach(bind => {
+            if(bind.type() == DIR) {
+                if(n == -1) {
+                    n = 0;
+                }
+                n++;
+            }
+        });
+
+        return n;
     }
 
     type() {
