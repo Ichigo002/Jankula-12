@@ -96,6 +96,8 @@ class DirFollower {
         this.curr_path = system.begin() + '/';
     }
 
+    //[TO FIX] USING FILE IN THE PATH AS FOLDER
+    // moving pointer in the files ['..' -> go out ; 'path' -> go to typed path]
     goto(dir) {
         if(dir == "..") {
             if(this.curr_path == this.system.begin() + '/') {
@@ -110,7 +112,7 @@ class DirFollower {
                     this.curr_path = new_p;
                     return "Successfule executed";
                 } else {
-                    return "Invalid Coming back";
+                    return "ERRGO: Invalid Coming back";
                 }
             }
         } else {
@@ -119,22 +121,30 @@ class DirFollower {
                 this.curr_path = new_p;
                 return "Successfule executed";
             } else {
-                return "Invalid Directory '" + dir +"'";
+                return "ERRFIND: Invalid Directory '" + dir +"'";
             }
         }
 
         
     }
 
+    //create directory in the current path
     mkdir(name_dir) {
 
     }
 
-    mkfile(name_dir) {
+    //create file in the current path
+    mkfile(name_file) {
         
     }
 
-    del(name_dir) {
+    // delete the binder from current path
+    del(name) {
+
+    }
+
+    // print current chosen directory
+    pdir() {
 
     }
 
@@ -204,6 +214,21 @@ class Folder extends BinderObject {
             }
         });
         return c;
+    }
+
+    //count all files & dirs. if it contains nothing, It returns -1
+    countAll() {
+
+    }
+
+    //count only files. if it contains nothing, It returns -1
+    countFiles() {
+
+    }
+
+    //count only dirs. if it contains nothing, It returns -1
+    countDirs(){
+
     }
 
     type() {
