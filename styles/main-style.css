@@ -1,3 +1,28 @@
+@font-face {
+    font-family: 'Nunito-Black';
+    src: url("./../fonts/Nunito-Black.ttf");
+}
+
+@font-face {
+    font-family: 'Nunito-Regular';
+    src: url("./../fonts/Nunito-Regular.ttf");
+}
+
+@font-face {
+    font-family: 'CourierPrime-Bold';
+    src: url("./../fonts/CourierPrime-Bold.ttf");
+}
+
+@font-face {
+    font-family: 'CourierPrime-BoldItalic';
+    src: url("./../fonts/CourierPrime-BoldItalic.ttf");
+}
+
+@font-face {
+    font-family: 'CourierPrime-Regular';
+    src: url("./../fonts/CourierPrime-Regular.ttf");
+}
+
 body {
     background-color: #000000;
     padding: 0;

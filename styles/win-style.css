@@ -1,13 +1,3 @@
-@font-face {
-    font-family: 'Nunito-Black';
-    src: url("./../fonts/Nunito-Black.ttf");
-}
-
-@font-face {
-    font-family: 'Nunito-Regular';
-    src: url("./../fonts/Nunito-Regular.ttf");
-}
-
 .win {
     position: absolute;
 

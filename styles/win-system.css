@@ -7,16 +7,31 @@
 }
 
 .exp-top-wrapper-btns {
-
+    float: left;
+    width: 56px;
+    margin-right: 4px;
+    margin-left: -10px;
 }
 
 .exp-top-btn {
-    
+    float: left;
+    padding: 4px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}
+
+.exp-top-btn:hover {
+    color: #868686;
+    cursor: pointer;
 }
 
 .exp-top-path {
+    float: left;
     background-color: #e4e4e4;
+    font-family: 'CourierPrime-Regular';
     font-size: 15px;
+    width: calc(100% - 60px);
     padding: 3px;
     padding-left: 5px;
     border: 1px solid #373737;
@@ -24,12 +39,12 @@
 }
 
 .exp-wrapper {
-    height: 163px; /*SETTING BY JS*/
+    height: 250px; /*SETTING BY JS*/
 }
 
 .exp-nav {
     float: left;
-    width: calc(30% - 10px);
+    width: calc(20% - 10px);
     height: 100%;
     padding: 5px;
     background-color: #afafaf;
@@ -41,5 +56,51 @@
     background-color: #e4e4e4;
     padding: 5px;
     height: 100%;
-    width: calc(100% - 12px - 30%);
+    width: calc(100% - 12px - 20%);
+    overflow-x: scroll;
 }
+
+.exp-item {
+    width: calc(100% - 7.5px);
+    height: 20px;
+    padding: 2px;
+    padding-left: 5px;
+    background-color: #fff;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+}
+
+.exp-item:hover {
+    background-color: #d6f2ff;
+    border: 1.5px solid #4e83de;    
+    padding: 0.5px;
+    padding-left: 3.5px;
+}
+
+.exp-item-name {
+    float: left;
+    color: #000;
+}
+
+.exp-item-date {
+    float: right;
+    margin-right: 27px;
+}
+
+.exp-item-type {
+    float: right;
+    margin-right: 27px;
+}
+
+/*CLICKED CSS
+
+.exp-top-btn {
+    background-color: #a1d2ff;
+    border: 1.5px solid #4e83de;    
+    padding: 0.5px;
+    padding-left: 3.5px;
+}*/
