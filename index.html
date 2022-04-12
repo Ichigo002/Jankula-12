@@ -9,7 +9,8 @@
         <link rel="stylesheet" href="styles/main-style.css" type="text/css"/>
         <link rel="stylesheet" href="styles/taskbar-style.css" type="text/css"/>
         <link rel="stylesheet" href="styles/win-style.css" type="text/css"/>
-
+        <link rel="stylesheet" href="styles/win-system.css" type="text/css"/>
+        
         <link rel="stylesheet" href="img/fontello/css/system-icons.css" type="text/css"/>
         <script src="scripts/jquery-3.6.0.min.js"></script>
         
@@ -18,15 +19,44 @@
         <script src="scripts/file-system.js"></script>
         <script src="scripts/window.js"></script>
         <script src="scripts/taskbar.js"></script>
+
+        <script src="scripts/windows/system/win-sys-cmd.js"></script>
+        <script src="scripts/windows/system/win-sys-explorer.js"></script>
     </head>
     <body>
         <div id="desktop"></div>
         <div id="task-bar">
-            <div class="task-item-style">Logo</div>
+            <div class="task-item-style"><img src="img/img/system-icon.png" style="margin-top: 5px;"/></div>
             <div class="task-item-style"><i class="icon-search" style="font-size: 20px;"></i></div>
             <div id="task-bar-items"><!--ITEMS--></div>
             <div style="clear: both;"></div>
             <div id="extra-info">INFO ADDITIONAL</div>
+        </div>
+
+        <div class="win" style="top: 100px; left: 100px; width: 400px; height: 250px;">
+            <div class="win-top">icon
+            <span style="margin-left: 15px;">
+            <i class="icon-close icon-all"></i>
+            <i class="icon-maximize icon-all"></i>
+            <i class="icon-minimize icon-all"></i>
+            <div style="clear: both;"></div>
+            </span> </div> 
+            <div class="win-content" id="win-cnt-' + this.id_win + '">
+                <!--START CONTENT-->
+                <div class="exp-top">
+                    <div class="exp-top-wrapper-btns">
+                        <div class="exp-top-btn"></div>
+                    </div>
+                    <div class="exp-top-path">R:/user/bin/Wisniewki/p*rn/mamuski</div>
+                </div>
+                <div class="exp-wrapper">
+                    <div class="exp-nav">3</div>
+                    <div class="exp-content">4</div>
+                </div>
+                
+                <!--END CONTENT-->
+            </div>
+            <div class="win-resize-point" id="win-res-'+this.id_win+'"></div>
         </div>
     </body>
 </html>
