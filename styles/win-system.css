@@ -39,7 +39,7 @@
 }
 
 .exp-wrapper {
-    height: 250px; /*SETTING BY JS*/
+    min-height: 100px; /*SETTING BY JS*/
 }
 
 .exp-nav {

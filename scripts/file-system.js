@@ -98,6 +98,7 @@ class DirFollower {
                 }
                 if(this.system.existPath(new_p)) {
                     this.curr_path = new_p;
+                    this.onChangePathEvent();
                     return "Successfule executed";
                 } else {
                     return "ERRGO: Invalid Coming back";
@@ -107,6 +108,7 @@ class DirFollower {
             let new_p = this.curr_path + dir + '/';
             if(this.system.existPath(new_p) && this.system.readPath(new_p).type() == DIR) {
                 this.curr_path = new_p;
+                this.onChangePathEvent();
                 return "Successfule executed";
             } else {
                 return "ERRFIND: Invalid Directory '" + dir +"'";
@@ -148,9 +150,11 @@ class DirFollower {
                         return "Deleting directory cancelled.";
                     }
                 } else {
+                    this.onChangePathEvent();
                     return this.__delPerm__(name);
                 }
             } else {
+                this.onChangePathEvent();
                 return this.__delPerm__(name);
             }
         } else {
@@ -200,6 +204,10 @@ class DirFollower {
 
     getPath() {
         return this.curr_path;
+    }
+
+    onChangePathEvent() { 
+       
     }
 }
 
