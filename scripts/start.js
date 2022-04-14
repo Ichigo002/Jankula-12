@@ -21,14 +21,7 @@ function Start() {
     file_system = new FileSystem();
     tr = new DirFollower(file_system);
     
-    NewWindow("Lorem ipsum dolor ", 200, 100, 100, 500, '<i class="icon-settings"></i>');
-    //NewWindow("wdw", 470, 260, 784, 31, '<i class="icon-app-calculator"></i>');
-    //NewWindow("32", 429, 269, 145, 38, '<i class="icon-app-terminal" style="margin-right: 5px;"></i>');
+    NewWindow("DEMO HELP", 470, 300, 250, 175, '<i class="icon-settings"></i>');
+    wins[0].setContent("<span style='text-align: left;'><h2>Help</h2><p>Press Shift + Ctrl + C to open inspector and console. In the console type 'help()' for more commands.</p><h2>Use Open(name)</h2><p>If you are at the console you can type 'Open('explorer') and after click enter it should open file exploerer.'</p></span>");
 
-    wins.push(new Win_Explorer(400, 250, iter, file_system));
-    wins[iter].setPosition(100, 100);
-    iter++;
-    wins.push(new Win_Explorer(400, 250, iter, file_system));
-    wins[iter].setPosition(100, 100);
-    iter++;
 }

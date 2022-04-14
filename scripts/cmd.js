@@ -5,6 +5,7 @@ function help() {
     "* func NewWindow(name, width, height, posX, posY, icon) | Create a new Window on the desktop\n" +
     "* func getAmountWins()       | return amount of all windows\n" +
     "* func CloseWindow(name)     | Close ALL windows with 'name'\n" +
+    "* func Open(name)            | Open system windows by name'\n" +
     "------ Vars ------ \n" +
     "* wins[]         | All existing windows in the website\n" +
     "* min_width_win  | Minimal width of window\n" +
@@ -30,6 +31,22 @@ function NewWindow(name, width, height, posX, posY, icon) {
     wins.push(new Window(name, width, height, iter, icon));
     wins[iter].setPosition(posX, posY);
     iter++;
+}
+
+function Open(name) {
+    switch(name) {
+        case "default":
+            NewWindow();
+        break;
+        case "explorer":
+            wins.push(new Win_Explorer(500, 350, iter, file_system));
+            wins[iter].setPosition(100, 100);
+            iter++;
+        break;
+        default:
+            console.error("Window to open with name '" + name +"' doesn't exist");
+        break;
+    }
 }
 
 function CloseWindow(name) {

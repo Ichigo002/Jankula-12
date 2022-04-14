@@ -6,7 +6,7 @@ class Win_Explorer extends Window {
         this.setMinimalSize(415, 230);
         
         this.ptr = new DirFollower(file_system__);
-        this.ptr.goto("bin/Folder");
+        //this.ptr.goto("bin/Folder");
         this.selected_item = 0;
         this.items_length = 0;
 

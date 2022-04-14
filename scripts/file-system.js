@@ -16,7 +16,8 @@ class FileSystem {
         this.root_folder.pushBinder(new Folder("user"));
         this.root_folder.getByName("bin").pushBinder(new File("Elo"));
         this.root_folder.getByName("bin").pushBinder(new File("W.txt"));
-        this.root_folder.getByName("bin").pushBinder(new Folder("Folder"));
+        this.root_folder.getByName("bin").pushBinder(new Folder("Gorące mamuśki"));
+        this.root_folder.getByName("bin").getByName("Gorące mamuśki").pushBinder(new File("Nie dla psa kielbasa"));
         
         this.printHierarchyTree();
         
