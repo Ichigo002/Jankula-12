@@ -57,7 +57,6 @@
     padding: 5px;
     height: calc(100% - 24px);
     width: calc(100% - 12px - 20%);
-    overflow-x: scroll;
 }
 
 .exp-item-barinfo {
@@ -90,8 +89,8 @@
 }
 
 .exp-item:hover {
-    background-color: #d6f2ff;
-    border: 1.5px solid #4e83de;    
+    background-color: #fffad6;
+    border: 1.5px solid #f2c172;    
     padding: 0.5px;
     padding-left: 3.5px;
 }
@@ -111,11 +110,16 @@
     margin-right: 27px;
 }
 
-/*CLICKED CSS
+.exp-item-selected {
+    background-color: #fff28e !important;
+    border: 1.5px solid #f7d97f !important;    
+    padding: 0.5px !important;
+    padding-left: 3.5px !important;
+}
 
-.exp-top-btn {
-    background-color: #a1d2ff;
-    border: 1.5px solid #4e83de;    
-    padding: 0.5px;
-    padding-left: 3.5px;
-}*/
+.exp-item-ghost-select {
+    background-color: #fffef2 !important;
+    border: 1.5px solid #ffe9a7 !important;    
+    padding: 0.5px !important;
+    padding-left: 3.5px !important;
+}

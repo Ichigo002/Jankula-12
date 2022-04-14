@@ -40,6 +40,14 @@ class Window {
     setMinimalSize(mw, mh) {
         this.def_min_w = mw;
         this.def_min_h = mh;
+
+        if(parseInt($('#win-' + this.id_win).css('width')) < mw) {
+            $('#win-' + this.id_win).css('width', mw);
+        }
+        if(parseInt($('#win-' + this.id_win).css('height')) < mh) {
+            $('#win-' + this.id_win).css('height', mh);
+        }
+        this.setPositionResizePoint();
         this.SetDraggingEvent();
         this.SetResizeEvent();
     }

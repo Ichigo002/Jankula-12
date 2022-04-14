@@ -14,6 +14,10 @@ var max_z = 200;
 var z_index = min_z;
 
 function Start() {
+    $(document).bind("contextmenu",function(e){
+        return false;
+    });
+
     file_system = new FileSystem();
     tr = new DirFollower(file_system);
     

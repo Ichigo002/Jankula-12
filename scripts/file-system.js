@@ -99,7 +99,7 @@ class DirFollower {
                 if(this.system.existPath(new_p)) {
                     this.curr_path = new_p;
                     this.onChangePathEvent();
-                    return "Successfule executed";
+                    return "Successful executed";
                 } else {
                     return "ERRGO: Invalid Coming back";
                 }
@@ -109,7 +109,7 @@ class DirFollower {
             if(this.system.existPath(new_p) && this.system.readPath(new_p).type() == DIR) {
                 this.curr_path = new_p;
                 this.onChangePathEvent();
-                return "Successfule executed";
+                return "Successful executed";
             } else {
                 return "ERRFIND: Invalid Directory '" + dir +"'";
             }
@@ -206,14 +206,15 @@ class DirFollower {
         return this.curr_path;
     }
 
-    onChangePathEvent() { 
-       
-    }
+    onChangePathEvent() { ; }
 }
 
 class BinderObject {
     constructor(name) {
         this.name = name;
+        let dd = new Date();
+        this.date = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
+        this.time = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
     }
 
     getByName(name) {
