@@ -37,3 +37,55 @@ body {
     height: calc(100vh - 70px);
                 /*hegiht of task-bar*/
 }
+
+#cxtm {
+    background-color: #d6d6d6;
+    border: 2px solid #808080;
+
+    font-family: 'Nunito-Regular';
+
+    padding: 3px;
+    border-radius: 0 5px 5px 5px;
+    min-width: 140px;
+    position: absolute;
+    left: -200px;
+    top: -200px;
+
+    z-index: 210;
+
+    -webkit-box-shadow: 4px 4px 24px -2px rgba(76, 76, 76, 1);
+    -moz-box-shadow: 4px 4px 24px -2px rgba(76, 76, 76, 1);
+    box-shadow: 4px 4px 24px -2px rgba(76, 76, 76, 1);
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+}
+
+.menu-option {
+    padding-left: 5px;
+    text-align: left;
+}
+
+    .menu-option:hover {
+        background-color: #535353;
+        color: #d3d3d3;
+        cursor: pointer;
+    }
+
+.menu-option-disabled {
+    color: #959595;
+}
+
+    .menu-option-disabled:hover {
+        background-color: #d6d6d6;
+        color: #959595;
+        cursor:default
+    }
+
+.menu-sep {
+    border-top: 1px solid #000000;
+    margin: 5px;
+}

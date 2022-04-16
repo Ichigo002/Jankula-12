@@ -120,7 +120,6 @@ class Window {
     SetResizeEvent() {
         let id = this.id_win;
         let resize;
-        let _static = this.static;
         let minw = this.def_min_w, minh = this.def_min_h;
 
         $("#win-" + id + " > .win-resize-point").on('mousedown', function(e) {
@@ -139,7 +138,7 @@ class Window {
         });
 
         $("#win-" + id + " > .win-resize-point").on("mousemove mouseout", function(e) {
-            if(resize && !_static) {
+            if(resize && !wins[id].static) {
                 wins[id].maximized = false;
                 let n_w = e.pageX - parseInt($('#win-' + id).css("left")) - 10;
                 let n_h = e.pageY - parseInt($('#win-' + id).css("top")) - 10;
