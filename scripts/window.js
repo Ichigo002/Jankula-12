@@ -14,7 +14,7 @@ class Window {
         this.static = false;
 
         //Topbar Context Menu
-        let menu = new MenuTemplate();
+        let menu = new MenuTemplate(name);
         menu.pushNewOption("Close", "alert('dd')");
         menu.pushNewOption("Maximize", 'wins['+this.id_win+'].action_full_maximize();');
         menu.pushNewOption("Minimize", 'wins['+this.id_win+'].action_minimalise();');
@@ -233,9 +233,10 @@ class Window {
 
     action_close() {
         this.task_item.removeItem();
+        cxtm.removeMenu($('#win-' + this.id_win).attr("menuv"));
         $("div").remove('#win-' + this.id_win);
         wins[this.id_win] = null;
-        }
+    }
 
     saveDef() {
         this.def_width = $('#win-' + this.id_win).css('width');

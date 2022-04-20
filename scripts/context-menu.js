@@ -5,50 +5,80 @@ var SPLITTER = "spr";
 class ContextMenu {
     constructor() {
         this.list_menus = [];
-        this.curr = 0;
-
-        let m = new MenuTemplate("Default Menu");
-        let sp = new MenuTemplate("Spliter sidefg");
-        sp.pushNewOption("ELO", null);
-        sp.pushNewSeparator();
-        sp.pushNewOption("EKOQQQ", "alert('LOVE!')");
-
-        m.pushNewOption("New", "alert('NEW FILE CREATING!')");
-        m.pushNewSplitOption("Splitter", );
-        m.pushNewSeparator();
-        m.pushNewOption("Exit", "alert('EXIT!')");
-
-        this.list_menus.push(m);
+        this.curr = undefined;
 
         $('#cxtm').css('display', 'none');
 
         this.setDisplayEvent();
-        this.RefreshMenu();
     }
 
     addMenu(menu_temp) {
-        return this.list_menus.push(menu_temp) - 1;
+        let _new = [];
+        let pushed = false;
+
+        for (let i = 0; i <= this.list_menus.length; i++) {
+            if(i == this.list_menus.length) {
+                if(!pushed) _new.push(menu_temp);
+                this.list_menus = _new;
+                return _new.length - 1;
+            }
+            if(this.list_menus.at(i) == null) {
+                _new.push(menu_temp);
+                pushed = true;
+            } else {
+                _new.push(this.list_menus.at(i));
+            }
+        }
+    }
+
+    removeMenu(id) {
+        let _new = [];
+
+        for (let i = 0; i < this.list_menus.length; i++) {
+            if(id != i) {
+                _new.push(this.list_menus.at(i));
+            } else {
+                _new.push(null);
+            }
+        }
+
+        this.list_menus = _new;
     }
 
     RefreshMenu() {
         $('#cxtm').empty();
         this.list_menus[this.curr].menu.forEach(w => {
-            switch(w.type) {
-                case STANDARD:
-                    $('#cxtm').append('<div class="menu-option" onclick="' + w.action + '">'+w.content +'</div>');
-                break;
-                case SEPARATOR:
-                    $('#cxtm').append('<div class="menu-sep" onclick="' + w.action + '">'+w.content+'</div>');
-                break;
-                case SPLITTER: 
-
-                break;
-                default: 
-                    console.error("Type Option '" + w.type + "' is not available.");
-                break;
-            }
-            
+            $('#cxtm').append(this.ProcessItemToHTML(w));
         });
+    }
+
+    ProcessItemToHTML(element) {
+        let html = "";
+        switch(element.type) {
+            case STANDARD:
+                html += '<div class="menu-option" onclick="' + element.action + '">'+element.content +'</div>';
+            break;
+            case SEPARATOR:
+                html += '<div class="menu-sep" onclick="' + element.action + '">'+element.content+'</div>';
+            break;
+            case SPLITTER: 
+                let opts = "";
+
+                element.submenu.menu.forEach(sbm => {
+                    opts += this.ProcessItemToHTML(sbm);
+                });
+
+                let posX = $('#cxtm').css('width');
+                let posY = $('#cxtm').css('height');
+
+                html += '<div class="menu-option menu-splitter">' + element.content + '<span style="float: right; margin-right: 10px;">></span><div class="menu menu-splitted" style="left: '+posX+'; top: '+posY+';">' + opts + '</div></div>';
+            break;
+            default: 
+                console.error("Type Option '" + element.type + "' is not available.");
+            break;
+        }
+
+        return html;
     }
 
     setDisplayEvent() {

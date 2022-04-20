@@ -33,7 +33,7 @@ function NewWindow(name, width, height, posX, posY, icon) {
     iter++;
 }
 
-function Open(name) {
+function stapp(name) {
     switch(name) {
         case "default":
             NewWindow();
