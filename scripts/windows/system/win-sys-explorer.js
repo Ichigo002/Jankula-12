@@ -14,7 +14,7 @@ class Win_Explorer extends Window {
             '<div class="exp-top-wrapper-btns">' +
                 '<i class="icon-up-arrow exp-top-btn"></i>' +
                 '<i class="icon-down-arrow exp-top-btn"></i></div>' +
-            '<div class="exp-top-path">R:/user/bin/Wisniewski/hot/mamuski</div> </div>' +
+            '<div class="exp-top-path"></div> </div>' +
         '<div class="exp-wrapper">' +
             '<div class="exp-nav"></div>' +
             '<div class="exp-item-barinfo">' +
@@ -122,6 +122,13 @@ class Win_Explorer extends Window {
     }
 
     RefreshItems() {
+        // TO DO REMOVING FROM MENU LIST ITEMS!
+        let children = $('#win-' + this.id_win + " > .win-content > .exp-wrapper > .exp-content").childNodes;
+
+        children.forEach(c => {
+            cxtm.removeMenu($(c).attr("menuv"));
+        });
+
         let cnt = "";
 
         let list = this.ptr.getBinders();
@@ -132,12 +139,31 @@ class Win_Explorer extends Window {
         }
 
         for(let i = 0; i < list.length; i ++) {
-            cnt += '<div class="exp-item" id="exp-item-' + i + '-' + this.id_win+ '" onclick="wins['+this.id_win+'].SelectItem('+i+')">' +
+            cnt += '<div class="exp-item" id="exp-item-' + i + '-' + this.id_win+ '" onclick="wins['+this.id_win+'].SelectItem('+i+')" oncontextmenu="wins['+this.id_win+'].SelectItem('+i+')" menuv="' + cxtm.addMenu(this.CreateMenu(list[i])) + '">' +
             '<div class="exp-item-name">' + list[i].name + '</div>' +
             '<div class="exp-item-date">'+list[i].date +' ' + list[i].time +'</div>' +
             '<div class="exp-item-type">'+((list[i].type() == DIR)? "Folder":list[i].type())+'</div></div>\n';
         }
         
         $('#win-' + this.id_win + " > .win-content > .exp-wrapper > .exp-content").html(cnt);
+    }
+
+    CreateMenu(item) {
+        let menu;
+        switch(item.type()) {
+            case DIR:
+                menu = new MenuTemplate('Folder ' + item.name);
+                menu.pushNewOption("Open", 'wins['+this.id_win+'].goInto()');
+            break;
+            case FILE:
+                menu = new MenuTemplate('File ' + item.name);
+                menu.pushNewOption("Open", 'alert("Opening FILE BITCH!")');
+            break;
+            default:
+                console.error("Not found '" + item.type() + "' in CreateMenu(item)");
+            break;
+        }
+
+        return menu;
     }
 }

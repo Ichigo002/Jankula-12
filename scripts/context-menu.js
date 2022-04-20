@@ -95,8 +95,8 @@ class ContextMenu {
                 if(cxtm.curr != undefined) {
                     cxtm.RefreshMenu();
                     $('#cxtm').css('display', 'block');
-                    $('#cxtm').css('left', e.pageX);
-                    $('#cxtm').css('top', e.pageY);
+                    $('#cxtm').css('left', e.pageX + 3);
+                    $('#cxtm').css('top', e.pageY + 3);
                 }
                 else {
                     $('#cxtm').css('display', 'none'); 

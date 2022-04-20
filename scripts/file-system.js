@@ -115,8 +115,6 @@ class DirFollower {
                 return "ERRFIND: Invalid Directory '" + dir +"'";
             }
         }
-
-        
     }
 
     //create directory in the current path
