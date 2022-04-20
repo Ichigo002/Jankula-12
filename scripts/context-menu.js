@@ -22,7 +22,7 @@ class ContextMenu {
                 this.list_menus = _new;
                 return _new.length - 1;
             }
-            if(this.list_menus.at(i) == null) {
+            if(this.list_menus.at(i) == null && !pushed) {
                 _new.push(menu_temp);
                 pushed = true;
             } else {
@@ -32,6 +32,9 @@ class ContextMenu {
     }
 
     removeMenu(id) {
+        if(this.list_menus[id] == null && id >= 0 && id < this.list_menus.length) {
+            return null;
+        }
         let _new = [];
 
         for (let i = 0; i < this.list_menus.length; i++) {
@@ -46,6 +49,9 @@ class ContextMenu {
     }
 
     RefreshMenu() {
+        if(this.list_menus[this.curr] == null) {
+            return null;
+        }
         $('#cxtm').empty();
         this.list_menus[this.curr].menu.forEach(w => {
             $('#cxtm').append(this.ProcessItemToHTML(w));
