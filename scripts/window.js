@@ -7,17 +7,27 @@ class Window {
     def_min_w = min_width_win;
 
     constructor(name, width, height, l, icon) {
+        //Standard Values
         this.name = name;
         this.id_win = l;
         this.maximized = false;
         this.static = false;
 
+        //Topbar Context Menu
+        let menu = new MenuTemplate();
+        menu.pushNewOption("Close", "alert('dd')");
+        menu.pushNewOption("Maximize", 'wins['+this.id_win+'].action_full_maximize();');
+        menu.pushNewOption("Minimize", 'wins['+this.id_win+'].action_minimalise();');
+
+        let cxt_id = cxtm.addMenu(menu);
+        // Task Item
         this.task_item = new TaskItem(name, l, icon);
         this.task_item.AddHoveringEvent();
         this.task_item.AddMaxmaliseEvent();
 
-        let gui = '<div class="win" id="win-' + this.id_win + '">' +
-            '<div class="win-top">'+ icon +' ' + this.name + 
+        //Graphic User Interface
+        let gui = '<div class="win" id="win-' + this.id_win + '" menuv="'+cxt_id+'">' +
+            '<div class="win-top" menuv="'+cxt_id+'">'+ icon +' ' + this.name + 
             '<span style="margin-left: 15px;">' +
             '<i class="icon-close icon-all" onclick="wins[' + this.id_win + '].action_close()"></i>' +
             '<i class="icon-maximize icon-all" onclick="wins[' + this.id_win + '].action_full_maximize()"></i>' +
@@ -31,6 +41,7 @@ class Window {
         $('#win-' + this.id_win).css('height', height);
         $('#win' + this.id_win).css('z-index', z_index);
 
+        //Active Default Events
         this.setPositionResizePoint();
         this.SetDraggingEvent();
         this.ActiveZIndex();

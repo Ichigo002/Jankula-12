@@ -4,12 +4,21 @@ var SPLITTER = "spr";
 
 class ContextMenu {
     constructor() {
-        this.current_menu = new MenuTemplate("Default Menu");
+        this.list_menus = [];
+        this.curr = 0;
 
-        this.current_menu.pushNewOption("New", "console.log('NEW FILE CREATING!')");
-        this.current_menu.pushNewOption("Delete", null);
-        this.current_menu.pushNewSeparator();
-        this.current_menu.pushNewOption("Exit", "alert('EXIT!')");
+        let m = new MenuTemplate("Default Menu");
+        let sp = new MenuTemplate("Spliter sidefg");
+        sp.pushNewOption("ELO", null);
+        sp.pushNewSeparator();
+        sp.pushNewOption("EKOQQQ", "alert('LOVE!')");
+
+        m.pushNewOption("New", "alert('NEW FILE CREATING!')");
+        m.pushNewSplitOption("Splitter", );
+        m.pushNewSeparator();
+        m.pushNewOption("Exit", "alert('EXIT!')");
+
+        this.list_menus.push(m);
 
         $('#cxtm').css('display', 'none');
 
@@ -17,14 +26,13 @@ class ContextMenu {
         this.RefreshMenu();
     }
 
-    setNewMenu(new_menu_temp) {
-        this.current_menu = new_menu_temp;
-        this.RefreshMenu();
+    addMenu(menu_temp) {
+        return this.list_menus.push(menu_temp) - 1;
     }
 
     RefreshMenu() {
         $('#cxtm').empty();
-        this.current_menu.menu.forEach(w => {
+        this.list_menus[this.curr].menu.forEach(w => {
             switch(w.type) {
                 case STANDARD:
                     $('#cxtm').append('<div class="menu-option" onclick="' + w.action + '">'+w.content +'</div>');
@@ -52,23 +60,28 @@ class ContextMenu {
 
         $("body").on("mousedown", function(e) {
             if(e.which == 3) {
-                $('#cxtm').css('display', 'block');
-                $('#cxtm').css('left', e.pageX);
-                $('#cxtm').css('top', e.pageY);
+                cxtm.curr = $(e.target).attr("menuv");
+
+                if(cxtm.curr != undefined) {
+                    cxtm.RefreshMenu();
+                    $('#cxtm').css('display', 'block');
+                    $('#cxtm').css('left', e.pageX);
+                    $('#cxtm').css('top', e.pageY);
+                }
+                else {
+                    $('#cxtm').css('display', 'none'); 
+                }
+                
             } else {
                 if(!clicked) {
                     $('#cxtm').css('display', 'none'); 
                 } else {
                     clicked = false;
+                    setTimeout(function() { $('#cxtm').css('display', 'none'); }, 100);
                 }
             }
         });
 
-    }
-
-    ForceClose() {
-        $('#cxtm').css('display', 'none'); 
-        return "Closed";
     }
 }
 
