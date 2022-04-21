@@ -2,7 +2,7 @@ var NONE = -1;
 
 class Win_Explorer extends Window {
     constructor(width, height, iterator, file_system__) {
-        super("File Explorer", width, height, iterator, '<i class="icon-folder-open"></i>');
+        super("File Explorer", width, height, iterator, '<i class="icon-folder-open" style="color: #f7c96c;"></i>');
         this.setMinimalSize(415, 230);
         
         this.ptr = new DirFollower(file_system__);

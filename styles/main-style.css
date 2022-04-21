@@ -38,6 +38,15 @@ body {
                 /*hegiht of task-bar*/
 }
 
+.system-button {
+    background-color: #d6d6d6;
+    border-radius: 5px;
+}
+
+.system-button:hover {
+    background-color: #efeeee;
+}
+
 .menu {
     background-color: #d6d6d6;
     border: 2px solid #808080;

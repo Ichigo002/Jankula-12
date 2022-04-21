@@ -29,5 +29,6 @@ function Start() {
     wins[0].static = true;
     wins[0].setPositionResizePoint();
     stapp("explorer");
-    xinfo("Love...", "I love Wiki and fuck of bitch <br/> haha. Nothing for your and you're looser!");
+    xerror("Love...", "Lorem ipsum dolor<br/> sit amet, consectetur adipiscing elit. Vivamus tincidunt<br/> vitae nunc id ullamcorper. Nam <br/>et odio sollicitudin, ultricies velit<br/> vel, hendrerit metus.");
+
 }
