@@ -27,5 +27,7 @@ function Start() {
     NewWindow("DEMO HELP", 470, 300, 250, 175, '<i class="icon-settings"></i>');
     wins[0].setContent("<span style='text-align: left;'><h2>Help</h2><p>Press Shift + Ctrl + C to open inspector and console. In the console type 'help()' for more commands.</p><h2>Use Open(name)</h2><p>If you are at the console you can type stapp('explorer') and after click enter it should open file explorer.</p></span>");
     wins[0].static = true;
+    wins[0].setPositionResizePoint();
     stapp("explorer");
+    xinfo("Love...", "I love Wiki and fuck of bitch <br/> haha. Nothing for your and you're looser!");
 }

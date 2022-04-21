@@ -1,3 +1,5 @@
+var AUTO_RESIZE = -4;
+
 class Window {
     def_height = 100;
     def_width = 100;
@@ -37,8 +39,13 @@ class Window {
             '<div class="win-resize-point"></div></div>';
         
         $('#desktop').append(gui);
-        $('#win-' + this.id_win).css('width', width);
-        $('#win-' + this.id_win).css('height', height);
+        if(width != AUTO_RESIZE) {
+            $('#win-' + this.id_win).css('width', width);
+        }
+        if(height != AUTO_RESIZE) {
+            $('#win-' + this.id_win).css('height', height);
+        }
+        
         $('#win' + this.id_win).css('z-index', z_index);
 
         //Active Default Events
@@ -184,9 +191,14 @@ class Window {
 
     setPositionResizePoint() {
         let id = this.id_win;
+        if(this.static) {
+            $("#win-" + id + " > .win-resize-point").css("display", "none");
+        } else {
+            $("#win-" + id + " > .win-resize-point").css("display", "block");
 
-        $("#win-" + id + " > .win-resize-point").css('left', parseInt($('#win-' + id).css('width')) );
-        $("#win-" + id + " > .win-resize-point").css('top', parseInt($('#win-' + id).css('height'))); 
+            $("#win-" + id + " > .win-resize-point").css('left', parseInt($('#win-' + id).css('width')) );
+            $("#win-" + id + " > .win-resize-point").css('top', parseInt($('#win-' + id).css('height')));     
+        }
     }
 
     setPosition(x, y) {

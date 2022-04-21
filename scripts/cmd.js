@@ -47,6 +47,7 @@ function stapp(name) {
             console.error("Window to open with name '" + name +"' doesn't exist");
         break;
     }
+    return iter-1;
 }
 
 function CloseWindow(name) {

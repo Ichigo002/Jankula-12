@@ -16,10 +16,10 @@ class Win_Explorer extends Window {
         newf.pushNewOption("File", null) //TODO
 
         let menu = new MenuTemplate("Explorer Content Menu");
-        menu.pushNewOption("Go Into", "wins["+this.id_win+"].goInto()");
+        menu.pushNewOption("Go Into", "wins["+this.id_win+"].goIntoByDef()");
         menu.pushNewOption("Go Previous", "wins["+this.id_win+"].goOut()");
         menu.pushNewSeparator();
-        menu.pushNewOption("Duplicate Window", null); // TODO
+        menu.pushNewOption("Duplicate Window", "wins["+this.id_win+"].Duplicate()"); // TODO
         menu.pushNewSeparator();
         menu.pushNewSplitOption("New", newf);
         
@@ -90,13 +90,38 @@ class Win_Explorer extends Window {
         });
     }
 
+    SetStartingPath(_path) {
+        this.ptr.goto(_path);
+        this.Refresh();
+    }
+
+    Duplicate() {
+        let id = stapp("explorer");
+        
+        wins[id].SetStartingPath(this.ptr.getPath());
+    }
+
+    goIntoByDef() {
+        let list = this.ptr.getBinders();
+        if(list.at(this.selected_item).type() != DIR || this.selected_item == NONE) {
+            for (let i = list.length-1; i >= 0; i--) {
+                if(list.at(i).type() == DIR) {
+                    this.selected_item = i;
+                }
+            }
+        }
+        this.goInto();
+    }
+
     goInto() {
         if(this.selected_item != NONE) {
             this.ptr.goto(this.ptr.getBinders()[this.selected_item].name);
+            this.selected_item = this.ptr.getCurrentDir().slct_pos;
         }
     }
 
     goOut() {
+        this.ptr.getCurrentDir().slct_pos = this.selected_item;
         this.ptr.goto("..");
         $('#exp-item-' + this.selected_item + '-' + this.id_win).addClass('exp-item-ghost-select');
     }

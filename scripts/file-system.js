@@ -106,7 +106,12 @@ class DirFollower {
                 }
             }
         } else {
-            let new_p = this.curr_path + dir + '/';
+            let new_p;
+            if(dir[0] == 'R' && dir[1] == ':' && dir[2] == '/') {
+                new_p = dir;
+            } else {
+                new_p = this.curr_path + dir + '/';
+            }
             if(this.system.existPath(new_p) && this.system.readPath(new_p).type() == DIR) {
                 this.curr_path = new_p;
                 this.onChangePathEvent();
@@ -115,6 +120,10 @@ class DirFollower {
                 return "ERRFIND: Invalid Directory '" + dir +"'";
             }
         }
+    }
+
+    getCurrentDir() {
+        return this.system.readPath(this.curr_path);
     }
 
     //create directory in the current path
@@ -229,6 +238,7 @@ class Folder extends BinderObject {
     constructor(name) {
         super(name); // calls constructor of BinderObject
         this.binder_list = [];
+        this.slct_pos = NONE;
     }
 
     pushBinder(ext_binder) {
