@@ -201,9 +201,19 @@ class Window {
         }
     }
 
+    setCenter() {
+        this.setPosition(100, 100);
+        let sizeX = parseInt($('body').innerWidth());
+        let sizeY = parseInt($('body').innerHeight());
+        
+        console.log(document.getElementById('win-' + this.id_win).clientWidth);
+
+        this.setPosition(sizeX / 2, sizeY / 2);
+    }
+
     setPosition(x, y) {
-        $('#win-' + this.id_win).css('left', x + 'px')
-        $('#win-' + this.id_win).css('top', y + 'px')
+        $('#win-' + this.id_win).css('left', x + 'px');
+        $('#win-' + this.id_win).css('top', y + 'px');
     }
 
     action_minimalise() {
