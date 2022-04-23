@@ -33,11 +33,6 @@ function Start() {
     wins[0].setPositionResizePoint();
 
     stapp("explorer");
-    xinput("New Folder", 
-    "Type name of new folder", 
-    "<input type='text' id='ttt'/>",
-    'console.log("Name: " + $("#ttt").val())',
-    'console.log("A to huj jebany w dupe")');
 }
 
 function basicFiles() {

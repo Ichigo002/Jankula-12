@@ -99,12 +99,12 @@ function xquestion(title, question, action_accept, action_decline) {
 // action_decline - html action after decline or close window
 // Returns id at the wins list of created input
 function xinput(title, content, input_html, action_accept, action_decline) {
-    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-question' style='color: #1f2bff;'></i>"));
+    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-info' style='color: #1f2bff;'></i>"));
     wins[iter].setCenter();
-
+    wins[iter].GoTop();
     //$("#win-" + iter).attr("onkeyup", '__xinputenter__('+iter+')');
 
-    let cnt = "<i class='icon-win-question' style='color: #1f2bff; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
+    let cnt = "<i class='icon-win-info' style='color: #1f2bff; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
     + content + "</p><p>" + input_html + "</p><p style='both:clear;' class='q-btns' onclick='wins["+iter+"].action_close()'><button onclick='" + action_accept + 
     "' class='system-button q-btns-yes' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Yes</button><button onclick='" + action_decline + 
     "' class='system-button q-btns-no' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>No</button></p>";

@@ -11,9 +11,9 @@ class Win_Explorer extends Window {
         this.items_length = 0;
 
         let newf = new MenuTemplate("Explorer Splitter Menu [New]");
-        newf.pushNewOption("Folder", null) // TODO
+        newf.pushNewOption("Folder", "wins["+this.id_win+"].mknew(DIR)") // TODO
         newf.pushNewSeparator();
-        newf.pushNewOption("File", null) //TODO
+        newf.pushNewOption("File", "wins["+this.id_win+"].mknew(FILE)") //TODO
 
         let menu = new MenuTemplate("Explorer Content Menu");
         menu.pushNewOption("Go Into", "wins["+this.id_win+"].goIntoByDef()");
@@ -152,19 +152,40 @@ class Win_Explorer extends Window {
     mknew(what, _res) {
         switch (what) {
             case DIR:
-                
+                xinput("Create a new folder", 
+                "Type name for a new folder: ", 
+                "<input type='text' class='system-input' id='i-exp-"+this.id_win+"'/>",
+                "wins["+this.id_win+'].mknew("D_RES_", $("#i-exp-'+this.id_win+'").val())',
+                "wins["+this.id_win+"].mknew(NONE)");
+
+                $('#i-exp-' + this.id_win).on('keypress', function (event) {
+                    var regex = new RegExp("^[a-zA-Z0-9~`!@#$%^&*()_+-=;':]+$"); // TO DO FORBIDDEN SIGNS
+                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                    if (!regex.test(key)) {
+                       event.preventDefault();
+                       return false;
+                    }
+                });
                 break;
-            case DIR + "_RES_":
-            
+            case "D_RES_":
+                this.ptr.mkdir(_res);
+                this.Refresh();
                break;
             case FILE:
-
+                xinput("Create a new file", 
+                "Type name for a new file: ", 
+                "<input type='text' class='system-input' id='i-exp-"+this.id_win+"'/>",
+                "wins["+this.id_win+'].mknew("F_RES_", $("#i-exp-'+this.id_win+'").val())',
+                "wins["+this.id_win+"].mknew(NONE)");
                 break;
-            case FILE + "_RES_":
-            
+            case "F_RES_":
+                this.ptr.mkfile(_res);
+                this.Refresh();
                 break;
+            case NONE: // Cancel creating
+                return false;
             default:
-                console.log("mknew does not know this type creating: " + what);
+                console.log("mknew(what, _res) does not know this type creating: " + what);
                 break;
         }
     }
