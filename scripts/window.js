@@ -182,6 +182,7 @@ class Window {
     }
 
     onDragEvent() {
+        
         //You can overwrite this and use for what you want
     }
 
@@ -235,6 +236,7 @@ class Window {
         $('#win-' + this.id_win).css('display', 'block');
         this.onResizeEvent();
     }
+
     action_full_maximize() {
         if(this.maximized) {
             this.maximized = false;

@@ -6,25 +6,19 @@ const DIR = "Directory";
 const ALL = "dirs&files";
 
 class FileSystem {
-    constructor() {
-        console.log("system");
+    // VALUE: start_dir_name => basic folder where tree hierarchy starts. For instance 'C:'
+    constructor(start_dir_name) {
+        if(start_dir_name == "" || start_dir_name == undefined) {
+            this.stdirn = "R:";
+        } else {
+            this.stdirn = start_dir_name;
+        }
+
         this.root_folder = new Folder(this.begin());
-        this.root_folder.pushBinder(new File("Testero.txt"));
-        this.root_folder.pushBinder(new File("be_be"));
-        this.root_folder.pushBinder(new Folder("xampp"));
-        this.root_folder.pushBinder(new Folder("bin"));
-        this.root_folder.pushBinder(new Folder("user"));
-        this.root_folder.getByName("bin").pushBinder(new File("Elo"));
-        this.root_folder.getByName("bin").pushBinder(new File("W.txt"));
-        this.root_folder.getByName("bin").pushBinder(new Folder("Gorące mamuśki"));
-        this.root_folder.getByName("bin").getByName("Gorące mamuśki").pushBinder(new File("Nie dla psa kielbasa"));
-        
-        this.printHierarchyTree();
-        
-        console.log(this.readPath("R:/bin/"));
-        console.log(this.readPath("R:/Testero.txt"));
     }
 
+    // Reads input path and returns directory on which path pointed
+    // ERROR CASE: Returns ERRFILE
     readPath(path) {
         let dirs = path.split('/');
         let curr_dir = this.root_folder;
@@ -50,6 +44,8 @@ class FileSystem {
         return curr_dir;
     }
 
+    // Checks is path in the system
+    // RETURNS: true or false
     existPath(path) {
         let f = this.readPath(path);
         if(f != ERRFILE) {
@@ -59,8 +55,9 @@ class FileSystem {
         }
     }
 
+    // Print ALL system files, folder etc. in the js console.
     printHierarchyTree() {
-        let c = "TREE DIRS\nR:\n";
+        let c = "TREE DIRS\n"+this.begin()+"\n";
 
         this.root_folder.binder_list.forEach(bind => {
             if(bind.type() == FILE) {
@@ -74,8 +71,9 @@ class FileSystem {
         console.log(c);
     }
 
+    // Returns begin of every path in this system
     begin() {
-        return "R:";
+        return this.stdirn;
     }
 }
 
@@ -122,11 +120,12 @@ class DirFollower {
         }
     }
 
+    // Returns currently chose directory [object]
     getCurrentDir() {
         return this.system.readPath(this.curr_path);
     }
 
-    //create directory in the current path
+    // Create directory in the current path
     mkdir(name_dir) {
         if(this.system.existPath(this.curr_path)) {
             this.system.readPath(this.curr_path).pushBinder(new Folder(name_dir));
@@ -136,7 +135,7 @@ class DirFollower {
         }
     }
 
-    //create file in the current path
+    // Create file in the current path
     mkfile(name_file) {
         if(this.system.existPath(this.curr_path)) {
             this.system.readPath(this.curr_path).pushBinder(new File(name_file));
@@ -146,7 +145,7 @@ class DirFollower {
         }
     }
 
-    // delete the binder from current path
+    // Delete the binder from current path
     del(name) {
         if(this.system.existPath(this.curr_path)) {
             if(this.system.readPath(this.curr_path + name).type() == DIR) {
@@ -170,6 +169,7 @@ class DirFollower {
         }
     }
 
+    // Continuation of del(name) method. Permanently delete item
     __delPerm__(name) {
         let index = this.system.readPath(this.curr_path).getIndexOf(name);
         this.system.readPath(this.curr_path).removeBinder(index);
@@ -177,7 +177,7 @@ class DirFollower {
 
     }
 
-    // count sepcific items by filterring data
+    // Count sepcific items by filterring data [DIR, FILE, ALL]
     count(filter) {
         switch (filter) {
             case DIR:
@@ -195,29 +195,29 @@ class DirFollower {
         }
     }
 
+    // Returns list of all items in the currently chosen directory
     getBinders() {
         if(this.system.existPath(this.curr_path)) {
             return this.system.readPath(this.curr_path).binder_list;
         }
     }
 
-    // print current chosen directory
+    // Print currently chosen directory
     pdir() {
         this.system.readPath(this.curr_path).printDirectory();
     }
 
-    path() {
-        return "Path is '" + this.curr_path + "'";
-    }
-
+    // Return full path going to current directory
     getPath() {
         return this.curr_path;
     }
 
+    // Event is called if path is changed
     onChangePathEvent() { ; }
 }
 
 class BinderObject {
+    // VALUE: name => name of item
     constructor(name) {
         this.name = name;
         let dd = new Date();
@@ -235,20 +235,24 @@ class BinderObject {
 }
 
 class Folder extends BinderObject {
+    // VALUE: name => name of new folder
     constructor(name) {
         super(name); // calls constructor of BinderObject
         this.binder_list = [];
         this.slct_pos = NONE;
     }
 
+    // Pushes to folder new Item
     pushBinder(ext_binder) {
         this.binder_list.push(ext_binder);
     }
 
+    // Removes from folder item with index
     removeBinder(index) {
         this.binder_list.splice(index, 1);
     }
 
+    // Returns index in the folder of the item with name
     getIndexOf(name) {
         for (let i = 0; i < this.binder_list.length; i++) {
             if(this.binder_list[i].name == name) {
@@ -257,12 +261,15 @@ class Folder extends BinderObject {
         }
     }
 
+    // Returns item object by index
     getByIndex(index) {
         if(index < this.binder_list.length && index >= 0) {
             return this.binder_list[index];
         }
     }
 
+    // Returns item object by name
+    // ERROR CASE: Returns ERRFILE
     getByName(name) {
         let result = ERRFILE;
 
@@ -275,7 +282,8 @@ class Folder extends BinderObject {
         return result;
     }
 
-    printDirectory() {
+    // Prints in the js console items of the folder
+    printDir() {
         let c = "DIR " + this.name + ":\n";
 
         this.binder_list.forEach(bind => {
@@ -306,12 +314,12 @@ class Folder extends BinderObject {
         return c;
     }
 
-    //count all files & dirs.
+    // Count all files & dirs.
     countAll() {
         return this.binder_list.length;
     }
 
-    //count only files.
+    // Count only files.
     countFiles() {
         let n = 0;
 
@@ -324,7 +332,7 @@ class Folder extends BinderObject {
         return n;
     }
 
-    //count only dirs.
+    // Count only dirs.
     countDirs(){
         let n = -1;
 
@@ -340,21 +348,24 @@ class Folder extends BinderObject {
         return n;
     }
 
+    // Returns type of item [DIR]
     type() {
         return DIR;
     }
 }
 
 class File extends BinderObject {
+    // VALUE: name => name of new folder
     constructor(name) {
         super(name); // calls constructor of BinderObject
        
     }
 
+    // Returns THIS object. Method extended
     getByName(name) {
         return this;
     }
-
+    // Returns type of item [FILE]
     type() {
         return FILE;
     }
