@@ -19,7 +19,7 @@ class Win_Explorer extends Window {
         menu.pushNewOption("Go Into", "wins["+this.id_win+"].goIntoByDef()");
         menu.pushNewOption("Go Previous", "wins["+this.id_win+"].goOut()");
         menu.pushNewSeparator();
-        menu.pushNewOption("Duplicate Window", "wins["+this.id_win+"].Duplicate()"); // TODO
+        menu.pushNewOption("Duplicate Window", "wins["+this.id_win+"].Duplicate()");
         menu.pushNewSeparator();
         menu.pushNewSplitOption("New", newf);
         
@@ -90,6 +90,13 @@ class Win_Explorer extends Window {
         });
     }
 
+    onResizeEvent() {
+        super.onResizeEvent();
+
+        let h = parseInt($('#win-' + this.id_win).css("height"));
+        $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h - 87);
+    }
+
     SetStartingPath(_path) {
         this.ptr.goto(_path);
         this.Refresh();
@@ -126,13 +133,6 @@ class Win_Explorer extends Window {
         $('#exp-item-' + this.selected_item + '-' + this.id_win).addClass('exp-item-ghost-select');
     }
 
-    onResizeEvent() {
-        super.onResizeEvent();
-
-        let h = parseInt($('#win-' + this.id_win).css("height"));
-        $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h - 87);
-    }
-
     SelectItem(index) {
         let id = this.id_win;
 
@@ -146,6 +146,26 @@ class Win_Explorer extends Window {
             $('#exp-item-' + index + '-' + this.id_win).on("dblclick", function() {
                 wins[id].goInto();
             });
+        }
+    }
+
+    mknew(what, _res) {
+        switch (what) {
+            case DIR:
+                
+                break;
+            case DIR + "_RES_":
+            
+               break;
+            case FILE:
+
+                break;
+            case FILE + "_RES_":
+            
+                break;
+            default:
+                console.log("mknew does not know this type creating: " + what);
+                break;
         }
     }
 
