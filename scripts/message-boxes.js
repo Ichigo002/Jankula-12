@@ -7,8 +7,8 @@ function xinfo(title, content) {
     wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-info' style='color: #5686ff;'></i>"));
     wins[iter].setCenter();
     let actionOk = 'wins[' + iter + '].action_close()';
-    let cnt = "<i class='icon-win-info' style='color:#5686ff; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
-     + content + "</p> <p style='both:clear;'><button onclick='"+actionOk+"' class='system-button' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button></p>";
+    let cnt = "<i class='icon-win-info' style='color: #5686ff; float: left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
+     + content + "</p> <p style='both:clear;'><button onclick='" + actionOk + "' class='system-button' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button></p>";
 
     wins[iter].setContent(cnt);
     wins[iter].static = true;
@@ -65,12 +65,14 @@ function xerror(title, content) {
 }
 
 function xquestion(title, question, action_accept, action_decline) {
-    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-question' style='color: #f70000;'></i>"));
+    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-question' style='color: #1f2bff;'></i>"));
 
     wins[iter].setCenter();
 
-    let cnt = "<i class='icon-win-attention' style='color:#f70000; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
-    + question + "</p> <p style='both:clear;' onclick='wins["+iter+"].action_close()'><button onclick='" + action_accept + "' class='system-button' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Yes</button><button onclick='" + action_decline + "' class='system-button' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>No</button></p>";
+    let cnt = "<i class='icon-win-question' style='color: #1f2bff; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
+    + question + "</p> <p style='both:clear;' onclick='wins["+iter+"].action_close()'><button onclick='" + action_accept + 
+    "' class='system-button' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Yes</button><button onclick='" + action_decline + 
+    "' class='system-button' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>No</button></p>";
 
     wins[iter].setContent(cnt);
     wins[iter].static = true;

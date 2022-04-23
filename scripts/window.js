@@ -74,24 +74,28 @@ class Window {
         let id = this.id_win;
 
         $('#win-' + id).on("mousedown", function() {
-            z_index++;
-            if(z_index >= max_z)
-            {
-                wins.forEach(w => {
-                    if(w.id_win != id) {
-                        $('#win-' + w.id_win).css('z-index', z_index - (max_z - min_z));
-                    } else {
-                        $('#win-' + w.id_win).css('z-index', min_z + wins.length);
-                    }
-                });
-                z_index = min_z + wins.length;
-            }
-            else
-            {
-                $('#win-' + id).css('z-index', z_index);
-            }
+            wins[id].GoTop();
         });
 
+    }
+
+    GoTop() {
+        z_index++;
+        if(z_index >= max_z)
+        {
+            wins.forEach(w => {
+                if(w.id_win != this.id_win) {
+                    $('#win-' + w.id_win).css('z-index', z_index - (max_z - min_z));
+                } else {
+                    $('#win-' + w.id_win).css('z-index', min_z + wins.length);
+                }
+            });
+            z_index = min_z + wins.length;
+        }
+        else
+        {
+            $('#win-' + this.id_win).css('z-index', z_index);
+        }
     }
 
     SetDraggingEvent() {
@@ -202,12 +206,9 @@ class Window {
     }
 
     setCenter() {
-        this.setPosition(100, 100);
         let sizeX = parseInt($('body').innerWidth());
         let sizeY = parseInt($('body').innerHeight());
         
-        console.log(document.getElementById('win-' + this.id_win).clientWidth);
-
         this.setPosition(sizeX / 2, sizeY / 2);
     }
 
@@ -225,6 +226,7 @@ class Window {
     action_unminimalise() {
         $('#win-' + this.id_win).css('display', 'block');
         this.task_item.unmin();
+        this.GoTop();
         this.onResizeEvent();
     }
 

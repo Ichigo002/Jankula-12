@@ -28,7 +28,6 @@ function Start() {
     wins[0].setContent("<span style='text-align: left;'><h2>Help</h2><p>Press Shift + Ctrl + C to open inspector and console. In the console type 'help()' for more commands.</p><h2>Use Open(name)</h2><p>If you are at the console you can type stapp('explorer') and after click enter it should open file explorer.</p></span>");
     wins[0].static = true;
     wins[0].setPositionResizePoint();
+    
     stapp("explorer");
-    xerror("Love...", "Lorem ipsum dolor<br/> sit amet, consectetur adipiscing elit. Vivamus tincidunt<br/> vitae nunc id ullamcorper. Nam <br/>et odio sollicitudin, ultricies velit<br/> vel, hendrerit metus.");
-    xquestion("Do u like me?", "Really. Please answer me for one question. <br/> Do you love Wiki? ", 'alert("I LOVE HER!")', 'alert("I HATE HER!")');
 }
