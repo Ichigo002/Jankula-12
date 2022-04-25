@@ -24,6 +24,7 @@
 
         <script src="scripts/windows/system/win-sys-cmd.js"></script>
         <script src="scripts/windows/system/win-sys-explorer.js"></script>
+        <script src="scripts/windows/system/win-sys-properties.js"></script>
     </head>
     <body>
         <div id="desktop"></div>
@@ -41,44 +42,44 @@
 
         
 
-        <!--<div class="win" style="top: 100px; left: 100px; width: 700px; height: 350px;">
-            <div class="win-top">icon
+        <!--<div class="win" style="top: 100px; left: 100px; width: 400px; height: 450px;">
+            <div class="win-top">* Properties
             <span style="margin-left: 15px;">
-            <i class="icon-close icon-all"></i>
-            <i class="icon-maximize icon-all"></i>
-            <i class="icon-minimize icon-all"></i>
-            <div style="clear: both;"></div>
+                <i class="icon-close icon-all"></i>
+                <i class="icon-maximize icon-all"></i>
+                <i class="icon-minimize icon-all"></i>
+                <div style="clear: both;"></div>
             </span> </div> 
-            <div class="win-content" id="win-cnt-' + this.id_win + '">
-                TOP BAR
-                <div class="exp-top">
-                    <div class="exp-top-wrapper-btns">
-                        <i class="icon-up-arrow exp-top-btn"></i>
-                        <i class="icon-down-arrow exp-top-btn"></i>
-                    </div>
-                    <div class="exp-top-path">R:/user/bin/Wisniewski/hot/mamuski</div>
+            <div class="win-content">
+                <div class="prop-top">
+                    <i class="icon-settings"></i>
+                    <input type="text" value="Lorem iddel more.exe"/>
                 </div>
-                <div class="exp-wrapper">
-                    NAV
-                    <div class="exp-nav"></div>
-                    CONTENT
-                    <div class="exp-item-barinfo">
-                        <div class="exp-item-name">Name</div>
-                        <div class="exp-item-date">Date Created</div>
-                        <div class="exp-item-type">Type File</div>
-                    </div>
-                    <div class="exp-content">
-                        <div class="exp-item">
-                            <div class="exp-item-name">User</div>
-                            <div class="exp-item-date">12/04/2022</div>
-                            <div class="exp-item-type">PNG</div>
-                        </div>
-                    </div>
+                <div class="prop-center">
+                    <table>
+                    <tbody>
+                        <tr>
+                            <th>Size on Disk</th>
+                            <th>254 KB</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><div class="prop-sep"></div></th>
+                        </tr>
+                        <tr>
+                            <th>Read Only</th>
+                            <th><input type="checkbox"/></th>
+                        </tr>
+                        
+                    </tbody>
+                    </table>
                 </div>
-                
-                END CONTENT
+                <div class="prop-footer">
+                    <button>Ok</button>
+                    <button>Cancel</button>
+                    <button>Apply</button>
+                </div>
             </div>
-            <div class="win-resize-point" id="win-res-'+this.id_win+'"></div>
+            <div class="win-resize-point"></div>
         </div>-->
     </body>
 </html>

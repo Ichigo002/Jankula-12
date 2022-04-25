@@ -33,6 +33,11 @@ function Start() {
     wins[0].setPositionResizePoint();
 
     stapp("explorer");
+
+    wins.push(new Win_Properties(iter));
+    let p = wins[iter];
+    iter++;
+
 }
 
 function basicFiles() {

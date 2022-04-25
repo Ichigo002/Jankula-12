@@ -41,6 +41,13 @@ body {
 button {
     background-color: #d6d6d6;
     border-radius: 5px;
+    letter-spacing: 1.1px;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
 }
 
 button:hover {
@@ -48,10 +55,14 @@ button:hover {
 }
 
 input {
+    
     background-color: #d4d4d4;
     color: #000000;
     border-radius: 3px;
     border: 2px solid #535353;
+    font-size: 17px;
+
+
 }
 
 .menu {

@@ -5,14 +5,14 @@
 // returns id at the wins list of created information
 function xinfo(title, content) {
     wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-info' style='color: #5686ff;'></i>"));
-    wins[iter].setCenter();
+
     let actionOk = 'wins[' + iter + '].action_close()';
     let cnt = "<i class='icon-win-info' style='color: #5686ff; float: left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
      + content + "</p> <p style='both:clear;'><button onclick='" + actionOk + "'style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button></p>";
 
-    wins[iter].setContent(cnt);
+    wins[iter].setContent(cnt).setPositionResizePoint().setCenter().GoTop();
     wins[iter].static = true;
-    wins[iter].setPositionResizePoint();
+
     $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
     $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
     iter++;

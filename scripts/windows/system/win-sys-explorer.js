@@ -139,7 +139,7 @@ class Win_Explorer extends Window {
             let tp = item.type() == DIR ? "Folder" : "File";
             xinput("Rename "+ item.name +" " + tp,
             "Type new name of " + tp + ": ",
-            "<input type='text' id='i-exp-" + this.id_win + "'/>",
+            "<input type='text' value='"+item.name+"' id='i-exp-" + this.id_win + "'/>",
             "wins["+this.id_win+'].execRename($("#i-exp-'+this.id_win+'").val(), '+this.selected_item+')',
             "");
         }
@@ -147,8 +147,15 @@ class Win_Explorer extends Window {
 
     execRename(accept, item) {
         if(accept != undefined) {
-            this.ptr.getItemBy(item).name = accept;
-            this.Refresh();
+            if(accept == '') {
+                xwarning("Warning. Incorrect name", "Item must have name.");
+            } else if(accept.includes('/') || accept.includes('\\')) {
+                xwarning("Warning. Incorrect name", "Item's name cannot includes '/' or '\\'.");
+            } else {
+                this.ptr.getItemBy(item).name = accept;
+                this.Refresh();
+            }
+            
         }
     }
 
@@ -156,9 +163,14 @@ class Win_Explorer extends Window {
         if(this.selected_item != NONE) {
             let item = this.ptr.getItemBy(this.selected_item);
             let tp = item.type() == DIR ? "Folder" : "File";
+            let contains;
+            if(item.type() == DIR && item.countAll() != 0) {
+                contains = "Folder contains: " + item.countAll() + (item.countAll() > 1 ? " Items" : " Item");
+            }
+            
             
             xquestion("Deleting " + item.name + " " + tp,
-            "Are you sure to delete 1 "+tp+"? ",
+            "Are you sure to delete 1 "+tp+"? <br/> " + contains,
             'wins['+this.id_win+'].execDel("'+item.name+'")',
             "");
         }
@@ -170,7 +182,7 @@ class Win_Explorer extends Window {
     }
 
     openProp() {
-
+        
     }
 
 

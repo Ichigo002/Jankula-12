@@ -1,3 +1,5 @@
+/*EXPLORER WINDOW STYLE*/
+
 .exp-top {
     width: calc(100% - 20px);
     height: 25px;
@@ -122,4 +124,57 @@
     border: 1.5px solid #ffe9a7 !important;    
     padding: 0.5px !important;
     padding-left: 3.5px !important;
+}
+
+/*PROPERTIES WINDOW STYLE*/
+
+.prop-top {
+    height: 60px;
+    font-family: 'Nunito-Regular';
+    padding: 5px;
+    border-bottom: 2px dashed #373737;
+}
+
+.prop-top > i {
+    font-size: 45px;
+    float: left;
+}
+
+.prop-top > input {
+    margin-top: 20px;
+    float: left;
+    width: 300px; /*JS OVERWRITE*/
+}
+
+.prop-center {
+    padding: 15px;
+}
+
+.prop-center > table > tbody > tr > th:first-child {
+    width: 130px;
+}
+
+.prop-center > table > tbody > tr > th {
+    font-size: 17px;
+    font-family: 'Nunito-Regular';
+    font-weight: normal;
+    text-align: left;
+}
+
+.prop-sep {
+    border-bottom: 2px dashed #373737;
+    width: 370px; /*JS OVERWRITE*/
+    height: 10px;
+    margin-bottom: 5px;
+}
+
+
+.prop-footer {
+    float: right;
+    padding: 5px;
+}
+
+.prop-footer > button {
+    margin-right: 5px;
+    padding: 5px 7px 5px 7px;
 }

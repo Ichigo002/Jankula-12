@@ -68,6 +68,7 @@ class Window {
         this.setPositionResizePoint();
         this.SetDraggingEvent();
         this.SetResizeEvent();
+        return this;
     }
 
     ActiveZIndex() {
@@ -96,6 +97,7 @@ class Window {
         {
             $('#win-' + this.id_win).css('z-index', z_index);
         }
+        return this;
     }
 
     SetDraggingEvent() {
@@ -192,6 +194,7 @@ class Window {
 
     setContent(v) {
         $("#win-" + this.id_win + " > .win-content").html(v);
+        return this;
     }
 
     setPositionResizePoint() {
@@ -204,6 +207,7 @@ class Window {
             $("#win-" + id + " > .win-resize-point").css('left', parseInt($('#win-' + id).css('width')) );
             $("#win-" + id + " > .win-resize-point").css('top', parseInt($('#win-' + id).css('height')));     
         }
+        return this;
     }
 
     setCenter() {
@@ -211,11 +215,13 @@ class Window {
         let sizeY = parseInt($('body').innerHeight());
         
         this.setPosition(sizeX / 2, sizeY / 2);
+        return this;
     }
 
     setPosition(x, y) {
         $('#win-' + this.id_win).css('left', x + 'px');
         $('#win-' + this.id_win).css('top', y + 'px');
+        return this;
     }
 
     action_minimalise() {

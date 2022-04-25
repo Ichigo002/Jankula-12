@@ -234,6 +234,7 @@ class BinderObject {
         let dd = new Date();
         this.date = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
         this.time = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
+        this.icon = "icon-default-app";
     }
 
     getByName(name) {
@@ -251,6 +252,7 @@ class Folder extends BinderObject {
         super(name); // calls constructor of BinderObject
         this.binder_list = [];
         this.slct_pos = NONE;
+        this.icon = "icon-folder-open";
     }
 
     // Pushes to folder new Item
@@ -367,9 +369,14 @@ class Folder extends BinderObject {
 
 class File extends BinderObject {
     // VALUE: name => name of new folder
-    constructor(name) {
+    constructor(name, ico) {
         super(name); // calls constructor of BinderObject
-       
+        if(ico == undefined) {
+            this.icon = "icon-file";
+        } else {
+            this.icon = ico;
+        }
+        
     }
 
     // Returns THIS object. Method extended
