@@ -10,10 +10,10 @@ class Win_Explorer extends Window {
         this.selected_item = 0;
         this.items_length = 0;
 
-        this.menu_creating_items = new MenuTemplate("Explorer Splitter Menu [New]");
-        this.menu_creating_items.pushNewOption("Folder", "wins["+this.id_win+"].mknew(DIR)") // TODO
-        this.menu_creating_items.pushNewSeparator();
-        this.menu_creating_items.pushNewOption("File", "wins["+this.id_win+"].mknew(FILE)") //TODO
+        let newop = new MenuTemplate("Explorer Splitter Menu [New]");
+        newop.pushNewOption("Folder", "wins["+this.id_win+"].mknew(DIR)");
+        newop.pushNewSeparator();
+        newop.pushNewOption("File", "wins["+this.id_win+"].mknew(FILE)");
 
         let menu = new MenuTemplate("Explorer Content Menu");
         menu.pushNewOption("Go Into", "wins["+this.id_win+"].goIntoByDef()");
@@ -21,7 +21,7 @@ class Win_Explorer extends Window {
         menu.pushNewSeparator();
         menu.pushNewOption("Duplicate Window", "wins["+this.id_win+"].Duplicate()");
         menu.pushNewSeparator();
-        menu.pushNewSplitOption("New", this.menu_creating_items);
+        menu.pushNewSplitOption("New", newop);
         
 
         let content = '<div class="exp-top">' +
@@ -263,19 +263,32 @@ class Win_Explorer extends Window {
         let menu;
         switch(item.type()) {
             case DIR:
+
                 menu = new MenuTemplate('Folder :: ' + item.name);
                 menu.pushNewOption("Open", 'wins['+this.id_win+'].goInto()');
                 menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
                 menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
                 menu.pushNewSeparator();
-                menu.pushNewSplitOption("New", this.menu_creating_items);
+                menu.pushNewOption("Cut", null);
+                menu.pushNewOption("Copy", null);
+                menu.pushNewOption("Paste", null);
+                menu.pushNewSeparator();
+                menu.pushNewOption("Copy Path", null);
                 menu.pushNewSeparator();
                 menu.pushNewOption("Properties", 'wins['+this.id_win+'].openProp()');
                 
             break;
             case FILE:
                 menu = new MenuTemplate('File ::   ' + item.name);
-                menu.pushNewOption("Open", "stapp('explorer')");
+                menu.pushNewOption("Open", null);
+                menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
+                menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
+                menu.pushNewSeparator();
+                menu.pushNewOption("Cut", null);
+                menu.pushNewOption("Copy", null);
+                menu.pushNewOption("Paste", null);
+                menu.pushNewSeparator();
+                menu.pushNewOption("Properties", 'wins['+this.id_win+'].openProp()');
             break;
             default:
                 console.error("Not found '" + item.type() + "' in CreateMenu(item)");

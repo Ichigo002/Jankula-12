@@ -4,4 +4,7 @@ TO DO:
 * make delete item option
 * make extensions
 * make blocking unallowed signs /?*
-* 
+* make notepad app
+* make option open i nth files explorer
+* make options in the items cut, copy, paste
+* make copy cut and paste class to do
