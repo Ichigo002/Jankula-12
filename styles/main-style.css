@@ -38,17 +38,20 @@ body {
                 /*hegiht of task-bar*/
 }
 
-.system-button {
+button {
     background-color: #d6d6d6;
     border-radius: 5px;
 }
 
-.system-button:hover {
+button:hover {
     background-color: #efeeee;
 }
 
-.system-input {
-    /*TO DO*/
+input {
+    background-color: #d4d4d4;
+    color: #000000;
+    border-radius: 3px;
+    border: 2px solid #535353;
 }
 
 .menu {

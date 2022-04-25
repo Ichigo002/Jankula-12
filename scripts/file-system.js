@@ -103,7 +103,7 @@ class DirFollower {
                     return "ERRGO: Invalid Coming back";
                 }
             }
-        } else {
+        } else if(!dir.includes("/")) {
             let new_p;
             if(dir[0] == 'R' && dir[1] == ':' && dir[2] == '/') {
                 new_p = dir;
@@ -117,6 +117,8 @@ class DirFollower {
             } else {
                 return "ERRFIND: Invalid Directory '" + dir +"'";
             }
+        } else {
+            return "FORBBIDEN_SIGNS";
         }
     }
 
@@ -152,17 +154,17 @@ class DirFollower {
                 if(this.system.readPath(this.curr_path + name).countAll() != 0) {
                     let ans = prompt("Are you sure to delete " + name + "? This folder contains other files. [Y/N]");
                     if(ans.toLowerCase() == 'y') {
-                        return this.__delPerm__(name);
+                        return this.del_noq(name);
                     } else if(ans.toLowerCase() == 'n') {
                         return "Deleting directory cancelled.";
                     }
                 } else {
                     this.onChangePathEvent();
-                    return this.__delPerm__(name);
+                    return this.del_noq(name);
                 }
             } else {
                 this.onChangePathEvent();
-                return this.__delPerm__(name);
+                return this.del_noq(name);
             }
         } else {
             return "ERREXT: Path to delete directory doesn't exist";
@@ -170,7 +172,7 @@ class DirFollower {
     }
 
     // Continuation of del(name) method. Permanently delete item
-    __delPerm__(name) {
+    del_noq(name) {
         let index = this.system.readPath(this.curr_path).getIndexOf(name);
         this.system.readPath(this.curr_path).removeBinder(index);
         return "Item " + name + " successfuly deleted from '" + this.curr_path + "'";
@@ -199,6 +201,15 @@ class DirFollower {
     getBinders() {
         if(this.system.existPath(this.curr_path)) {
             return this.system.readPath(this.curr_path).binder_list;
+        }
+    }
+
+    //Returns item with index
+    getItemBy(index) {
+        if(index > -1 && index < this.getBinders().length) {
+            return this.getBinders()[index];
+        } else {
+            return "INVALID INDEX";
         }
     }
 

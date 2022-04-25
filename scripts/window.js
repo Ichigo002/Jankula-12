@@ -17,7 +17,7 @@ class Window {
 
         //Topbar Context Menu
         let menu = new MenuTemplate(name);
-        menu.pushNewOption("Close", "alert('dd')");
+        menu.pushNewOption("Close", 'wins['+this.id_win+'].action_close()');
         menu.pushNewOption("Maximize", 'wins['+this.id_win+'].action_full_maximize();');
         menu.pushNewOption("Minimize", 'wins['+this.id_win+'].action_minimalise();');
 

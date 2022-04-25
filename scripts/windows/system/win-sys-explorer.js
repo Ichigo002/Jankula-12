@@ -10,10 +10,10 @@ class Win_Explorer extends Window {
         this.selected_item = 0;
         this.items_length = 0;
 
-        let newf = new MenuTemplate("Explorer Splitter Menu [New]");
-        newf.pushNewOption("Folder", "wins["+this.id_win+"].mknew(DIR)") // TODO
-        newf.pushNewSeparator();
-        newf.pushNewOption("File", "wins["+this.id_win+"].mknew(FILE)") //TODO
+        this.menu_creating_items = new MenuTemplate("Explorer Splitter Menu [New]");
+        this.menu_creating_items.pushNewOption("Folder", "wins["+this.id_win+"].mknew(DIR)") // TODO
+        this.menu_creating_items.pushNewSeparator();
+        this.menu_creating_items.pushNewOption("File", "wins["+this.id_win+"].mknew(FILE)") //TODO
 
         let menu = new MenuTemplate("Explorer Content Menu");
         menu.pushNewOption("Go Into", "wins["+this.id_win+"].goIntoByDef()");
@@ -21,7 +21,7 @@ class Win_Explorer extends Window {
         menu.pushNewSeparator();
         menu.pushNewOption("Duplicate Window", "wins["+this.id_win+"].Duplicate()");
         menu.pushNewSeparator();
-        menu.pushNewSplitOption("New", newf);
+        menu.pushNewSplitOption("New", this.menu_creating_items);
         
 
         let content = '<div class="exp-top">' +
@@ -133,6 +133,47 @@ class Win_Explorer extends Window {
         $('#exp-item-' + this.selected_item + '-' + this.id_win).addClass('exp-item-ghost-select');
     }
 
+    renameItem() {
+        if(this.selected_item != NONE) {
+            let item = this.ptr.getItemBy(this.selected_item);
+            let tp = item.type() == DIR ? "Folder" : "File";
+            xinput("Rename "+ item.name +" " + tp,
+            "Type new name of " + tp + ": ",
+            "<input type='text' id='i-exp-" + this.id_win + "'/>",
+            "wins["+this.id_win+'].execRename($("#i-exp-'+this.id_win+'").val(), '+this.selected_item+')',
+            "");
+        }
+    }
+
+    execRename(accept, item) {
+        if(accept != undefined) {
+            this.ptr.getItemBy(item).name = accept;
+            this.Refresh();
+        }
+    }
+
+    deleteItem() {
+        if(this.selected_item != NONE) {
+            let item = this.ptr.getItemBy(this.selected_item);
+            let tp = item.type() == DIR ? "Folder" : "File";
+            
+            xquestion("Deleting " + item.name + " " + tp,
+            "Are you sure to delete 1 "+tp+"? ",
+            'wins['+this.id_win+'].execDel("'+item.name+'")',
+            "");
+        }
+    }
+
+    execDel(name) {
+        this.ptr.del_noq(name);
+        this.Refresh();
+    }
+
+    openProp() {
+
+    }
+
+
     SelectItem(index) {
         let id = this.id_win;
 
@@ -154,18 +195,9 @@ class Win_Explorer extends Window {
             case DIR:
                 xinput("Create a new folder", 
                 "Type name for a new folder: ", 
-                "<input type='text' class='system-input' id='i-exp-"+this.id_win+"'/>",
+                "<input type='text' id='i-exp-"+this.id_win+"'/>",
                 "wins["+this.id_win+'].mknew("D_RES_", $("#i-exp-'+this.id_win+'").val())',
                 "wins["+this.id_win+"].mknew(NONE)");
-
-                $('#i-exp-' + this.id_win).on('keypress', function (event) {
-                    var regex = new RegExp("^[a-zA-Z0-9~`!@#$%^&*()_+-=;':]+$"); // TO DO FORBIDDEN SIGNS
-                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-                    if (!regex.test(key)) {
-                       event.preventDefault();
-                       return false;
-                    }
-                });
                 break;
             case "D_RES_":
                 this.ptr.mkdir(_res);
@@ -174,7 +206,7 @@ class Win_Explorer extends Window {
             case FILE:
                 xinput("Create a new file", 
                 "Type name for a new file: ", 
-                "<input type='text' class='system-input' id='i-exp-"+this.id_win+"'/>",
+                "<input type='text' id='i-exp-"+this.id_win+"'/>",
                 "wins["+this.id_win+'].mknew("F_RES_", $("#i-exp-'+this.id_win+'").val())',
                 "wins["+this.id_win+"].mknew(NONE)");
                 break;
@@ -233,6 +265,13 @@ class Win_Explorer extends Window {
             case DIR:
                 menu = new MenuTemplate('Folder :: ' + item.name);
                 menu.pushNewOption("Open", 'wins['+this.id_win+'].goInto()');
+                menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
+                menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
+                menu.pushNewSeparator();
+                menu.pushNewSplitOption("New", this.menu_creating_items);
+                menu.pushNewSeparator();
+                menu.pushNewOption("Properties", 'wins['+this.id_win+'].openProp()');
+                
             break;
             case FILE:
                 menu = new MenuTemplate('File ::   ' + item.name);
