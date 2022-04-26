@@ -101,7 +101,6 @@ function xquestion(title, question, action_accept, action_decline) {
 function xinput(title, content, input_html, action_accept, action_decline) {
     wins.push(new Window(title, 400, AUTO_RESIZE, iter, "<i class='icon-win-info' style='color: #1f2bff;'></i>"));
     wins[iter].setCenter();
-    //$("#win-" + iter).attr("onkeyup", '__xinputenter__('+iter+')');
 
     let cnt = "<i class='icon-win-info' style='color: #1f2bff; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
     + content + "</p><p>" + input_html + "</p><p style='both:clear;' class='q-btns' onclick='wins["+iter+"].action_close()'><button onclick='" + action_accept + 
@@ -115,6 +114,18 @@ function xinput(title, content, input_html, action_accept, action_decline) {
     $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
 
     wins[iter].GoTop();
+    keyboardEvent(iter);
     iter++;
     return iter - 1;
+}
+
+function keyboardEvent(id) {
+    $(window).keydown(function(e) {
+        if($('#win-' + id).css('z-index') == z_index) {
+            if(e.which == 13) { //enter
+                $('#win-' + id + " > .win-content > p > .q-btns-yes").trigger("onclick");
+                $('#win-' + id + " > .win-content > p").trigger("onclick");
+            }
+        }
+    });
 }
