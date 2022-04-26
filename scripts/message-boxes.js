@@ -99,9 +99,8 @@ function xquestion(title, question, action_accept, action_decline) {
 // action_decline - html action after decline or close window
 // Returns id at the wins list of created input
 function xinput(title, content, input_html, action_accept, action_decline) {
-    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-info' style='color: #1f2bff;'></i>"));
+    wins.push(new Window(title, 400, AUTO_RESIZE, iter, "<i class='icon-win-info' style='color: #1f2bff;'></i>"));
     wins[iter].setCenter();
-    wins[iter].GoTop();
     //$("#win-" + iter).attr("onkeyup", '__xinputenter__('+iter+')');
 
     let cnt = "<i class='icon-win-info' style='color: #1f2bff; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
@@ -114,7 +113,8 @@ function xinput(title, content, input_html, action_accept, action_decline) {
     wins[iter].setPositionResizePoint();
     $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
     $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
-    iter++;
 
+    wins[iter].GoTop();
+    iter++;
     return iter - 1;
 }

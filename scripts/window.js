@@ -53,6 +53,8 @@ class Window {
         this.SetDraggingEvent();
         this.ActiveZIndex();
         this.SetResizeEvent();
+        
+        this.GoTop();
     }
 
     setMinimalSize(mw, mh) {
@@ -192,6 +194,10 @@ class Window {
         //You can overwrite this and use for what you want
     }
 
+    onCloseEvent() {
+        //You can overwrite this and use for what you want
+    }
+
     setContent(v) {
         $("#win-" + this.id_win + " > .win-content").html(v);
         return this;
@@ -264,6 +270,7 @@ class Window {
     }
 
     action_close() {
+        this.onCloseEvent();
         this.task_item.removeItem();
         cxtm.removeMenu($('#win-' + this.id_win).attr("menuv"));
         $("div").remove('#win-' + this.id_win);

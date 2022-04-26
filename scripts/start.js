@@ -3,7 +3,7 @@ window.onload = Start;
 //System
 var file_system;
 var tr; // for testing only
-var cxtm;
+var cxtm; // context menu
 // windows
 var wins = [];
 var iter = 0;

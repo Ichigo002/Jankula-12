@@ -23,7 +23,7 @@ class Win_Explorer extends Window {
         menu.pushNewSeparator();
         menu.pushNewSplitOption("New", newop);
         
-
+        this.cnt_menu_ = cxtm.addMenu(menu);
         let content = '<div class="exp-top">' +
             '<div class="exp-top-wrapper-btns">' +
                 '<i class="icon-up-arrow exp-top-btn"></i>' +
@@ -35,18 +35,26 @@ class Win_Explorer extends Window {
                 '<div class="exp-item-name">Name</div>' +
                 '<div class="exp-item-date">Date Created</div>' +
                 '<div class="exp-item-type">Type</div></div>' +
-            '<div class="exp-content" menuv="' + cxtm.addMenu(menu) + '"></div>';
+            '<div class="exp-content" menuv="' + this.cnt_menu_ + '"></div>';
 
         this.setContent(content);
         this.onResizeEvent();
-        this.Refresh();
+        
 
         this.setClickArrowsEvents();
         this.setKeyboardEvents();
+        this.onRefreshEvent();
 
-        let id = this.id_win;
+        this.Refresh();
+
+        let w = this;
+
         this.ptr.onChangePathEvent = function() {
-            wins[id].Refresh();
+            w.Refresh();
+        }
+        this.onCloseEvent = function() {
+            this.RemoveCXTMenus();
+            cxtm.removeMenu(this.cnt_menu_);
         }
     }
 
@@ -97,6 +105,14 @@ class Win_Explorer extends Window {
         $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h - 87);
     }
 
+    onRefreshEvent() {
+        let win = this;
+        $("#handler_event").on("exp_refresh", function(e) {
+            win.RefreshPath();
+            win.RefreshItems();
+        });
+    }
+
     SetStartingPath(_path) {
         this.ptr.goto(_path);
         this.Refresh();
@@ -106,6 +122,7 @@ class Win_Explorer extends Window {
         let id = stapp("explorer");
         
         wins[id].SetStartingPath(this.ptr.getPath());
+        wins[id].GoTop();
     }
 
     goIntoByDef() {
@@ -235,18 +252,21 @@ class Win_Explorer extends Window {
     }
 
     Refresh() {
-        this.RefreshPath();
-        this.RefreshItems();
+        $("#handler_event").trigger('exp_refresh');
     }
 
     RefreshPath() {
         $('#win-' + this.id_win + " > .win-content > .exp-top > .exp-top-path").text(this.ptr.getPath());
     }
 
-    RefreshItems() {
+    RemoveCXTMenus() {
         this._item_cxt_menus_.forEach(item => {
             cxtm.removeMenu(item);
         });
+    }
+
+    RefreshItems() {
+        this.RemoveCXTMenus();
 
         this._item_cxt_menus_ = [];
 
@@ -275,7 +295,6 @@ class Win_Explorer extends Window {
         let menu;
         switch(item.type()) {
             case DIR:
-
                 menu = new MenuTemplate('Folder :: ' + item.name);
                 menu.pushNewOption("Open", 'wins['+this.id_win+'].goInto()');
                 menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');

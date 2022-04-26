@@ -14,21 +14,24 @@ class ContextMenu {
 
     addMenu(menu_temp) {
         let _new = [];
-        let pushed = false;
+        let pushed = -1;
 
-        for (let i = 0; i <= this.list_menus.length; i++) {
-            if(i == this.list_menus.length) {
-                if(!pushed) _new.push(menu_temp);
-                this.list_menus = _new;
-                return _new.length - 1;
-            }
-            if(this.list_menus.at(i) == null && !pushed) {
+        for (let i = 0; i < this.list_menus.length; i++) {
+            if(pushed == -1 && this.list_menus[i] == null) {
                 _new.push(menu_temp);
-                pushed = true;
+                pushed = i;
+                //console.log("MENU_TEMP ", i, " p: ", pushed);
             } else {
-                _new.push(this.list_menus.at(i));
+                _new.push(this.list_menus[i]);
+                //console.log("STD ", i, " p: ", pushed);
             }
         }
+        if(pushed == -1) {
+            pushed = _new.push(menu_temp) - 1;
+            //console.log("NON STD ", " p: ", pushed);
+        }
+        this.list_menus = _new;
+        return pushed;
     }
 
     removeMenu(id) {

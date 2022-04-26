@@ -1,10 +1,8 @@
 TO DO:
 * displaying on the center message boxes
-* make 'rename' item option
 * make left navgiate bar in the explorer
-* make delete item option
+* make accept window input by only enter
 * make extensions
-* make blocking unallowed signs /?*
 * make notepad app
 * make option open i nth files explorer
 * make options in the items cut, copy, paste
