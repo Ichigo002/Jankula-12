@@ -27,7 +27,7 @@ function Start() {
     cxtm = new ContextMenu();
     
     //ONLY FOR TESTS
-    NewWindow("DEMO HELP", 470, 300, 250, 175, '<i class="icon-settings"></i>');
+    NewWindow("DEMO HELP", 470, 300, 1000, 500, '<i class="icon-settings"></i>');
     wins[0].setContent("<span style='text-align: left;'><h2>Help</h2><p>Press Shift + Ctrl + C to open inspector and console. In the console type 'help()' for more commands.</p><h2>Use Open(name)</h2><p>If you are at the console you can type stapp('explorer') and after click enter it should open file explorer.</p></span>");
     wins[0].static = true;
     wins[0].setPositionResizePoint();
@@ -36,8 +36,17 @@ function Start() {
 
     wins.push(new Win_Properties(iter));
     let p = wins[iter];
+    p.pushNewValue("Type", "NaN");
+    p.pushNewValue("loremp", "NaN");
+    p.pushSeparator();
+    p.pushNewValue("gegvw", "NaN");
+    p.pushNewValue("fasf", "NaN");
     iter++;
 
+    NewWindow("Source Code", 400, 200, 1000, 100, '<i class="icon-app-notebook"></i>');
+    wins[iter - 1].setContent("<h1 padding='20px'><a href='https://github.com/Ichigo002/Jankula-12.git' target='_blank'>Kod źródłowy github</a></h1>");
+    wins[iter - 1].static = true;
+    wins[iter - 1].setPositionResizePoint();
 }
 
 function basicFiles() {
@@ -49,8 +58,8 @@ function basicFiles() {
     file_system.root_folder.getByName("xampp").pushBinder(new File("htdocs"));
     file_system.root_folder.getByName("bin").pushBinder(new File("Elo"));
     file_system.root_folder.getByName("bin").pushBinder(new File("W.txt"));
-    file_system.root_folder.getByName("bin").pushBinder(new Folder("Gorące mamuśki"));
-    file_system.root_folder.getByName("bin").getByName("Gorące mamuśki").pushBinder(new File("Nie dla psa kielbasa"));
+    file_system.root_folder.getByName("bin").pushBinder(new Folder("hot"));
+    file_system.root_folder.getByName("bin").getByName("hot").pushBinder(new File("Nie dla psa kielbasa"));
         
     file_system.printHierarchyTree();
 }
