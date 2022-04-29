@@ -23,6 +23,19 @@
     src: url("./../fonts/CourierPrime-Regular.ttf");
 }
 
+@media only screen and (max-width: 600px)  {
+    #block-warning {
+        display: block !important;
+        color: #ffffff;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    #block-warning {
+        display: none;
+    }
+}
+
 body {
     background-color: #000000;
     padding: 0;

@@ -1,9 +1,16 @@
 class TaskItem {
-    constructor(name, iter, icon) {
+    constructor(name, iter, icon, style_icon) {
         this.name = name;
         this.link_id_win = iter;
 
-        let item = '<div class="task-item-style" id="task-item-'+iter+'">'+icon+'</div>';
+        this.m_id = new MenuTemplate("Task Item " + iter);
+
+        this.m_id.pushNewOption("Pin to taskbar", null);
+        this.m_id.pushNewOption("Close", "wins[iter].action_close()");
+
+        this.m_id = cxtm.addMenu(this.m_id);
+
+        let item = '<div class="task-item-style" id="task-item-'+iter+'" menuv="'+this.m_id+'"><i class="'+icon+'" style="'+style_icon+'" menuv="'+this.m_id+'"></i></div>';
 
         $('#task-bar-items').append(item);
     }
@@ -39,6 +46,7 @@ class TaskItem {
 
     removeItem() {
         $('div').remove('#task-item-' + this.link_id_win);
+        cxtm.removeMenu(this.m_id);
     }
 
     min() {

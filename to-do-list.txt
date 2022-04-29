@@ -7,7 +7,10 @@ TO DO:
 * make options in the items cut, copy, paste
 * make properties
 * make copy cut and paste class to do
-* fix refreshing files in few explorers after delete or rename file
 * customize checkboxes [CSS]
-* rebuild icon system (add icon only by class not by all tag <i></i>!)
 * complete displayFileProperties() with size property & Modified & Accessed
+* complete warning for smartphones
+* saving files by cookies
+* add cxtm to taskbar
+* make func duplicate() in the window class
+* add responsive for cxtm next to borders

@@ -2,7 +2,7 @@ var NONE = -1;
 
 class Win_Explorer extends Window {
     constructor(width, height, iterator, file_system__) {
-        super("File Explorer", width, height, iterator, '<i class="icon-folder-open" style="color: #f7c96c;"></i>');
+        super("File Explorer", width, height, iterator, 'icon-folder-open', "color: #f7c96c;");
         this.setMinimalSize(415, 230);
         
         this.ptr = new DirFollower(file_system__);
@@ -68,7 +68,7 @@ class Win_Explorer extends Window {
         });
         // Down arrow
         $('#win-' + id + " > .win-content > .exp-top > .exp-top-wrapper-btns > .icon-down-arrow").on('click', function() {
-            wins[id].goInto();
+            wins[id].goIntoByDef();
         });
     }
 
@@ -114,7 +114,8 @@ class Win_Explorer extends Window {
     }
 
     SetStartingPath(_path) {
-        this.ptr.goto(_path);
+        console.log(_path);
+        console.log(this.ptr.goto(_path));
         this.Refresh();
     }
 
@@ -123,6 +124,9 @@ class Win_Explorer extends Window {
         
         wins[id].SetStartingPath(this.ptr.getPath());
         wins[id].GoTop();
+        wins[id].setPosition(
+            parseInt($("#win-" + this.id_win).css("left")) + 40, 
+            parseInt($("#win-" + this.id_win).css("top")) + 40);
     }
 
     goIntoByDef() {

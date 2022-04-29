@@ -1,6 +1,6 @@
 class Win_Properties extends Window {
     constructor(iter, action_onEditName) {
-        super("Properties", 400, AUTO_RESIZE, iter, '<i class="icon-settings"></i>');
+        super("Properties", 400, AUTO_RESIZE, iter, 'icon-settings', 'color: #24ebff;');
         this.setPosition(400,430);
         
         this.html_path = "#win-" + this.id_win + " > .win-content > .prop-center > table > tbody";

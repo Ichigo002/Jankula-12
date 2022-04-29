@@ -75,6 +75,22 @@ class FileSystem {
     begin() {
         return this.stdirn;
     }
+
+    isPathStartCorrectly(path) {
+        let st = this.begin();
+        let cr = 0;
+
+        for (let i = 0; i < st.length; i++) {
+            if(st.at(i) == path.at(i)) {
+                cr++;
+            }
+        }
+        if(cr == st.length) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 class DirFollower {
@@ -103,9 +119,9 @@ class DirFollower {
                     return "ERRGO: Invalid Coming back";
                 }
             }
-        } else if(!dir.includes("/")) {
+        } else {
             let new_p;
-            if(dir[0] == 'R' && dir[1] == ':' && dir[2] == '/') {
+            if(this.system.isPathStartCorrectly(dir)) {
                 new_p = dir;
             } else {
                 new_p = this.curr_path + dir + '/';
@@ -117,8 +133,6 @@ class DirFollower {
             } else {
                 return "ERRFIND: Invalid Directory '" + dir +"'";
             }
-        } else {
-            return "FORBBIDEN_SIGNS";
         }
     }
 

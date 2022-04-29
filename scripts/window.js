@@ -8,7 +8,7 @@ class Window {
     def_min_h = min_height_win;
     def_min_w = min_width_win;
 
-    constructor(name, width, height, l, icon) {
+    constructor(name, width, height, l, icon, style_icon) {
         //Standard Values
         this.name = name;
         this.id_win = l;
@@ -23,13 +23,13 @@ class Window {
 
         let cxt_id = cxtm.addMenu(menu);
         // Task Item
-        this.task_item = new TaskItem(name, l, icon);
+        this.task_item = new TaskItem(name, l, icon, style_icon);
         this.task_item.AddHoveringEvent();
         this.task_item.AddMaxmaliseEvent();
 
         //Graphic User Interface
         let gui = '<div class="win" id="win-' + this.id_win + '" menuv="'+cxt_id+'">' +
-            '<div class="win-top" menuv="'+cxt_id+'">'+ icon +' ' + this.name + 
+            '<div class="win-top" menuv="'+cxt_id+'"><i class="'+ icon +'" style="'+style_icon+'"></i> ' + this.name + 
             '<span style="margin-left: 15px;">' +
             '<i class="icon-close icon-all" onclick="wins[' + this.id_win + '].action_close()"></i>' +
             '<i class="icon-maximize icon-all" onclick="wins[' + this.id_win + '].action_full_maximize()"></i>' +
