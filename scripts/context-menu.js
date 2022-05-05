@@ -108,22 +108,22 @@ class ContextMenu {
                     $('#cxtm').css('display', 'block');
 
                     cxtm.SetActiveCorner("left-top");
-                    $('#cxtm').css('left', e.pageX );
-                    $('#cxtm').css('top', e.pageY);
+                    $('#cxtm').css('left', e.pageX + 3);
+                    $('#cxtm').css('top', e.pageY + 3);
 
                     let both = 0;
 
                     //Right border
                     if(e.pageX + $('#cxtm').outerWidth() > parseInt($("body").css("width"))) {
                         cxtm.SetActiveCorner("right-top");
-                        $('#cxtm').css('left', e.pageX - $('#cxtm').outerWidth());
+                        $('#cxtm').css('left', e.pageX - $('#cxtm').outerWidth() - 3);
                         both++;
                     }
                     
                     //Bottom border
                     if(e.pageY + $('#cxtm').outerHeight() > parseInt($("body").css("height"))) {
                         cxtm.SetActiveCorner("left-bottom");
-                        $('#cxtm').css('top', e.pageY - $('#cxtm').outerHeight());
+                        $('#cxtm').css('top', e.pageY - $('#cxtm').outerHeight() - 3);
                         both++;
                     }
 

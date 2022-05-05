@@ -21,7 +21,7 @@ function Start() {
     });
 
     // Creating basic systems
-    file_system = new FileSystem("SYS1:");
+    file_system = new FileSystem("R:");
     basicFiles();
     tr = new DirFollower(file_system); // ONLY FOR TESTS
     cxtm = new ContextMenu();
