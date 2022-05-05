@@ -169,9 +169,9 @@ class Win_Explorer extends Window {
     execRename(accept, item) {
         if(accept != undefined) {
             if(accept == '') {
-                xwarning("Warning. Incorrect name", "Item must have name.");
+                xwarning("Incorrect name", "Item must have new name.");
             } else if(accept.includes('/') || accept.includes('\\')) {
-                xwarning("Warning. Incorrect name", "Item's name cannot includes '/' or '\\'.");
+                xwarning("Incorrect name", "Item's name cannot includes '/' or '\\'.");
             } else {
                 this.ptr.getItemBy(item).name = accept;
                 this.Refresh();
@@ -185,7 +185,7 @@ class Win_Explorer extends Window {
             let item = this.ptr.getItemBy(this.selected_item);
             let tp = item.type() == DIR ? "Folder" : "File";
             let contains = "";
-            
+
             if(item.type() == DIR && item.countAll() != 0) {
                 contains = "Folder contains: " + item.countAll() + (item.countAll() > 1 ? " Items" : " Item");
             }
@@ -234,8 +234,12 @@ class Win_Explorer extends Window {
                 "wins["+this.id_win+"].mknew(NONE)");
                 break;
             case "D_RES_":
-                this.ptr.mkdir(_res);
+                if(_res == '') {
+                    xwarning("Incorrect Name", "Created folder must has any name.");
+                } else {
+                    this.ptr.mkdir(_res);
                 this.Refresh();
+                }
                break;
             case FILE:
                 xinput("Create a new file", 
@@ -245,8 +249,12 @@ class Win_Explorer extends Window {
                 "wins["+this.id_win+"].mknew(NONE)");
                 break;
             case "F_RES_":
-                this.ptr.mkfile(_res);
-                this.Refresh();
+                if(_res == '') {
+                    xwarning("Incorrect Name", "Created file must has any name.");
+                } else {
+                    this.ptr.mkfile(_res);
+                    this.Refresh();
+                }
                 break;
             case NONE: // Cancel creating
                 return false;

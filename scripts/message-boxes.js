@@ -4,7 +4,7 @@
 // content - contents of information
 // returns id at the wins list of created information
 function xinfo(title, content) {
-    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-info' style='color: #5686ff;'></i>"));
+    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, 'icon-win-info', 'color: #5686ff;'));
 
     let actionOk = 'wins[' + iter + '].action_close()';
     let cnt = "<i class='icon-win-info' style='color: #5686ff; float: left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
@@ -20,7 +20,7 @@ function xinfo(title, content) {
 // content - contents of warning
 // returns id at the wins list of created warning
 function xwarning(title, content) {
-    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-warning' style='color: yellow;'></i>"));
+    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, 'icon-win-warning', 'color: yellow;'));
     wins[iter].setCenter();
     let actionOk = 'wins[' + iter + '].action_close()';
     let cnt = "<i class='icon-win-warning' style='color: yellow; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
@@ -36,7 +36,7 @@ function xwarning(title, content) {
 // content - contents of information
 // returns id at the wins list of created information
 function xerror(title, content) {
-    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-attention' style='color: #f70000;'></i>"));
+    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, 'icon-win-attention', 'color: #f70000;'));
 
     wins[iter].setCenter();
 
@@ -56,7 +56,7 @@ function xerror(title, content) {
 // action_decline - html action after decline or colse window
 // Returns id at the wins list of created question
 function xquestion(title, question, action_accept, action_decline) {
-    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, "<i class='icon-win-question' style='color: #1f2bff;'></i>"));
+    wins.push(new Window(title, AUTO_RESIZE, AUTO_RESIZE, iter, 'icon-win-question', 'color: #1f2bff;'));
 
     wins[iter].setCenter();
 
@@ -79,7 +79,7 @@ function xquestion(title, question, action_accept, action_decline) {
 // action_decline - html action after decline or close window
 // Returns id at the wins list of created input
 function xinput(title, content, input_html, action_accept, action_decline) {
-    wins.push(new Window(title, 400, AUTO_RESIZE, iter, "<i class='icon-win-info' style='color: #1f2bff;'></i>"));
+    wins.push(new Window(title, 400, AUTO_RESIZE, iter, 'icon-win-info', 'color: #1f2bff;'));
     wins[iter].setCenter();
 
     let cnt = "<i class='icon-win-info' style='color: #1f2bff; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
