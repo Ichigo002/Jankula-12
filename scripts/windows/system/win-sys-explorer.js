@@ -184,7 +184,8 @@ class Win_Explorer extends Window {
         if(this.selected_item != NONE) {
             let item = this.ptr.getItemBy(this.selected_item);
             let tp = item.type() == DIR ? "Folder" : "File";
-            let contains;
+            let contains = "";
+            
             if(item.type() == DIR && item.countAll() != 0) {
                 contains = "Folder contains: " + item.countAll() + (item.countAll() > 1 ? " Items" : " Item");
             }

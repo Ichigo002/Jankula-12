@@ -1,5 +1,4 @@
 TO DO:
-* displaying on the center message boxes
 * make left navgiate bar in the explorer
 * make extensions
 * make notepad app
@@ -14,3 +13,4 @@ TO DO:
 * add cxtm to taskbar
 * make func duplicate() in the window class
 * add responsive for cxtm next to borders
+* add cutting text if too long to '...'

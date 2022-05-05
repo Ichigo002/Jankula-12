@@ -8,15 +8,10 @@ function xinfo(title, content) {
 
     let actionOk = 'wins[' + iter + '].action_close()';
     let cnt = "<i class='icon-win-info' style='color: #5686ff; float: left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
-     + content + "</p> <p style='both:clear;'><button onclick='" + actionOk + "'style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button></p>";
+     + content + "</p> <p style='both:clear;'><button class='q-btns-yes' onclick='" + actionOk + "'style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button></p>";
 
-    wins[iter].setContent(cnt).setPositionResizePoint().setCenter().GoTop();
-    wins[iter].static = true;
-
-    $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
-    $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
+    _defaultSettingsBox_(cnt);
     iter++;
-
     return iter - 1;
 }
 
@@ -29,15 +24,10 @@ function xwarning(title, content) {
     wins[iter].setCenter();
     let actionOk = 'wins[' + iter + '].action_close()';
     let cnt = "<i class='icon-win-warning' style='color: yellow; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
-     + content + "</p> <p style='both:clear;'><button onclick='"+actionOk+"' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button></p>";
+     + content + "</p> <p style='both:clear;'><button class='q-btns-yes' onclick='"+actionOk+"' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button></p>";
 
-    wins[iter].setContent(cnt);
-    wins[iter].static = true;
-    wins[iter].setPositionResizePoint();
-    $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
-    $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
+    _defaultSettingsBox_(cnt);
     iter++;
-
     return iter - 1;
 }
 
@@ -52,15 +42,10 @@ function xerror(title, content) {
 
     let actionOk = 'wins[' + iter + '].action_close()';
     let cnt = "<i class='icon-win-attention' style='color:#f70000; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
-    + content + "</p> <p style='both:clear;'><button onclick='"+actionOk+"' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button></p>";
+    + content + "</p> <p style='both:clear;'><button class='q-btns-yes' onclick='"+actionOk+"' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button></p>";
 
-    wins[iter].setContent(cnt);
-    wins[iter].static = true;
-    wins[iter].setPositionResizePoint();
-    $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
-    $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
+    _defaultSettingsBox_(cnt);
     iter++;
-
     return iter - 1;
 }
 
@@ -76,17 +61,12 @@ function xquestion(title, question, action_accept, action_decline) {
     wins[iter].setCenter();
 
     let cnt = "<i class='icon-win-question' style='color: #1f2bff; float:left; font-size: 60px;'></i><p style='padding: 0px; padding-right: 20px; float: left; font-size: 18px;'>"
-    + question + "</p> <p style='both:clear;' onclick='wins["+iter+"].action_close()'><button onclick='" + action_accept + 
+    + question + "</p> <p style='both:clear;' onclick='wins["+iter+"].action_close()'><button class='q-btns-yes' onclick='" + action_accept + 
     "' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Yes</button><button onclick='" + action_decline + 
     "' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>No</button></p>";
 
-    wins[iter].setContent(cnt);
-    wins[iter].static = true;
-    wins[iter].setPositionResizePoint();
-    $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
-    $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
+    _defaultSettingsBox_(cnt);
     iter++;
-
     return iter - 1;
 }
 
@@ -106,28 +86,33 @@ function xinput(title, content, input_html, action_accept, action_decline) {
     + content + "</p><p class='xinput-focus'>" + input_html + "</p><p style='both:clear;' class='q-btns' onclick='wins["+iter+"].action_close()'><button onclick='" + action_accept + 
     "' class='q-btns-yes' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button><button onclick='" + action_decline + 
     "' class='q-btns-no' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Cancel</button></p>";
-
-    wins[iter].setContent(cnt);
-    wins[iter].static = true;
-    wins[iter].setPositionResizePoint();
-    $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
-    $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
-
+ 
+    _defaultSettingsBox_(cnt);
     $(".xinput-focus > input").trigger("focus");
-
-    wins[iter].GoTop();
-    keyboardEvent(iter);
     iter++;
     return iter - 1;
 }
 
-function keyboardEvent(id) {
+function _keyboardEvent_(id) {
     $(window).keydown(function(e) {
         if($('#win-' + id).css('z-index') == z_index) {
             if(e.which == 13) { //enter
                 $('#win-' + id + " > .win-content > p > .q-btns-yes").trigger("onclick");
                 $('#win-' + id + " > .win-content > p").trigger("onclick");
             }
+            if(e.which == 27) { //escape
+                $('#win-' + id + " > .win-content > p").trigger("onclick");
+            }
         }
     });
+}
+
+function _defaultSettingsBox_(cnt) {
+    wins[iter].setContent(cnt).setPositionResizePoint().setCenter().GoTop();
+    wins[iter].static = true;
+
+    $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
+    $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
+
+    _keyboardEvent_(iter);
 }

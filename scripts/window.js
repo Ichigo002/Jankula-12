@@ -219,8 +219,11 @@ class Window {
     setCenter() {
         let sizeX = parseInt($('body').innerWidth());
         let sizeY = parseInt($('body').innerHeight());
+
+        let win_sizeX = parseInt($('#win-' + this.id_win).outerWidth());
+        let win_sizeY = parseInt($('#win-' + this.id_win).outerHeight());
         
-        this.setPosition(sizeX / 2, sizeY / 2);
+        this.setPosition(sizeX / 2 - win_sizeX / 2, sizeY / 2 - win_sizeY / 2);
         return this;
     }
 
