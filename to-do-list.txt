@@ -2,9 +2,7 @@ TO DO:
 * make left navgiate bar in the explorer
 * make extensions
 * make notepad app
-* make option open i nth files explorer
 * make options in the items cut, copy, paste
-* make properties
 * make copy cut and paste class to do
 * customize checkboxes [CSS]
 * complete displayFileProperties() with size property & Modified & Accessed

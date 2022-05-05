@@ -102,6 +102,7 @@ class ContextMenu {
             if(e.which == 3) {
                 cxtm.curr = $(e.target).attr("menuv");
 
+                //displaying
                 if(cxtm.curr != undefined) {
                     cxtm.RefreshMenu();
                     $('#cxtm').css('display', 'block');
@@ -138,9 +139,13 @@ class ContextMenu {
             } else {
                 if(!clicked) {
                     $('#cxtm').css('display', 'none'); 
-                } else {
+                } else { // Chose option
                     clicked = false;
-                    setTimeout(function() { $('#cxtm').css('display', 'none'); }, 100);
+                    if($(e.target).attr("class") == "menu" || $(e.target).attr("class") == "menu-sep" || $(e.target).attr("class") == "menu-option menu-splitter") {
+                        return false;
+                    } else {
+                        setTimeout(function() { $('#cxtm').css('display', 'none'); }, 100);
+                    }
                 }
             }
         });
