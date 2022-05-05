@@ -55,6 +55,7 @@ class ContextMenu {
         if(this.list_menus[this.curr] == null) {
             return null;
         }
+
         $('#cxtm').empty();
         this.list_menus[this.curr].menu.forEach(w => {
             $('#cxtm').append(this.ProcessItemToHTML(w));
@@ -104,8 +105,31 @@ class ContextMenu {
                 if(cxtm.curr != undefined) {
                     cxtm.RefreshMenu();
                     $('#cxtm').css('display', 'block');
-                    $('#cxtm').css('left', e.pageX + 3);
-                    $('#cxtm').css('top', e.pageY + 3);
+
+                    cxtm.SetActiveCorner("left-top");
+                    $('#cxtm').css('left', e.pageX );
+                    $('#cxtm').css('top', e.pageY);
+
+                    let both = 0;
+
+                    //Right border
+                    if(e.pageX + $('#cxtm').outerWidth() > parseInt($("body").css("width"))) {
+                        cxtm.SetActiveCorner("right-top");
+                        $('#cxtm').css('left', e.pageX - $('#cxtm').outerWidth());
+                        both++;
+                    }
+                    
+                    //Bottom border
+                    if(e.pageY + $('#cxtm').outerHeight() > parseInt($("body").css("height"))) {
+                        cxtm.SetActiveCorner("left-bottom");
+                        $('#cxtm').css('top', e.pageY - $('#cxtm').outerHeight());
+                        both++;
+                    }
+
+                    if(both == 2) {
+                        cxtm.SetActiveCorner("right-bottom");
+                    }
+                    
                 }
                 else {
                     $('#cxtm').css('display', 'none'); 
@@ -121,6 +145,28 @@ class ContextMenu {
             }
         });
 
+    }
+
+    SetActiveCorner(corner, r) {
+        if(r == undefined) {
+            r = "8px";
+        } else {
+            r += "px";
+        }
+        switch(corner) {
+            case "left-top":
+                $("#cxtm").css("border-radius"," 0 "+r+" "+r+" "+r);
+            break;
+            case "left-bottom":
+                $("#cxtm").css("border-radius"," "+r+" "+r+" "+r+" 0");
+            break;
+            case "right-top":
+                $("#cxtm").css("border-radius"," "+r+" 0 "+r+" "+r);
+            break;
+            case "right-bottom":
+                $("#cxtm").css("border-radius"," "+r+" "+r+" 0 "+r);
+            break;
+        }
     }
 }
 

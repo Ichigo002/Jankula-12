@@ -114,19 +114,20 @@ class Win_Explorer extends Window {
     }
 
     SetStartingPath(_path) {
-        console.log(_path);
-        console.log(this.ptr.goto(_path));
+        this.ptr.goto(_path)
         this.Refresh();
     }
 
     Duplicate() {
         let id = stapp("explorer");
-        
+    
         wins[id].SetStartingPath(this.ptr.getPath());
         wins[id].GoTop();
         wins[id].setPosition(
-            parseInt($("#win-" + this.id_win).css("left")) + 40, 
-            parseInt($("#win-" + this.id_win).css("top")) + 40);
+        parseInt($("#win-" + this.id_win).css("left")) + 40, 
+        parseInt($("#win-" + this.id_win).css("top")) + 40);
+
+        return id;
     }
 
     goIntoByDef() {

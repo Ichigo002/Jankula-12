@@ -24,17 +24,17 @@ function help() {
 }
 
 //Create new active window on the desktop
-function NewWindow(name, width, height, posX, posY, icon) {
+function NewWindow(name, width, height, posX, posY, icon, style_icon) {
     if(name == null)
         name = "Default Window";
     if(icon == null)
-        icon = "<i class='icon-default-icon'></i>";
+        icon = "icon-default-icon";
     if(width < this.min_width_win || width == null)
         width = this.min_width_win;
     if(height < this.min_height_win || height == null)
         height = this.min_height_win;
             
-    wins.push(new Window(name, width, height, iter, icon));
+    wins.push(new Window(name, width, height, iter, icon, style_icon));
     wins[iter].setPosition(posX, posY);
     iter++;
     return iter - 1;

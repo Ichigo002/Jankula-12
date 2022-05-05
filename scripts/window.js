@@ -198,9 +198,23 @@ class Window {
         //You can overwrite this and use for what you want
     }
 
+    Duplicate() {
+        let id = NewWindow(this.name, $('#win-' + this.id_win).css('width'), $('#win-' + this.id_win).css('height'), $('#win-' + this.id_win).css('left'), $('#win-' + this.id_win).css('top'), $('#win-' + this.id_win + " > .win-top > i").attr('class'), $('#win-' + this.id_win + " > .win-top > i").attr('style'));
+
+        wins[id].setContent(this.getContent());
+        wins[id].setPosition(
+            parseInt($("#win-" + this.id_win).css("left")) + 40, 
+            parseInt($("#win-" + this.id_win).css("top")) + 40);
+        return id;
+    }
+
     setContent(v) {
         $("#win-" + this.id_win + " > .win-content").html(v);
         return this;
+    }
+
+    getContent() {
+        return $("#win-" + this.id_win + " > .win-content").html();
     }
 
     setPositionResizePoint() {

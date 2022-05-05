@@ -11,7 +11,5 @@ TO DO:
 * complete warning for smartphones
 * saving files by cookies
 * add cxtm to taskbar
-* make func duplicate() in the window class
-* add responsive for cxtm next to borders
 * add cutting text if too long to '...'
 * make better minimizing from max to min window
