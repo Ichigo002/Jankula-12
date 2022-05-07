@@ -8,6 +8,6 @@ TO DO:
 * complete displayFileProperties() with size property & Modified & Accessed
 * complete warning for smartphones
 * saving files by cookies
-* add cxtm to taskbar
 * add cutting text if too long to '...'
 * make better minimizing from max to min window
+* complete option: pin to taskbar

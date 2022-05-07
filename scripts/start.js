@@ -7,8 +7,6 @@ var cxtm; // context menu
 // windows
 var wins = [];
 var iter = 0;
-var min_width_win = 200;
-var min_height_win = 150;
 // Z-index
 var min_z = 10;
 var max_z = 200;
@@ -26,10 +24,6 @@ function Start() {
     tr = new DirFollower(file_system); // ONLY FOR TESTS
     cxtm = new ContextMenu();
 
-    stapp("demo-help");
-    stapp("explorer");
-    stapp("src");
-
     wins.push(new Win_Properties(iter));
     let p = wins[iter];
     p.pushNewValue("Type", "NaN");
@@ -38,6 +32,13 @@ function Start() {
     p.pushNewValue("avallach'oloi", "NaN");
     p.pushNewValue("fastly?", "NaN");
     iter++;
+
+    stapp("demo-help");
+    stapp("explorer");
+    stapp("src");
+    stapp("design-studio");
+
+    
 }
 
 function basicFiles() {

@@ -2,7 +2,6 @@ console.log("---\n For basic commands and variables type command: 'help()'\n---"
 
 function help() {
     console.log("------ Commands ------ \n"+
-    "* func NewWindow(name, width, height, posX, posY, icon) | Create a new Window on the desktop [NOT recommended]\n" +
     "* func getAmountWins()       | return amount of all windows\n" +
     "* func CloseWindow(name)     | Close ALL windows with 'name'\n" +
     "* func stapp(name)           | Open system windows by name'\n" +
@@ -10,6 +9,7 @@ function help() {
     "    -> 'explorer'\n" +
     "    -> 'demo-help'\n" +
     "    -> 'src'\n" +
+    "    -> 'design-studio'\n" +
     "\n" +
     "------ Vars ------ \n" +
     "* wins[]         | All existing windows in the website\n" +
@@ -23,27 +23,11 @@ function help() {
     return "executed";
 }
 
-//Create new active window on the desktop
-function NewWindow(name, width, height, posX, posY, icon, style_icon) {
-    if(name == null)
-        name = "Default Window";
-    if(icon == null)
-        icon = "icon-default-icon";
-    if(width < this.min_width_win || width == null)
-        width = this.min_width_win;
-    if(height < this.min_height_win || height == null)
-        height = this.min_height_win;
-            
-    wins.push(new Window(name, width, height, iter, icon, style_icon));
-    wins[iter].setPosition(posX, posY);
-    iter++;
-    return iter - 1;
-}
-
 function stapp(name) {
     switch(name) {
         case "default":
-            NewWindow();
+            wins.push(new Window(iter));
+            iter++;
         break;
         case "explorer":
             wins.push(new Win_Explorer(500, 350, iter, file_system));
@@ -51,16 +35,26 @@ function stapp(name) {
             iter++;
         break;
         case "demo-help"://ONLY FOR TESTS
-            let p1 = wins[NewWindow("DEMO HELP", 470, 300, 1000, 500, 'icon-settings')];
-            p1.setContent("<span style='text-align: left;'><h2>Help</h2><p>Press Shift + Ctrl + C to open inspector and console. In the console type 'help()' for more commands.</p><h2>Use stapp(name)</h2><p>If you are at the console you can type stapp('explorer') and after click enter it should open file explorer.</p></span>");
-            p1.static = true;
-            p1.setPositionResizePoint();
+            wins.push(new Window(iter, "DEMO HELP", 470, 300, 'icon-settings'));
+            wins[iter].setPosition(900, 400);
+            wins[iter].setContent("<span style='text-align: left;'><h2>Help</h2><p>Press Shift + Ctrl + C to open inspector and console. In the console type 'help()' for more commands.</p><h2>Use stapp(name)</h2><p>If you are at the console you can type stapp('explorer') and after click enter it should open file explorer.</p></span>");
+            wins[iter].static = true;
+            wins[iter].setPositionResizePoint();
+            iter++;
         break;
         case "src":
-            let p2 = wins[NewWindow("Source Code", 400, 200, 1000, 100, 'icon-app-notebook')];
-            p2.setContent("<h1 padding='20px'><a href='https://github.com/Ichigo002/Jankula-12.git' target='_blank'>Kod źródłowy github</a></h1>");
-            p2.static = true;
-            p2.setPositionResizePoint();
+            wins.push(new Window(iter, "Source Code", 400, 200, 'icon-app-notebook'));
+            wins[iter].setPosition(1300, 160);
+            wins[iter].setContent("<h1 padding='20px'><a href='https://github.com/Ichigo002/Jankula-12.git' target='_blank'>Kod źródłowy github</a></h1>");
+            wins[iter].static = true;
+            wins[iter].setPositionResizePoint();
+            iter++;
+        break;
+        case "design-studio":
+            wins.push(new Win_Dev_Design(iter));
+            wins[iter].Set("designer-cnt");
+            wins[iter].setPosition(250, 250);
+            iter++;
         break;
         default:
             console.error("Window to open with name '" + name +"' doesn't exist");

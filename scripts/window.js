@@ -5,13 +5,23 @@ class Window {
     def_width = 100;
     def_left = 0;
     def_top = 0;
-    def_min_h = min_height_win;
-    def_min_w = min_width_win;
+    def_min_h = 250;
+    def_min_w = 320;
 
-    constructor(name, width, height, l, icon, style_icon) {
+    constructor(win_iterator, name, width, height, icon, style_icon) {
+        
+        if(name == undefined)
+            name = "Default Window";
+        if(icon == undefined)
+            icon = "icon-default-icon";
+        if(width == undefined)
+            width = this.def_min_w;
+        if(height == undefined)
+            height = this.def_min_h;
+
         //Standard Values
         this.name = name;
-        this.id_win = l;
+        this.id_win = win_iterator;
         this.maximized = false;
         this.static = false;
 
@@ -23,7 +33,7 @@ class Window {
 
         let cxt_id = cxtm.addMenu(menu);
         // Task Item
-        this.task_item = new TaskItem(name, l, icon, style_icon);
+        this.task_item = new TaskItem(name, this.id_win, icon, style_icon);
         this.task_item.AddHoveringEvent();
         this.task_item.AddMaxmaliseEvent();
 
