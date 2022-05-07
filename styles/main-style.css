@@ -144,5 +144,6 @@ input {
 }
 
 .menu-splitter:hover > div {
+    
     display: block !important;
 }

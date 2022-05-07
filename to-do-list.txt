@@ -1,5 +1,5 @@
 TO DO:
-* make left navgiate bar in the explorer
+* *****make left navgiate bar in the explorer*******
 * make extensions
 * make notepad app
 * make options in the items cut, copy, paste

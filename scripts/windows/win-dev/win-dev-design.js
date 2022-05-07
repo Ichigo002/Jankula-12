@@ -5,7 +5,12 @@ class Win_Dev_Design extends Window {
     }
 
     Set(id_div_cnt) {
-        wins[win_iterator].SetContent($('#' + id_div_cnt).html());
+        if($('#' + id_div_cnt).html() == undefined) {
+            wins[this.id_win].setContent("<p style='padding:15px;'><h3 style='padding: 10px;'>DIV with input ID doesn't exist</h3>Create on the website any div with ID and type in the constructor of designer studio.</p>");
+        } else {
+            wins[this.id_win].setContent($('#' + id_div_cnt).html());
+        }
+        
     }
 
     

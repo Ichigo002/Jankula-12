@@ -36,7 +36,7 @@ function Start() {
     stapp("demo-help");
     stapp("explorer");
     stapp("src");
-    stapp("design-studio");
+    //stapp("design-studio");
 
     
 }

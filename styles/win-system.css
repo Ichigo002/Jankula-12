@@ -53,6 +53,31 @@
     border-right: 2px solid #bd7643;
 }
 
+.exp-nav-item {
+    width: calc(100% - 5px);
+    padding: 2.5px;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    
+}
+
+.exp-nav-item-none {
+    display: none !important;
+}
+
+.exp-nav-item-block {
+    display: block !important;
+}
+
+.exp-nav-item:hover {
+    background-color: #959595;
+    cursor: pointer;
+}
+
 .exp-content {
     float: left;
     background-color: #e4e4e4;

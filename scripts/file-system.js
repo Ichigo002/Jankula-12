@@ -241,14 +241,57 @@ class DirFollower {
     onChangePathEvent() { ; }
 }
 
+var REMOVABLE = 0, 
+    EDITABLE = 1, 
+    CHANGEABLE_NAME = 2,
+    HIDDEN = 3,
+    COPYABLE = 4,
+    READ_ONLY = 5;
+
 class BinderObject {
     // VALUE: name => name of item
     constructor(name) {
-        this.name = name;
-        let dd = new Date();
-        this.date = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
-        this.time = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
+        this.dd = new Date();
+
+        this.date_created = this.dd.getMonth() + "/" + this.dd.getDay() + "/" + this.dd.getFullYear();
+        this.time_created = ((this.dd.getHours() < 10)? "0":"") + this.dd.getHours() + ":" + ((this.dd.getMinutes() < 10)? "0":"") + this.dd.getMinutes();
+
+        this.date_modified = this.date_created;
+        this.time_modified = this.time_created;
+
+        this.date_accessed = this.date_created;
+        this.time_accessed = this.time_created;
+
         this.icon = "icon-default-app";
+        this.name = name;
+
+        this.attributes = [REMOVABLE, EDITABLE, CHANGEABLE_NAME, COPYABLE];
+    }
+
+    removeAttr(attr) {
+        for( var i = 0; i < this.attributes.length; i++){ 
+            if ( this.attributes[i] === attr) { 
+                this.attributes.splice(i, 1); 
+            }
+        }
+    }
+    
+    addAttr(attr) {
+        this.attributes.push(attr);
+    }
+
+    checkAttr(attr) {
+        return this.attributes.includes(attr);
+    }
+
+    refreshModified() {
+        this.date_modified = this.dd.getMonth() + "/" + this.dd.getDay() + "/" + this.dd.getFullYear();
+        this.time_modified = ((this.dd.getHours() < 10)? "0":"") + this.dd.getHours() + ":" + ((this.dd.getMinutes() < 10)? "0":"") + this.dd.getMinutes();
+    }
+
+    refreshAccessed() {
+        this.date_accessed = this.dd.getMonth() + "/" + this.dd.getDay() + "/" + this.dd.getFullYear();
+        this.time_accessed = ((this.dd.getHours() < 10)? "0":"") + this.dd.getHours() + ":" + ((this.dd.getMinutes() < 10)? "0":"") + this.dd.getMinutes();
     }
 
     getByName(name) {
@@ -259,7 +302,6 @@ class BinderObject {
         return BINDER;
     }
 }
-
 class Folder extends BinderObject {
     // VALUE: name => name of new folder
     constructor(name) {
@@ -390,7 +432,6 @@ class File extends BinderObject {
         } else {
             this.icon = ico;
         }
-        
     }
 
     // Returns THIS object. Method extended

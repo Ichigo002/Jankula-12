@@ -110,6 +110,7 @@ class Win_Explorer extends Window {
         $("#handler_event").on("exp_refresh", function(e) {
             win.RefreshPath();
             win.RefreshItems();
+            //win.RefreshNav();
         });
     }
 
@@ -184,6 +185,9 @@ class Win_Explorer extends Window {
     deleteItem() {
         if(this.selected_item != NONE) {
             let item = this.ptr.getItemBy(this.selected_item);
+            if(!item.checkAttr(REMOVABLE)) {
+                return false;
+            }
             let tp = item.type() == DIR ? "Folder" : "File";
             let contains = "";
 
@@ -204,6 +208,7 @@ class Win_Explorer extends Window {
         this.Refresh();
     }
 
+    // TO DO
     openProp() {
         
     }
@@ -298,7 +303,7 @@ class Win_Explorer extends Window {
 
             cnt += '<div class="exp-item" id="exp-item-' + i + '-' + this.id_win+ '" onclick="wins['+this.id_win+'].SelectItem('+i+')" oncontextmenu="wins['+this.id_win+'].SelectItem('+i+')" menuv="' + menu_id + '">' +
             '<div class="exp-item-name" menuv="' + menu_id + '">' + list[i].name + '</div>' +
-            '<div class="exp-item-date" menuv="' + menu_id + '">'+list[i].date +' ' + list[i].time +'</div>' +
+            '<div class="exp-item-date" menuv="' + menu_id + '">'+list[i].date_created +' ' + list[i].time_created +'</div>' +
             '<div class="exp-item-type" menuv="' + menu_id + '">'+((list[i].type() == DIR)? "Folder":list[i].type())+'</div></div>\n';
         }
         
