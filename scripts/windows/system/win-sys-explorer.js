@@ -132,15 +132,18 @@ class Win_Explorer extends Window {
     }
 
     goIntoByDef() {
+
         let list = this.ptr.getBinders();
-        if(list.at(this.selected_item).type() != DIR || this.selected_item == NONE) {
-            for (let i = list.length-1; i >= 0; i--) {
-                if(list.at(i).type() == DIR) {
-                    this.selected_item = i;
+        if(list.length != 0) {
+            if(list.at(this.selected_item).type() != DIR || this.selected_item == NONE) {
+                for (let i = list.length-1; i >= 0; i--) {
+                    if(list.at(i).type() == DIR) {
+                        this.selected_item = i;
+                    }
                 }
             }
+            this.goInto();
         }
-        this.goInto();
     }
 
     goInto() {
@@ -176,6 +179,7 @@ class Win_Explorer extends Window {
                 xwarning("Incorrect name", "Item's name cannot includes '/' or '\\'.");
             } else {
                 this.ptr.getItemBy(item).name = accept;
+                this.ptr.getItemBy(item).refreshModified();
                 this.Refresh();
             }
             
@@ -205,9 +209,10 @@ class Win_Explorer extends Window {
         this.Refresh();
     }
 
-    // TO DO
     openProp() {
-        
+        wins.push(new Win_Properties(iter, null));
+        wins[iter].displayFileProperties(this.ptr.getBinders()[this.selected_item], this.ptr.getPath());
+        iter++;
     }
 
 
@@ -240,8 +245,11 @@ class Win_Explorer extends Window {
                 if(_res == '') {
                     xwarning("Incorrect Name", "Created folder must has any name.");
                 } else {
-                    this.ptr.mkdir(_res);
-                this.Refresh();
+                    let r = this.ptr.mkdir(_res);
+                    if(r.includes("ERRMK")) {
+                        xerror("Couldn't create new item", "No Folder can be created in this directory because it is forbidden.")
+                    }
+                    this.Refresh();
                 }
                break;
             case FILE:
@@ -255,7 +263,10 @@ class Win_Explorer extends Window {
                 if(_res == '') {
                     xwarning("Incorrect Name", "Created file must has any name.");
                 } else {
-                    this.ptr.mkfile(_res);
+                    let r = this.ptr.mkfile(_res);
+                    if(r.includes("ERRMK")) {
+                        xerror("Couldn't create new item", "No file can be created in this directory because it is forbidden.")
+                    }
                     this.Refresh();
                 }
                 break;
@@ -313,24 +324,24 @@ class Win_Explorer extends Window {
             case DIR:
                 menu = new MenuTemplate('Folder :: ' + item.name);
                 menu.pushNewOption("Open", 'wins['+this.id_win+'].goInto()');
-                menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()', !item.checkAttr(CHANGEABLE_NAME));
-                menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()', !item.checkAttr(REMOVABLE));
+                if(item.checkAttr(CHANGEABLE_NAME)) menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
+                if(item.checkAttr(REMOVABLE)) menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
                 menu.pushNewSeparator();
-                menu.pushNewOption("Cut", null, !item.checkAttr(COPYABLE));
-                menu.pushNewOption("Copy", null, !item.checkAttr(COPYABLE));
-                menu.pushNewSeparator();
+                if(item.checkAttr(CUTABLE)) menu.pushNewOption("Cut", null);
+                if(item.checkAttr(COPYABLE)) menu.pushNewOption("Copy", null);
+                if(item.checkAttr(COPYABLE) && item.checkAttr(CUTABLE)) menu.pushNewSeparator();
                 menu.pushNewOption("Copy Path", null, true);
                 menu.pushNewSeparator();
                 menu.pushNewOption("Properties", 'wins['+this.id_win+'].openProp()');
             break;
             case FILE:
                 menu = new MenuTemplate('File ::   ' + item.name);
-                menu.pushNewOption("Open", null);
-                menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()', !item.checkAttr(CHANGEABLE_NAME));
-                menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()', !item.checkAttr(REMOVABLE));
+                menu.pushNewOption("Open", item.refreshAccessed());
+                if(item.checkAttr(CHANGEABLE_NAME)) menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
+                if(item.checkAttr(REMOVABLE)) menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
                 menu.pushNewSeparator();
-                menu.pushNewOption("Cut", null, !item.checkAttr(COPYABLE));
-                menu.pushNewOption("Copy", null, !item.checkAttr(COPYABLE));
+                if(item.checkAttr(COPYABLE)) menu.pushNewOption("Cut", null);
+                if(item.checkAttr(COPYABLE)) menu.pushNewOption("Copy", null);
                 menu.pushNewSeparator();
                 menu.pushNewOption("Properties", 'wins['+this.id_win+'].openProp()');
             break;

@@ -51,23 +51,24 @@ class Win_Properties extends Window {
     }
 
     displayFileProperties(_file, path) {
-        if(_file.type() == FILE) {
-            this.setIcon(_file.icon);
-            this.setNameProperty(_file.name);
-            this.pushNewValue("Type", _file.type());
-            this.pushSeparator();
+        this.setIcon(_file.icon);
+        this.setNameProperty(_file.name);
+        this.pushNewValue("Type", _file.type());
 
-            this.pushNewValue("Path", path);
-            this.pushNewValue("Size", "null");
-            this.pushSeparator();
+        this.pushSeparator();
+        this.pushNewValue("Path", path);
+        this.pushNewValue("Size", "null");
 
-            this.pushNewValue("Created", _file.date + " " + _file.time);
-            this.pushNewValue("Modified", _file.date + " " + _file.time);
-            this.pushNewValue("Accessed", _file.date + " " + _file.time);
-            this.pushSeparator();
+        this.pushSeparator();
+        this.pushNewValue("Created", _file.date_created + " " + _file.time_created);
+        this.pushNewValue("Modified", _file.date_modified + " " + _file.time_modified);
+        this.pushNewValue("Accessed", _file.date_accessed + " " + _file.time_accessed);
+        this.pushSeparator();
 
-            this.pushNewCheckbox("Hidden", "alert('Hidden!!!')");
-
-        }
+        let cnt = "";
+        _file.attributes.forEach(attr => {
+            cnt += attr + ", ";
+        });
+        this.pushNewValue("Attributes", cnt);
     }
 }

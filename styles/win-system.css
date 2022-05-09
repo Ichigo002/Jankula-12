@@ -79,6 +79,7 @@
 }
 
 .exp-content {
+    overflow-y: auto;
     float: left;
     background-color: #e4e4e4;
     padding: 5px;

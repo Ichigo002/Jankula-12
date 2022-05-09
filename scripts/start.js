@@ -42,16 +42,20 @@ function Start() {
 }
 
 function basicFiles() {
-    file_system.root_folder.pushBinder(new File("Testero.txt"));
-    file_system.root_folder.pushBinder(new File("be_be"));
-    file_system.root_folder.pushBinder(new Folder("xampp"));
-    file_system.root_folder.pushBinder(new Folder("bin"));
-    file_system.root_folder.pushBinder(new Folder("user"));
-    file_system.root_folder.getByName("xampp").pushBinder(new File("htdocs"));
-    file_system.root_folder.getByName("bin").pushBinder(new File("Elo"));
-    file_system.root_folder.getByName("bin").pushBinder(new File("W.txt"));
-    file_system.root_folder.getByName("bin").pushBinder(new Folder("hot"));
-    file_system.root_folder.getByName("bin").getByName("hot").pushBinder(new File("Nie dla psa kielbasa"));
-        
+    file_system.root_folder.getByName("Documents").pushBinder(new File("Testero.txt"));
+    file_system.root_folder.getByName("Documents").pushBinder(new File("be_be"));
+    file_system.root_folder.getByName("Documents").pushBinder(new Folder("xampp"));
+    file_system.root_folder.getByName("Documents").pushBinder(new Folder("bin"));
+    file_system.root_folder.getByName("Documents").pushBinder(new Folder("user"));
+    file_system.root_folder.getByName("Documents").getByName("xampp").pushBinder(new File("htdocs"));
+    file_system.root_folder.getByName("Documents").getByName("bin").pushBinder(new File("Elo"));
+    file_system.root_folder.getByName("Documents").getByName("bin").pushBinder(new File("W.txt"));
+    file_system.root_folder.getByName("Documents").getByName("bin").pushBinder(new Folder("hot"));
+    file_system.root_folder.getByName("Documents").getByName("bin").getByName("hot").pushBinder(new File("Nie dla psa kielbasa"));
+       
+    for (let i = 0; i < 20; i++) {
+        file_system.root_folder.getByName("Documents").pushBinder(new Folder("Lorem ipsum"));
+    }
+
     file_system.printHierarchyTree();
 }
