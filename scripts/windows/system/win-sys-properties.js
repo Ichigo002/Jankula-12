@@ -2,6 +2,9 @@ class Win_Properties extends Window {
     constructor(iter, action_onEditName) {
         super(iter, "Properties", 400, AUTO_RESIZE, 'icon-settings', 'color: #24ebff;');
         this.setPosition(400,430);
+
+        $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
+        $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
         
         this.html_path = "#win-" + this.id_win + " > .win-content > .prop-center > table > tbody";
 

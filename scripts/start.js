@@ -24,15 +24,6 @@ function Start() {
     tr = new DirFollower(file_system); // ONLY FOR TESTS
     cxtm = new ContextMenu();
 
-    wins.push(new Win_Properties(iter));
-    let p = wins[iter];
-    p.pushNewValue("Type", "NaN");
-    p.pushNewValue("loremp", "NaN");
-    p.pushSeparator();
-    p.pushNewValue("avallach'oloi", "NaN");
-    p.pushNewValue("fastly?", "NaN");
-    iter++;
-
     stapp("demo-help");
     stapp("explorer");
     stapp("src");

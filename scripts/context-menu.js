@@ -98,11 +98,11 @@ class ContextMenu {
     setDisplayEvent() {
         let clicked = false;
 
-        $('#cxtm').on("mousedown", function() {
+        $('#cxtm').on("mouseup", function() {
             clicked = true;
         });
 
-        $("body").on("mousedown", function(e) {
+        $("body").on("mouseup", function(e) {
             if(e.which == 3) {
                 cxtm.curr = $(e.target).attr("menuv");
 
@@ -139,7 +139,6 @@ class ContextMenu {
                 else {
                     $('#cxtm').css('display', 'none'); 
                 }
-                
             } else {
                 if(!clicked) {
                     $('#cxtm').css('display', 'none'); 
@@ -148,7 +147,7 @@ class ContextMenu {
                     if($(e.target).attr("class") == "menu" || $(e.target).attr("class") == "menu-sep" || $(e.target).attr("class") == "menu-option menu-splitter") {
                         return false;
                     } else {
-                        setTimeout(function() { $('#cxtm').css('display', 'none'); }, 100);
+                        $('#cxtm').css('display', 'none');
                     }
                 }
             }
