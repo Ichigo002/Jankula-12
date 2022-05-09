@@ -12,4 +12,3 @@ TO DO:
 * make better minimizing from max to min window
 * complete option: pin to taskbar
 * make disabled option during its creating
-* sleep

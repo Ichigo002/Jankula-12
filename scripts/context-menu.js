@@ -1,6 +1,7 @@
 var SEPARATOR = "sep";
 var STANDARD = "std";
 var SPLITTER = "spr";
+var DISABLED = "dsbld";
 
 class ContextMenu {
     constructor() {
@@ -70,6 +71,9 @@ class ContextMenu {
             break;
             case SEPARATOR:
                 html += '<div class="menu-sep" onclick="' + element.action + '">'+element.content+'</div>';
+            break;
+            case DISABLED:
+                html += '<div class="menu-option-disabled">'+element.content+'</div>';
             break;
             case SPLITTER: 
                 let opts = "";
@@ -182,8 +186,12 @@ class MenuTemplate {
 
     }
 
-    pushNewOption(title, action) {
-        return this.menu.push(new _MenuTempOption_(STANDARD, title, action));
+    pushNewOption(title, action, disabled) {
+        if(disabled) {
+            return this.menu.push(new _MenuTempOption_(DISABLED, title, action));
+        } else {
+            return this.menu.push(new _MenuTempOption_(STANDARD, title, action));
+        }
     }
 
     pushNewSeparator() {

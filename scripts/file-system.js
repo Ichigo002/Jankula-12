@@ -15,6 +15,28 @@ class FileSystem {
         }
 
         this.root_folder = new Folder(this.begin());
+
+        let fol = new Folder("Desktop");
+        fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME);
+        this.root_folder.pushBinder(fol);
+
+        fol = new Folder("Documents");
+        fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME);
+        this.root_folder.pushBinder(fol);
+
+        fol = new Folder("Pictures");
+        fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME);
+        this.root_folder.pushBinder(fol);
+
+        fol = new Folder("Jankula");
+        fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME);
+        this.root_folder.pushBinder(fol);
+
+        this.root_folder.getByName("Jankula").pushBinder(new Folder("For Beginners"));
+        
+        fol = new Folder("Program Files");
+        fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME);
+        this.root_folder.pushBinder(fol);
     }
 
     // Reads input path and returns directory on which path pointed
@@ -274,10 +296,12 @@ class BinderObject {
                 this.attributes.splice(i, 1); 
             }
         }
+        return this;
     }
     
     addAttr(attr) {
         this.attributes.push(attr);
+        return this;
     }
 
     checkAttr(attr) {

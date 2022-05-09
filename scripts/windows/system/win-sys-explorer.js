@@ -185,9 +185,6 @@ class Win_Explorer extends Window {
     deleteItem() {
         if(this.selected_item != NONE) {
             let item = this.ptr.getItemBy(this.selected_item);
-            if(!item.checkAttr(REMOVABLE)) {
-                return false;
-            }
             let tp = item.type() == DIR ? "Folder" : "File";
             let contains = "";
 
@@ -316,27 +313,24 @@ class Win_Explorer extends Window {
             case DIR:
                 menu = new MenuTemplate('Folder :: ' + item.name);
                 menu.pushNewOption("Open", 'wins['+this.id_win+'].goInto()');
-                menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
-                menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
+                menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()', !item.checkAttr(CHANGEABLE_NAME));
+                menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()', !item.checkAttr(REMOVABLE));
                 menu.pushNewSeparator();
-                menu.pushNewOption("Cut", null);
-                menu.pushNewOption("Copy", null);
-                menu.pushNewOption("Paste", null);
+                menu.pushNewOption("Cut", null, !item.checkAttr(COPYABLE));
+                menu.pushNewOption("Copy", null, !item.checkAttr(COPYABLE));
                 menu.pushNewSeparator();
-                menu.pushNewOption("Copy Path", null);
+                menu.pushNewOption("Copy Path", null, true);
                 menu.pushNewSeparator();
                 menu.pushNewOption("Properties", 'wins['+this.id_win+'].openProp()');
-                
             break;
             case FILE:
                 menu = new MenuTemplate('File ::   ' + item.name);
                 menu.pushNewOption("Open", null);
-                menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
-                menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
+                menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()', !item.checkAttr(CHANGEABLE_NAME));
+                menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()', !item.checkAttr(REMOVABLE));
                 menu.pushNewSeparator();
-                menu.pushNewOption("Cut", null);
-                menu.pushNewOption("Copy", null);
-                menu.pushNewOption("Paste", null);
+                menu.pushNewOption("Cut", null, !item.checkAttr(COPYABLE));
+                menu.pushNewOption("Copy", null, !item.checkAttr(COPYABLE));
                 menu.pushNewSeparator();
                 menu.pushNewOption("Properties", 'wins['+this.id_win+'].openProp()');
             break;

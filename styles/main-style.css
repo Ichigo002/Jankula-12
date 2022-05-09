@@ -116,6 +116,9 @@ input {
     }
 
 .menu-option-disabled {
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: left;
     color: #959595;
 }
 
