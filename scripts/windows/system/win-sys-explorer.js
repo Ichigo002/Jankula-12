@@ -149,7 +149,7 @@ class Win_Explorer extends Window {
                     }
                 }
             }
-            console.log(this.#ptr.goto(this.#ptr.getBinders()[this.selected_item].getName()));
+            this.#ptr.goto(this.#ptr.getBinders()[this.selected_item].getName());
             this.selected_item = this.#ptr.getCurrentDir().slct_pos;
             this.refresh();
         }
@@ -186,6 +186,9 @@ class Win_Explorer extends Window {
                 case "ZERO_LENGTH":
                     xwarning("Incorrect name", "Item must have new name.");
                     break;
+                case "FORBIDDEN_RENAMING": 
+                    xerror("Forbidden renaming item", "You cannot rename this item.");
+                break;
                 default:
                     break;
             }
@@ -222,12 +225,6 @@ class Win_Explorer extends Window {
     openProp() {
         wins.push(new Win_Properties(iter));
         wins[iter].displayFileProperties(this.#ptr.getBinders()[this.selected_item], this.#ptr.getPath());
-        let this_ = wins[this.id_win];
-        let i = iter;
-        wins[iter].onApply = function() {
-            console.log(wins[i].getNameProperty(), wins[i].file);
-            this_.execRename(wins[i].getNameProperty(), wins[i].file);
-        }
         iter++;
     }
 

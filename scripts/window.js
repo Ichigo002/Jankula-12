@@ -8,8 +8,6 @@ class Window {
     #def_top = 0;
     #def_min_h = 250;
     #def_min_w = 320;
-    #def_max_h;
-    #def_max_w;
 
     #name;
     #maximized;
@@ -93,23 +91,6 @@ class Window {
         return this;
     }
 
-    //Set maximal size of window
-    setMaxSize(mw, mh) {
-        this.#def_max_w = mw;
-        this.#def_max_h = mh;
-
-        if(parseInt($('#win-' + this.id_win).css('width')) > mw) {
-            $('#win-' + this.id_win).css('width', mw);
-        }
-        if(parseInt($('#win-' + this.id_win).css('height')) > mh) {
-            $('#win-' + this.id_win).css('height', mh);
-        }
-        this.setPositionResizePoint();
-        this.SetDraggingEvent();
-        this.SetResizeEvent();
-        return this;
-    }
-
     // Display window on the foreground of screen
     goTop() {
         z_index++;
@@ -128,6 +109,12 @@ class Window {
         {
             $('#win-' + this.id_win).css('z-index', z_index);
         }
+        return this;
+    }
+
+    // Set is window static
+    setStatic(s) {
+        this.#static = s;
         return this;
     }
 
@@ -282,8 +269,8 @@ class Window {
 
         let win_sizeX = parseInt($('#win-' + this.id_win).outerWidth());
         let win_sizeY = parseInt($('#win-' + this.id_win).outerHeight());
-        
-        this.setPosition(sizeX / 2 - win_sizeX / 2, sizeY / 2 - win_sizeY / 2);
+        console.log(sizeY/2);
+        this.setPosition(sizeX / 2 - win_sizeX / 2, sizeY / 2 - win_sizeY / 2 - 120);
         return this;
     }
 

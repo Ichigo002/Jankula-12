@@ -13,6 +13,7 @@ class ContextMenu {
         this.setDisplayEvent();
     }
 
+    // Add new menu to the list of all menus
     addMenu(menu_temp) {
         let _new = [];
         let pushed = -1;
@@ -35,6 +36,7 @@ class ContextMenu {
         return pushed;
     }
 
+    // Remove menu from available list
     removeMenu(id) {
         if(this.list_menus[id] == null && id >= 0 && id < this.list_menus.length) {
             return null;
@@ -52,6 +54,7 @@ class ContextMenu {
         this.list_menus = _new;
     }
 
+    // Refresh menu
     RefreshMenu() {
         if(this.list_menus[this.curr] == null) {
             return null;
@@ -125,7 +128,7 @@ class ContextMenu {
                     }
                     
                     //Bottom border
-                    if(e.pageY + $('#cxtm').outerHeight() > parseInt($("body").css("height"))) {
+                    if(e.pageY + $('#cxtm').outerHeight() > parseInt($("body").css("height")) - 245) {
                         cxtm.SetActiveCorner("left-bottom");
                         $('#cxtm').css('top', e.pageY - $('#cxtm').outerHeight() - 3);
                         both++;

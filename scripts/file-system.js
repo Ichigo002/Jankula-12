@@ -232,7 +232,9 @@ class DirFollower {
 
     // Continuation of del(name) method. Permanently delete item
     del_noq(name) {
+        
         let index = this.system.readPath(this.#curr_path).getIndexOf(name);
+        console.log(name, this.#curr_path, index);
         this.system.readPath(this.#curr_path).removeBinder(index);
         return "Item " + name + " successfuly deleted from '" + this.#curr_path + "'";
     }
@@ -329,16 +331,22 @@ class BinderObject {
 
     // Change the name of item
     rename(new_) {
-        if(new_ == undefined || new_ == null) {
-            return "UNDEFINED VALUE";
-        } else if(new_.length == 0) {
-            return "ZERO_LENGTH";
-        } else if(new_.includes('/') || new_.includes('\\')) {
-            return "FORBIDDEN_SIGNS";
+        console.log("fff", new_);
+        if(this.checkAttr(CHANGEABLE_NAME)) {
+            if(new_ == undefined || new_ == null) {
+                return "UNDEFINED VALUE";
+            } else if(new_.length == 0) {
+                return "ZERO_LENGTH";
+            } else if(new_.includes('/') || new_.includes('\\')) {
+                return "FORBIDDEN_SIGNS";
+            } else {
+                this.refreshModifiedTime();
+                this.#name = new_; 
+            }
         } else {
-            this.refreshModifiedTime();
-            this.#name = new_;
+            return "FORBIDDEN_RENAMING";
         }
+        
     }
     // Returns name of item
     getName() {
@@ -439,7 +447,7 @@ class Folder extends BinderObject {
     // Returns index in the folder of the item with name
     getIndexOf(name) {
         for (let i = 0; i < this.binder_list.length; i++) {
-            if(this.binder_list[i].name == name) {
+            if(this.binder_list[i].getName() == name) {
                 return i;
             }
         }

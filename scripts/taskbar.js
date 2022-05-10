@@ -5,7 +5,7 @@ class TaskItem {
 
         this.m_id = new MenuTemplate("Task Item " + iter);
 
-        this.m_id.pushNewOption("Duplicate " + name, "wins["+iter+"].Duplicate()");
+        this.m_id.pushNewOption("Duplicate " + name, "wins["+iter+"].duplicate()");
         this.m_id.pushNewSeparator();
         this.m_id.pushNewOption("Pin to taskbar", null);
         this.m_id.pushNewOption("Close", "wins["+iter+"].action_close()");

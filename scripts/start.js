@@ -28,8 +28,7 @@ function Start() {
     stapp("explorer");
     //stapp("src");
     //stapp("design-studio");
-
-    
+    //xerror("lorem ipsum", "lorem ipsum del qutiero monror rof EROOR fjos rar !");
 }
 
 function basicFiles() {
