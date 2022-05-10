@@ -178,8 +178,9 @@ class Win_Explorer extends Window {
             } else if(accept.includes('/') || accept.includes('\\')) {
                 xwarning("Incorrect name", "Item's name cannot includes '/' or '\\'.");
             } else {
-                this.ptr.getItemBy(item).name = accept;
-                this.ptr.getItemBy(item).refreshModified();
+                let obj = this.ptr.getItemBy(item);
+                obj.name = accept;
+                obj.refreshModified();
                 this.Refresh();
             }
             
@@ -210,8 +211,14 @@ class Win_Explorer extends Window {
     }
 
     openProp() {
-        wins.push(new Win_Properties(iter, null));
+        wins.push(new Win_Properties(iter));
         wins[iter].displayFileProperties(this.ptr.getBinders()[this.selected_item], this.ptr.getPath());
+        let this_ = wins[this.id_win];
+        let i = iter;
+        wins[iter].onApply = function() {
+            console.log(wins[i].getNameProperty(), wins[i].file);
+            this_.execRename(wins[i].getNameProperty(), wins[i].file);
+        }
         iter++;
     }
 

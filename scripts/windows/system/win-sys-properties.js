@@ -1,10 +1,13 @@
 class Win_Properties extends Window {
-    constructor(iter, action_onEditName) {
+    constructor(iter) {
         super(iter, "Properties", 400, AUTO_RESIZE, 'icon-settings', 'color: #24ebff;');
+        console.log(iter + " ddd");
         this.setPosition(400,430);
 
-        $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
-        $("#win-" + iter + " > .win-top > span > i.icon-minimize").remove();
+        this.file;
+
+        $(`#win-${iter} > .win-top > span > i.icon-maximize`).remove();
+        $(`#win-${iter} > .win-top > span > i.icon-minimize`).remove();
         
         this.html_path = "#win-" + this.id_win + " > .win-content > .prop-center > table > tbody";
 
@@ -14,14 +17,23 @@ class Win_Properties extends Window {
             '<input type="text" value="Lorem iddel more.exe"/></div>'+
         '<div class="prop-center"><table><tbody></tbody></table></div>'+
         '<div class="prop-footer">'+
-            '<button>Ok</button>'+
-            '<button>Cancel</button>'+
-            '<button>Apply</button></div>';
+            `<button onclick="wins[${iter}].onOk()">Ok</button>`+
+            `<button onclick="wins[${iter}].action_close()">Cancel</button>`+
+            `<button onclick="wins[${iter}].onApply()">Apply</button></div>`;
 
         this.setContent(content);
         this.static = true;
         this.setPositionResizePoint();
         return this;
+    }
+
+    onApply() {
+        
+    }
+
+    onOk() {
+        this.onApply();
+        this.action_close();
     }
 
     setNameProperty(name) {
@@ -54,6 +66,7 @@ class Win_Properties extends Window {
     }
 
     displayFileProperties(_file, path) {
+        this.file = _file;
         this.setIcon(_file.icon);
         this.setNameProperty(_file.name);
         this.pushNewValue("Type", _file.type());

@@ -24,9 +24,9 @@ function Start() {
     tr = new DirFollower(file_system); // ONLY FOR TESTS
     cxtm = new ContextMenu();
 
-    stapp("demo-help");
+    //stapp("demo-help");
     stapp("explorer");
-    stapp("src");
+    //stapp("src");
     //stapp("design-studio");
 
     

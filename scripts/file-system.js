@@ -258,6 +258,16 @@ class DirFollower {
         }
     }
 
+    //Returns item with name
+    getItemBy(name) {
+        for(let i = 0 ; i < this.getBinders().length; i++) {
+            if(name = this.getBinders()[i].name) {
+                return this.getBinders()[i];
+            }
+        }
+        return "INVALID NAME";
+    }
+
     // Print currently chosen directory
     pdir() {
         this.system.readPath(this.curr_path).printDirectory();
