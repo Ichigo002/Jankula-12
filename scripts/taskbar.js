@@ -15,9 +15,12 @@ class TaskItem {
         let item = '<div class="task-item-style" id="task-item-'+iter+'" menuv="'+this.m_id+'"><i class="'+icon+'" style="'+style_icon+'" menuv="'+this.m_id+'"></i></div>';
 
         $('#task-bar-items').append(item);
+        this.addHoveringEvent();
+        this.addMaximizeEvent();
     }
 
-    AddHoveringEvent() {
+    // ADD EVENT: Hover item if mouse is touching it
+    addHoveringEvent() {
         let id = this.link_id_win;
         let c = this.name;
 
@@ -34,27 +37,31 @@ class TaskItem {
         });
     }
 
-    AddMaxmaliseEvent() {
+    // ADD EVENT: Maxmize task's window
+    addMaximizeEvent() {
         let id = this.link_id_win;
         $('#task-item-' + id).on("click", function() {
             if($('#task-item-' + id).is(".task-item-min")) {
-                wins[id].action_unminimalise();
+                wins[id].action_unmin();
             }
             else {
-                wins[id].action_minimalise();
+                wins[id].action_min();
             }
         });
     }
 
+    // Remove item from taskbar
     removeItem() {
         $('div').remove('#task-item-' + this.link_id_win);
         cxtm.removeMenu(this.m_id);
     }
 
+    // Display minimized status
     min() {
         $('#task-item-' + this.link_id_win).addClass("task-item-min");
     }
     
+    // Display unminimized status
     unmin() {
         $('#task-item-' + this.link_id_win).removeClass("task-item-min");
     }

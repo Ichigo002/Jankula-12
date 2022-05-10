@@ -1,13 +1,16 @@
 var NONE = -1;
 
 class Win_Explorer extends Window {
+    #ptr;
+    #_item_cxt_menus_ = [];
+    #cnt_menu;
+
     constructor(width, height, iterator, file_system__) {
         super(iterator, "File Explorer", width, height, 'icon-folder-open', "color: #f7c96c;");
         this.setMinimalSize(415, 230);
         
-        this.ptr = new DirFollower(file_system__);
-        this._item_cxt_menus_ = [];
         this.selected_item = 0;
+        this.#ptr = new DirFollower(file_system__);
         this.items_length = 0;
 
         let newop = new MenuTemplate("Explorer Splitter Menu [New]");
@@ -23,7 +26,7 @@ class Win_Explorer extends Window {
         menu.pushNewSeparator();
         menu.pushNewSplitOption("New", newop);
         
-        this.cnt_menu_ = cxtm.addMenu(menu);
+        this.#cnt_menu = cxtm.addMenu(menu);
         let content = '<div class="exp-top">' +
             '<div class="exp-top-wrapper-btns">' +
                 '<i class="icon-up-arrow exp-top-btn"></i>' +
@@ -35,7 +38,7 @@ class Win_Explorer extends Window {
                 '<div class="exp-item-name">Name</div>' +
                 '<div class="exp-item-date">Date Created</div>' +
                 '<div class="exp-item-type">Type</div></div>' +
-            '<div class="exp-content" menuv="' + this.cnt_menu_ + '"></div>';
+            '<div class="exp-content" menuv="' + this.#cnt_menu + '"></div>';
 
         this.setContent(content);
         this.onResizeEvent();
@@ -45,22 +48,22 @@ class Win_Explorer extends Window {
         this.setKeyboardEvents();
         this.onRefreshEvent();
 
-        this.Refresh();
+        this.refresh();
 
         let w = this;
 
-        this.ptr.onChangePathEvent = function() {
-            w.Refresh();
+        this.#ptr.onChangePathEvent = function() {
+            w.refresh();
         }
         this.onCloseEvent = function() {
-            this.RemoveCXTMenus();
-            cxtm.removeMenu(this.cnt_menu_);
+            this.removeCXTMenus();
+            cxtm.removeMenu(this.#cnt_menu);
         }
     }
 
+    // ADD EVENT: Called when arrowed to follow path clicked
     setClickArrowsEvents() {
         let id = this.id_win;
-        let p = this.ptr;
         
         // Up arrow
         $('#win-' + id + " > .win-content > .exp-top > .exp-top-wrapper-btns > .icon-up-arrow").on('click', function() {
@@ -68,13 +71,13 @@ class Win_Explorer extends Window {
         });
         // Down arrow
         $('#win-' + id + " > .win-content > .exp-top > .exp-top-wrapper-btns > .icon-down-arrow").on('click', function() {
-            wins[id].goIntoByDef();
+            wins[id].goInto();
         });
     }
 
+    // ADD EVENTS: Whole keyboard events
     setKeyboardEvents() {
         let id = this.id_win;
-        let p = this.ptr;
 
         $(window).keydown(function(e) {
             if($('#win-' + id).css('z-index') == z_index) {
@@ -86,7 +89,7 @@ class Win_Explorer extends Window {
                 }
                 if(e.which == 38) { //up arrow
                     if(wins[id].selected_item > 0) {
-                        wins[id].SelectItem(wins[id].selected_item - 1);
+                        wins[id].selectItem(wins[id].selected_item - 1);
                     }
                 }
                 if(e.which == 40) { //down arrow
@@ -98,6 +101,7 @@ class Win_Explorer extends Window {
         });
     }
 
+    // OVERWRITTEN EVENT
     onResizeEvent() {
         super.onResizeEvent();
 
@@ -105,25 +109,28 @@ class Win_Explorer extends Window {
         $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h - 87);
     }
 
+    // OVERWRITTEN EVENT
     onRefreshEvent() {
         let win = this;
         $("#handler_event").on("exp_refresh", function(e) {
-            win.RefreshPath();
-            win.RefreshItems();
+            win.refreshPath();
+            win.refreshItems();
             //win.RefreshNav();
         });
     }
 
-    SetStartingPath(_path) {
-        this.ptr.goto(_path)
-        this.Refresh();
+    // Method needed to duplicate()
+    setStartingPath(_path) {
+        this.#ptr.goto(_path)
+        this.refresh();
     }
 
-    Duplicate() {
+    // OVERWRITTEN EVENT
+    duplicate() {
         let id = stapp("explorer");
     
-        wins[id].SetStartingPath(this.ptr.getPath());
-        wins[id].GoTop();
+        wins[id].setStartingPath(this.#ptr.getPath());
+        wins[id].goTop();
         wins[id].setPosition(
         parseInt($("#win-" + this.id_win).css("left")) + 40, 
         parseInt($("#win-" + this.id_win).css("top")) + 40);
@@ -131,9 +138,9 @@ class Win_Explorer extends Window {
         return id;
     }
 
-    goIntoByDef() {
-
-        let list = this.ptr.getBinders();
+    // Go into the selected folder or if not selected then get first one
+    goInto() {
+        let list = this.#ptr.getBinders();
         if(list.length != 0) {
             if(list.at(this.selected_item).type() != DIR || this.selected_item == NONE) {
                 for (let i = list.length-1; i >= 0; i--) {
@@ -142,54 +149,54 @@ class Win_Explorer extends Window {
                     }
                 }
             }
-            this.goInto();
+            console.log(this.#ptr.goto(this.#ptr.getBinders()[this.selected_item].getName()));
+            this.selected_item = this.#ptr.getCurrentDir().slct_pos;
+            this.refresh();
         }
     }
 
-    goInto() {
-        if(this.selected_item != NONE) {
-            this.ptr.goto(this.ptr.getBinders()[this.selected_item].name);
-            this.selected_item = this.ptr.getCurrentDir().slct_pos;
-        }
-    }
-
+    // Go out from current folder
     goOut() {
-        this.ptr.getCurrentDir().slct_pos = this.selected_item;
-        this.ptr.goto("..");
+        this.#ptr.getCurrentDir().slct_pos = this.selected_item;
+        this.#ptr.goto("..");
         $('#exp-item-' + this.selected_item + '-' + this.id_win).addClass('exp-item-ghost-select');
     }
 
+    // Rename Item with GUi's help
     renameItem() {
         if(this.selected_item != NONE) {
-            let item = this.ptr.getItemBy(this.selected_item);
+            let item = this.#ptr.getItemByIndex(this.selected_item);
             let tp = item.type() == DIR ? "Folder" : "File";
-            xinput("Rename "+ item.name +" " + tp,
+            xinput("Rename "+ item.getName() +" " + tp,
             "Type new name of " + tp + ": ",
-            "<input type='text' value='"+item.name+"' id='i-exp-" + this.id_win + "'/>",
+            "<input type='text' value='"+item.getName()+"' id='i-exp-" + this.id_win + "'/>",
             "wins["+this.id_win+'].execRename($("#i-exp-'+this.id_win+'").val(), '+this.selected_item+')',
             "");
         }
     }
-
-    execRename(accept, item) {
+    // Execute rename of file
+    execRename(accept, item_index) {
         if(accept != undefined) {
-            if(accept == '') {
-                xwarning("Incorrect name", "Item must have new name.");
-            } else if(accept.includes('/') || accept.includes('\\')) {
-                xwarning("Incorrect name", "Item's name cannot includes '/' or '\\'.");
-            } else {
-                let obj = this.ptr.getItemBy(item);
-                obj.name = accept;
-                obj.refreshModified();
-                this.Refresh();
+
+            switch (this.#ptr.getItemByIndex(item_index).rename(accept)) 
+            {
+                case "FORBIDDEN_SIGNS":
+                    xwarning("Incorrect name", "Item's name cannot includes '/' or '\\'.");
+                    break;
+                case "ZERO_LENGTH":
+                    xwarning("Incorrect name", "Item must have new name.");
+                    break;
+                default:
+                    break;
             }
-            
+            this.refresh();
         }
     }
 
+    //Delete item with GUI's help
     deleteItem() {
         if(this.selected_item != NONE) {
-            let item = this.ptr.getItemBy(this.selected_item);
+            let item = this.#ptr.getItemByIndex(this.selected_item);
             let tp = item.type() == DIR ? "Folder" : "File";
             let contains = "";
 
@@ -198,21 +205,23 @@ class Win_Explorer extends Window {
             }
             
             
-            xquestion("Deleting " + item.name + " " + tp,
+            xquestion("Deleting " + item.getName() + " " + tp,
             "Are you sure to delete 1 "+tp+"? <br/> " + contains,
-            'wins['+this.id_win+'].execDel("'+item.name+'")',
+            'wins['+this.id_win+'].execDel("'+item.getName()+'")',
             "");
         }
     }
 
+    // Execute deleting item
     execDel(name) {
-        this.ptr.del_noq(name);
-        this.Refresh();
+        this.#ptr.del_noq(name);
+        this.refresh();
     }
 
+    // Open properties of current item
     openProp() {
         wins.push(new Win_Properties(iter));
-        wins[iter].displayFileProperties(this.ptr.getBinders()[this.selected_item], this.ptr.getPath());
+        wins[iter].displayFileProperties(this.#ptr.getBinders()[this.selected_item], this.#ptr.getPath());
         let this_ = wins[this.id_win];
         let i = iter;
         wins[iter].onApply = function() {
@@ -222,7 +231,7 @@ class Win_Explorer extends Window {
         iter++;
     }
 
-
+    // Set current item
     SelectItem(index) {
         let id = this.id_win;
 
@@ -239,6 +248,8 @@ class Win_Explorer extends Window {
         }
     }
 
+    // Make new item.
+    // what: DIR or FILE
     mknew(what, _res) {
         switch (what) {
             case DIR:
@@ -252,11 +263,11 @@ class Win_Explorer extends Window {
                 if(_res == '') {
                     xwarning("Incorrect Name", "Created folder must has any name.");
                 } else {
-                    let r = this.ptr.mkdir(_res);
+                    let r = this.#ptr.mkdir(_res);
                     if(r.includes("ERRMK")) {
                         xerror("Couldn't create new item", "No Folder can be created in this directory because it is forbidden.")
                     }
-                    this.Refresh();
+                    this.refresh();
                 }
                break;
             case FILE:
@@ -270,11 +281,11 @@ class Win_Explorer extends Window {
                 if(_res == '') {
                     xwarning("Incorrect Name", "Created file must has any name.");
                 } else {
-                    let r = this.ptr.mkfile(_res);
+                    let r = this.#ptr.mkfile(_res);
                     if(r.includes("ERRMK")) {
                         xerror("Couldn't create new item", "No file can be created in this directory because it is forbidden.")
                     }
-                    this.Refresh();
+                    this.refresh();
                 }
                 break;
             case NONE: // Cancel creating
@@ -285,27 +296,31 @@ class Win_Explorer extends Window {
         }
     }
 
-    Refresh() {
+    // Refresh all explorers
+    refresh() {
         $("#handler_event").trigger('exp_refresh');
     }
 
-    RefreshPath() {
-        $('#win-' + this.id_win + " > .win-content > .exp-top > .exp-top-path").text(this.ptr.getPath());
+    // Refresh path on the top of explorer
+    refreshPath() {
+        $('#win-' + this.id_win + " > .win-content > .exp-top > .exp-top-path").text(this.#ptr.getPath());
     }
 
-    RemoveCXTMenus() {
-        this._item_cxt_menus_.forEach(item => {
+    // Removes all context menus of items
+    removeCXTMenus() {
+        this.#_item_cxt_menus_.forEach(item => {
             cxtm.removeMenu(item);
         });
     }
 
-    RefreshItems() {
-        this.RemoveCXTMenus();
+    // Refrehs items in the explorer
+    refreshItems() {
+        this.removeCXTMenus();
 
-        this._item_cxt_menus_ = [];
+        this.#_item_cxt_menus_ = [];
 
         let cnt = "";
-        let list = this.ptr.getBinders();
+        let list = this.#ptr.getBinders();
         this.items_length = list.length;
 
         if(list.length == 0) {
@@ -314,17 +329,18 @@ class Win_Explorer extends Window {
         
         for(let i = 0; i < list.length; i ++) {
             let menu_id = cxtm.addMenu(this.CreateMenu(list[i]));
-            this._item_cxt_menus_.push(menu_id);
+            this.#_item_cxt_menus_.push(menu_id);
 
             cnt += '<div class="exp-item" id="exp-item-' + i + '-' + this.id_win+ '" onclick="wins['+this.id_win+'].SelectItem('+i+')" oncontextmenu="wins['+this.id_win+'].SelectItem('+i+')" menuv="' + menu_id + '">' +
-            '<div class="exp-item-name" menuv="' + menu_id + '">' + list[i].name + '</div>' +
-            '<div class="exp-item-date" menuv="' + menu_id + '">'+list[i].date_created +' ' + list[i].time_created +'</div>' +
+            '<div class="exp-item-name" menuv="' + menu_id + '">' + list[i].getName() + '</div>' +
+            '<div class="exp-item-date" menuv="' + menu_id + '">'+list[i].getCreatedDate() +' ' + list[i].getCreatedTime() +'</div>' +
             '<div class="exp-item-type" menuv="' + menu_id + '">'+((list[i].type() == DIR)? "Folder":list[i].type())+'</div></div>\n';
         }
         
         $('#win-' + this.id_win + " > .win-content > .exp-wrapper > .exp-content").html(cnt);
     }
 
+    //Create menu for specific item
     CreateMenu(item) {
         let menu;
         switch(item.type()) {
@@ -343,7 +359,7 @@ class Win_Explorer extends Window {
             break;
             case FILE:
                 menu = new MenuTemplate('File ::   ' + item.name);
-                menu.pushNewOption("Open", item.refreshAccessed());
+                menu.pushNewOption("Open", item.refreshAccessedTime());
                 if(item.checkAttr(CHANGEABLE_NAME)) menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
                 if(item.checkAttr(REMOVABLE)) menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
                 menu.pushNewSeparator();

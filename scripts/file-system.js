@@ -1,9 +1,23 @@
+// Errors
 const ERRFILE = -1;
 
+// Types
 const BINDER = "Binder Object";
 const FILE = "File";
 const DIR = "Directory";
 const ALL = "dirs&files";
+
+// Attributes which are used for files & folders by system
+const REMOVABLE = 0, 
+    EDITABLE = 1, 
+    CHANGEABLE_NAME = 2,
+    HIDDEN = 3,
+    COPYABLE = 4,
+    READ_ONLY = 5,
+    FORBID_MK_ITEMS = 6,
+    CUTABLE = 7;
+
+
 
 class FileSystem {
     // VALUE: start_dir_name => basic folder where tree hierarchy starts. For instance 'C:'
@@ -16,27 +30,24 @@ class FileSystem {
 
         this.root_folder = new Folder(this.begin()).addAttr(FORBID_MK_ITEMS);
 
-        let fol = new Folder("Desktop");
-        fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME).removeAttr(CUTABLE);
-        this.root_folder.pushBinder(fol);
+        this._mkDefDir_("Desktop");
+        this._mkDefDir_("Documents");
+        this._mkDefDir_("Pictures");
+        this._mkDefDir_("Jankula");
+    }
 
-        fol = new Folder("Documents");
+    // create default folder unremoveable, uneditable, unchangeable name, uncutable at the chosen folder
+    // If path is undefined then create at the root folder
+    _mkDefDir_(name, path) {
+        let fol = new Folder(name);
         fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME).removeAttr(CUTABLE);
-        this.root_folder.pushBinder(fol);
 
-        fol = new Folder("Pictures");
-        fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME).removeAttr(CUTABLE);
-        this.root_folder.pushBinder(fol);
-
-        fol = new Folder("Jankula");
-        fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME).removeAttr(CUTABLE);
-        this.root_folder.pushBinder(fol);
-
-        this.root_folder.getByName("Jankula").pushBinder(new Folder("For Beginners"));
-        
-        fol = new Folder("Program Files");
-        fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME).removeAttr(CUTABLE);
-        this.root_folder.pushBinder(fol);
+        if(path == undefined) {
+            this.root_folder.pushBinder(fol);
+        } else {
+            this.readPath(path).pushBinder(fol);
+        }
+        return this;
     }
 
     // Reads input path and returns directory on which path pointed
@@ -52,7 +63,7 @@ class FileSystem {
 
         while(curr_level < dirs.length)
         {
-            if(dirs[curr_level] == curr_dir.name)
+            if(dirs[curr_level] == curr_dir.getName())
             {
                 curr_level++;
                 if(curr_level < dirs.length)
@@ -98,6 +109,7 @@ class FileSystem {
         return this.stdirn;
     }
 
+    // Check is path correct
     isPathStartCorrectly(path) {
         let st = this.begin();
         let cr = 0;
@@ -116,25 +128,27 @@ class FileSystem {
 }
 
 class DirFollower {
+    #curr_path;
+
     constructor(system) {
         this.system = system;
-        this.curr_path = system.begin() + '/';
+        this.#curr_path = system.begin() + '/';
     }
 
     //[TO FIX] USING FILE IN THE PATH AS FOLDER
     // moving pointer in the files ['..' -> go out ; 'path' -> go to typed path]
     goto(dir) {
         if(dir == "..") {
-            if(this.curr_path == this.system.begin() + '/') {
+            if(this.#curr_path == this.system.begin() + '/') {
                 return "Cannot go back directory";
             } else {
-                let splitp = this.curr_path.split('/');
+                let splitp = this.#curr_path.split('/');
                 let new_p = "";
                 for (let i = 0; i < splitp.length-2; i++) {
                     new_p += splitp[i] + '/';
                 }
                 if(this.system.existPath(new_p)) {
-                    this.curr_path = new_p;
+                    this.#curr_path = new_p;
                     this.onChangePathEvent();
                     return "Successful executed";
                 } else {
@@ -146,12 +160,12 @@ class DirFollower {
             if(this.system.isPathStartCorrectly(dir)) {
                 new_p = dir;
             } else {
-                new_p = this.curr_path + dir + '/';
+                new_p = this.#curr_path + dir + '/';
             }
             if(this.system.existPath(new_p) && this.system.readPath(new_p).type() == DIR) {
-                this.curr_path = new_p;
+                this.#curr_path = new_p;
                 this.onChangePathEvent();
-                this.system.readPath(new_p).refreshAccessed();
+                this.system.readPath(new_p).refreshAccessedTime();
                 return "Successful executed";
             } else {
                 return "ERRFIND: Invalid Directory '" + dir +"'";
@@ -161,17 +175,17 @@ class DirFollower {
 
     // Returns currently chose directory [object]
     getCurrentDir() {
-        return this.system.readPath(this.curr_path);
+        return this.system.readPath(this.#curr_path);
     }
 
     // Create directory in the current path
     mkdir(name_dir) {
-        if(this.system.existPath(this.curr_path)) {
-            if(!this.system.readPath(this.curr_path).checkAttr(FORBID_MK_ITEMS)) {
-                this.system.readPath(this.curr_path).pushBinder(new Folder(name_dir));
-                return "Directory Created at place '" + this.curr_path + name_dir + "/'";
+        if(this.system.existPath(this.#curr_path)) {
+            if(!this.system.readPath(this.#curr_path).checkAttr(FORBID_MK_ITEMS)) {
+                this.system.readPath(this.#curr_path).pushBinder(new Folder(name_dir));
+                return "Directory Created at place '" + this.#curr_path + name_dir + "/'";
             } else {
-                return "ERRMK: The directory at " + this.curr_path + " has forbidden adding new items."; 
+                return "ERRMK: The directory at " + this.#curr_path + " has forbidden adding new items."; 
             }
         } else {
             return "ERREXT: Path to make directory doesn't exist";
@@ -180,23 +194,23 @@ class DirFollower {
 
     // Create file in the current path
     mkfile(name_file) {
-        if(this.system.existPath(this.curr_path)) {
-            if(!this.system.readPath(this.curr_path).checkAttr(FORBID_MK_ITEMS)) {
-                this.system.readPath(this.curr_path).pushBinder(new File(name_file));
-                return "File Created at place '" + this.curr_path + name_file + "'";
+        if(this.system.existPath(this.#curr_path)) {
+            if(!this.system.readPath(this.#curr_path).checkAttr(FORBID_MK_ITEMS)) {
+                this.system.readPath(this.#curr_path).pushBinder(new File(name_file));
+                return "File Created at place '" + this.#curr_path + name_file + "'";
             } else {
-                return "ERRMK: The directory at " + this.curr_path + " has forbidden adding new items."; 
+                return "ERRMK: The directory at " + this.#curr_path + " has forbidden adding new items."; 
             }
         } else {
             return "ERREXT: Path to make directory doesn't exist";
         }
     }
 
-    // Delete the binder from current path
+    // Delete the binder from current path [CONSOLE]
     del(name) {
-        if(this.system.existPath(this.curr_path)) {
-            if(this.system.readPath(this.curr_path + name).type() == DIR) {
-                if(this.system.readPath(this.curr_path + name).countAll() != 0) {
+        if(this.system.existPath(this.#curr_path)) {
+            if(this.system.readPath(this.#curr_path + name).type() == DIR) {
+                if(this.system.readPath(this.#curr_path + name).countAll() != 0) {
                     let ans = prompt("Are you sure to delete " + name + "? This folder contains other files. [Y/N]");
                     if(ans.toLowerCase() == 'y') {
                         return this.del_noq(name);
@@ -218,23 +232,22 @@ class DirFollower {
 
     // Continuation of del(name) method. Permanently delete item
     del_noq(name) {
-        let index = this.system.readPath(this.curr_path).getIndexOf(name);
-        this.system.readPath(this.curr_path).removeBinder(index);
-        return "Item " + name + " successfuly deleted from '" + this.curr_path + "'";
-
+        let index = this.system.readPath(this.#curr_path).getIndexOf(name);
+        this.system.readPath(this.#curr_path).removeBinder(index);
+        return "Item " + name + " successfuly deleted from '" + this.#curr_path + "'";
     }
 
     // Count sepcific items by filterring data [DIR, FILE, ALL]
     count(filter) {
         switch (filter) {
             case DIR:
-                return this.system.readPath(this.curr_path).countDirs();
+                return this.system.readPath(this.#curr_path).countDirs();
                 break;
             case FILE:
-                return this.system.readPath(this.curr_path).countFiles();
+                return this.system.readPath(this.#curr_path).countFiles();
             break;
             case ALL:
-                return this.system.readPath(this.curr_path).countAll();
+                return this.system.readPath(this.#curr_path).countAll();
                 break;
             default:
                 return "ERRCNT: Invalid filter. Available filters counting: [DIR], [FILE], [ALL]";
@@ -244,13 +257,13 @@ class DirFollower {
 
     // Returns list of all items in the currently chosen directory
     getBinders() {
-        if(this.system.existPath(this.curr_path)) {
-            return this.system.readPath(this.curr_path).binder_list;
+        if(this.system.existPath(this.#curr_path)) {
+            return this.system.readPath(this.#curr_path).binder_list;
         }
     }
 
     //Returns item with index
-    getItemBy(index) {
+    getItemByIndex(index) {
         if(index > -1 && index < this.getBinders().length) {
             return this.getBinders()[index];
         } else {
@@ -259,9 +272,9 @@ class DirFollower {
     }
 
     //Returns item with name
-    getItemBy(name) {
+    getItemByName(name) {
         for(let i = 0 ; i < this.getBinders().length; i++) {
-            if(name = this.getBinders()[i].name) {
+            if(name == this.getBinders()[i].getName()) {
                 return this.getBinders()[i];
             }
         }
@@ -270,47 +283,77 @@ class DirFollower {
 
     // Print currently chosen directory
     pdir() {
-        this.system.readPath(this.curr_path).printDirectory();
+        this.system.readPath(this.#curr_path).printDirectory();
     }
 
     // Return full path going to current directory
     getPath() {
-        return this.curr_path;
+        return this.#curr_path;
     }
 
     // Event is called if path is changed
     onChangePathEvent() { ; }
 }
 
-const REMOVABLE = 0, 
-    EDITABLE = 1, 
-    CHANGEABLE_NAME = 2,
-    HIDDEN = 3,
-    COPYABLE = 4,
-    READ_ONLY = 5,
-    FORBID_MK_ITEMS = 6,
-    CUTABLE = 7;
-
 class BinderObject {
+    #date_created;
+    #time_created;
+
+    #date_modified;
+    #time_modified;
+
+    #date_accessed;
+    #time_accessed;
+
+    #icon = "icon-default-app";
+    #name;
+
     // VALUE: name => name of item
     constructor(name) {
         let dd = new Date();
 
-        this.date_created = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
-        this.time_created = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
+        this.#date_created = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
+        this.#time_created = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
 
-        this.date_modified = this.date_created;
-        this.time_modified = this.time_created;
+        this.#date_modified = this.#date_created;
+        this.#time_modified = this.#time_created;
 
-        this.date_accessed = this.date_created;
-        this.time_accessed = this.time_created;
+        this.#date_accessed = this.#date_created;
+        this.#time_accessed = this.#time_created;
 
-        this.icon = "icon-default-app";
-        this.name = name;
+        this.#icon = "icon-default-app";
+        this.#name = name;
 
         this.attributes = [REMOVABLE, EDITABLE, CHANGEABLE_NAME, COPYABLE];
     }
 
+    // Change the name of item
+    rename(new_) {
+        if(new_ == undefined || new_ == null) {
+            return "UNDEFINED VALUE";
+        } else if(new_.length == 0) {
+            return "ZERO_LENGTH";
+        } else if(new_.includes('/') || new_.includes('\\')) {
+            return "FORBIDDEN_SIGNS";
+        } else {
+            this.refreshModifiedTime();
+            this.#name = new_;
+        }
+    }
+    // Returns name of item
+    getName() {
+        return this.#name;
+    }
+    // Returns class icon
+    getIcon() {
+        return this.#icon;
+    }
+    // Set new class icon
+    setIcon(class_icon) {
+        if(class_icon != '' || class_icon != undefined)
+            this.#icon = class_icon;
+    }
+    // Removes Attribute
     removeAttr(attr) {
         for( var i = 0; i < this.attributes.length; i++){ 
             if ( this.attributes[i] === attr) { 
@@ -319,44 +362,68 @@ class BinderObject {
         }
         return this;
     }
-    
+    // Adds Attribute
     addAttr(attr) {
         this.attributes.push(attr);
         return this;
     }
-
+    // Checks Attribute
     checkAttr(attr) {
         return this.attributes.includes(attr);
     }
-
-    refreshModified() {
+    // Refresh modfied date
+    refreshModifiedTime() {
         let dd = new Date();
-        console.log("qofs");
-        this.date_modified = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
-        this.time_modified = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
+        this.#date_modified = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
+        this.#time_modified = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
     }
-
-    refreshAccessed() {
+    // Refresh accessed date
+    refreshAccessedTime() {
         let dd = new Date();
-        this.date_accessed = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
-        this.time_accessed = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
+        this.#date_accessed = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
+        this.#time_accessed = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
     }
-
-    getByName(name) {
-        return 'x-BinderObject-x';
+    // Returns time when file was created
+    getCreatedTime() {
+        return this.#time_created;
     }
-
+    // Returns date when file was created
+    getCreatedDate() {
+        return this.#date_created;
+    }
+    // Returns time when file was modified
+    getModifiedTime() {
+        return this.#time_modified;
+    }
+    // Returns date when file was modfied
+    getModifiedDate() {
+        return this.#date_modified;
+    }
+    // Returns time when file was accessed
+    getAccessedTime() {
+        return this.#time_accessed;
+    }
+    // Returns date when file was accessed
+    getAccessedDate() {
+        return this.#date_accessed;
+    }
+    // Returns this object
+    getThis() {
+        return undefined;
+    }
+    // Returns type of item
     type() {
         return BINDER;
     }
 }
 class Folder extends BinderObject {
+
     // VALUE: name => name of new folder
     constructor(name) {
         super(name); // calls constructor of BinderObject
         this.binder_list = [];
         this.slct_pos = NONE;
-        this.icon = "icon-folder-open";
+        this.setIcon('icon-folder-open');
     }
 
     // Pushes to folder new Item
@@ -391,7 +458,7 @@ class Folder extends BinderObject {
         let result = ERRFILE;
 
         this.binder_list.forEach(bind => {
-            if(bind.name == name) {
+            if(bind.getName() == name) {
                 result = bind;
             }
         });
@@ -465,6 +532,11 @@ class Folder extends BinderObject {
         return n;
     }
 
+    // Returns THIS object. Method extended
+    getThis(name) {
+        return this;
+    }
+
     // Returns type of item [DIR]
     type() {
         return DIR;
@@ -476,14 +548,14 @@ class File extends BinderObject {
     constructor(name, ico) {
         super(name); // calls constructor of BinderObject
         if(ico == undefined) {
-            this.icon = "icon-file";
+            this.setIcon("icon-file");
         } else {
-            this.icon = ico;
+            this.setIcon(ico);
         }
     }
 
     // Returns THIS object. Method extended
-    getByName(name) {
+    getThis(name) {
         return this;
     }
     // Returns type of item [FILE]

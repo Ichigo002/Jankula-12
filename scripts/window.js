@@ -1,49 +1,58 @@
 var AUTO_RESIZE = -4;
 
 class Window {
-    def_height = 100;
-    def_width = 100;
-    def_left = 0;
-    def_top = 0;
-    def_min_h = 250;
-    def_min_w = 320;
+	// Default settings window
+    #def_height = 100;
+    #def_width = 100;
+    #def_left = 0;
+    #def_top = 0;
+    #def_min_h = 250;
+    #def_min_w = 320;
+    #def_max_h;
+    #def_max_w;
+
+    #name;
+    #maximized;
+    #static;
 
     constructor(win_iterator, name, width, height, icon, style_icon) {
         
+        if(win_iterator == undefined) {
+            xerror("Missing value in the Window->constructor", "Constructor of Window has must reference to current window iterator to set default properties to correctly work.");
+            return "MISSING ITERATOR";
+        }
         if(name == undefined)
             name = "Default Window";
+        if(width == undefined)
+            width = this.#def_min_w;
+        if(height == undefined)
+            height = this.#def_min_h;
         if(icon == undefined)
             icon = "icon-default-icon";
-        if(width == undefined)
-            width = this.def_min_w;
-        if(height == undefined)
-            height = this.def_min_h;
 
         //Standard Values
-        this.name = name;
+        this.#name = name;
         this.id_win = win_iterator;
-        this.maximized = false;
-        this.static = false;
+        this.#maximized = false;
+        this.#static = false;
 
         //Topbar Context Menu
         let menu = new MenuTemplate(name);
         menu.pushNewOption("Close", 'wins['+this.id_win+'].action_close()');
-        menu.pushNewOption("Maximize", 'wins['+this.id_win+'].action_full_maximize();');
-        menu.pushNewOption("Minimize", 'wins['+this.id_win+'].action_minimalise();');
+        menu.pushNewOption("Maximize", 'wins['+this.id_win+'].action_max();');
+        menu.pushNewOption("Minimize", 'wins['+this.id_win+'].action_min();');
 
         let cxt_id = cxtm.addMenu(menu);
         // Task Item
         this.task_item = new TaskItem(name, this.id_win, icon, style_icon);
-        this.task_item.AddHoveringEvent();
-        this.task_item.AddMaxmaliseEvent();
 
         //Graphic User Interface
         let gui = '<div class="win" id="win-' + this.id_win + '" menuv="'+cxt_id+'">' +
-            '<div class="win-top" menuv="'+cxt_id+'"><i class="'+ icon +'" style="'+style_icon+'"></i> ' + this.name + 
+            '<div class="win-top" menuv="'+cxt_id+'"><i class="'+ icon +'" style="'+style_icon+'"></i> ' + this.#name + 
             '<span style="margin-left: 15px;">' +
             '<i class="icon-close icon-all" onclick="wins[' + this.id_win + '].action_close()"></i>' +
-            '<i class="icon-maximize icon-all" onclick="wins[' + this.id_win + '].action_full_maximize()"></i>' +
-            '<i class="icon-minimize icon-all" onclick="wins[' + this.id_win + '].action_minimalise()"></i>' +
+            '<i class="icon-maximize icon-all" onclick="wins[' + this.id_win + '].action_max()"></i>' +
+            '<i class="icon-minimize icon-all" onclick="wins[' + this.id_win + '].action_min()"></i>' +
             '<div style="clear: both;"></div>' +
             '</span> </div> <div class="win-content"></div>'+
             '<div class="win-resize-point"></div></div>';
@@ -60,16 +69,17 @@ class Window {
 
         //Active Default Events
         this.setPositionResizePoint();
-        this.SetDraggingEvent();
-        this.ActiveZIndex();
-        this.SetResizeEvent();
+        this.setDraggingEvent();
+        this.activeZIndex();
+        this.setResizeEvent();
         
-        this.GoTop();
+        this.goTop();
     }
 
+    //Set minimal size of window
     setMinimalSize(mw, mh) {
-        this.def_min_w = mw;
-        this.def_min_h = mh;
+        this.#def_min_w = mw;
+        this.#def_min_h = mh;
 
         if(parseInt($('#win-' + this.id_win).css('width')) < mw) {
             $('#win-' + this.id_win).css('width', mw);
@@ -78,21 +88,30 @@ class Window {
             $('#win-' + this.id_win).css('height', mh);
         }
         this.setPositionResizePoint();
+        this.setDraggingEvent();
+        this.setResizeEvent();
+        return this;
+    }
+
+    //Set maximal size of window
+    setMaxSize(mw, mh) {
+        this.#def_max_w = mw;
+        this.#def_max_h = mh;
+
+        if(parseInt($('#win-' + this.id_win).css('width')) > mw) {
+            $('#win-' + this.id_win).css('width', mw);
+        }
+        if(parseInt($('#win-' + this.id_win).css('height')) > mh) {
+            $('#win-' + this.id_win).css('height', mh);
+        }
+        this.setPositionResizePoint();
         this.SetDraggingEvent();
         this.SetResizeEvent();
         return this;
     }
 
-    ActiveZIndex() {
-        let id = this.id_win;
-
-        $('#win-' + id).on("mousedown", function() {
-            wins[id].GoTop();
-        });
-
-    }
-
-    GoTop() {
+    // Display window on the foreground of screen
+    goTop() {
         z_index++;
         if(z_index >= max_z)
         {
@@ -112,7 +131,18 @@ class Window {
         return this;
     }
 
-    SetDraggingEvent() {
+    // ADD EVENT: Go window top after click its
+    activeZIndex() {
+        let id = this.id_win;
+
+        $('#win-' + id).on("mousedown", function() {
+            wins[id].goTop();
+        });
+
+    }
+
+    // ADD EVENT: Drag window by mouse after hold top bar
+    setDraggingEvent() {
         let drag = false;
         let offsetX = 0;
         let offsetY = 0;
@@ -131,10 +161,8 @@ class Window {
         $("#win-"+ id).on("mousemove mouseout", function(e) {
             if(drag)
             {
-                if(wins[id].maximized) {
-                    wins[id].action_full_maximize();
-                    offsetX = e.pageX - parseInt($('#win-' + id).css("left"));
-                    offsetY = e.pageY - parseInt($('#win-' + id).css("top"));
+                if(wins[id].getStatusMax()) {
+                    wins[id].action_max();
                 }
 
                 $('#win-' + id).css('left', (e.pageX - offsetX) + 'px');
@@ -152,11 +180,16 @@ class Window {
             }
         });
     }
+    // return #maximized variable
+    getStatusMax() {
+        return this.#maximized;
+    }
 
-    SetResizeEvent() {
+    // ADD EVENT: Resize window after hold right-bottom point
+    setResizeEvent() {
         let id = this.id_win;
         let resize;
-        let minw = this.def_min_w, minh = this.def_min_h;
+        let minw = this.#def_min_w, minh = this.#def_min_h;
 
         $("#win-" + id + " > .win-resize-point").on('mousedown', function(e) {
             resize = true;
@@ -195,21 +228,20 @@ class Window {
         });
     }
 
-    onDragEvent() {
-        
-        //You can overwrite this and use for what you want
-    }
+    // Methods are called if event has place now. Method can be overwritten
+    onDragEvent() { }
+    onResizeEvent() { }
+    onCloseEvent() { }
 
-    onResizeEvent() {
-        //You can overwrite this and use for what you want
-    }
-
-    onCloseEvent() {
-        //You can overwrite this and use for what you want
-    }
-
-    Duplicate() {
-        let id = NewWindow(this.name, $('#win-' + this.id_win).css('width'), $('#win-' + this.id_win).css('height'), $('#win-' + this.id_win).css('left'), $('#win-' + this.id_win).css('top'), $('#win-' + this.id_win + " > .win-top > i").attr('class'), $('#win-' + this.id_win + " > .win-top > i").attr('style'));
+    // Duplicate this window. Method can be overwritten
+    duplicate() {
+        let id = NewWindow(this.#name,
+            $('#win-' + this.id_win).css('width'),
+            $('#win-' + this.id_win).css('height'),
+            $('#win-' + this.id_win).css('left'),
+            $('#win-' + this.id_win).css('top'),
+            $('#win-' + this.id_win + " > .win-top > i").attr('class'),
+            $('#win-' + this.id_win + " > .win-top > i").attr('style'));
 
         wins[id].setContent(this.getContent());
         wins[id].setPosition(
@@ -218,18 +250,21 @@ class Window {
         return id;
     }
 
+    // Set content of window
     setContent(v) {
         $("#win-" + this.id_win + " > .win-content").html(v);
         return this;
     }
 
+    // Returns content of window
     getContent() {
         return $("#win-" + this.id_win + " > .win-content").html();
     }
 
+    // Reset resize point's position to right-bottom side
     setPositionResizePoint() {
         let id = this.id_win;
-        if(this.static) {
+        if(this.#static) {
             $("#win-" + id + " > .win-resize-point").css("display", "none");
         } else {
             $("#win-" + id + " > .win-resize-point").css("display", "block");
@@ -240,6 +275,7 @@ class Window {
         return this;
     }
 
+    // Set window on the center of screen
     setCenter() {
         let sizeX = parseInt($('body').innerWidth());
         let sizeY = parseInt($('body').innerHeight());
@@ -251,39 +287,40 @@ class Window {
         return this;
     }
 
+    // Set position by left and top variables
     setPosition(x, y) {
         $('#win-' + this.id_win).css('left', x + 'px');
         $('#win-' + this.id_win).css('top', y + 'px');
         return this;
     }
 
-    action_minimalise() {
+    // Minimize to background work
+    action_min() {
         this.task_item.min();
         $('#win-' + this.id_win).css('display', 'none');
         this.onResizeEvent();
     }
 
-    action_unminimalise() {
+    // Unminimize from the background work
+    action_unmin() {
         $('#win-' + this.id_win).css('display', 'block');
         this.task_item.unmin();
-        this.GoTop();
+        this.goTop();
         this.onResizeEvent();
+        this.setPositionResizePoint();
     }
 
-    action_maxmalise() {
-        this.task_item.unmin();
-        $('#win-' + this.id_win).css('display', 'block');
-        this.onResizeEvent();
-    }
-
-    action_full_maximize() {
-        if(this.maximized) {
-            this.maximized = false;
+    // Maximize and fill all screen by itself
+    action_max() {
+        if(this.#maximized) {
+            console.log("gggg");
+            this.#maximized = false;
             this.loadDef();
             this.setPositionResizePoint();
         } else {
-            this.action_maxmalise();
-            this.maximized = true;
+            console.log("2222");
+            this.action_unmin();
+            this.#maximized = true;
             this.saveDef();
 
             $('#win-' + this.id_win).css('width', parseInt($('#desktop').css('width')) - 10);
@@ -296,6 +333,7 @@ class Window {
         this.onResizeEvent();
     }
 
+    // Close the window
     action_close() {
         this.onCloseEvent();
         this.task_item.removeItem();
@@ -304,20 +342,21 @@ class Window {
         wins[this.id_win] = null;
     }
 
+    // Save default settings
     saveDef() {
-        this.def_width = $('#win-' + this.id_win).css('width');
-        this.def_height = $('#win-' + this.id_win).css('height');
+        this.#def_width = $('#win-' + this.id_win).css('width');
+        this.#def_height = $('#win-' + this.id_win).css('height');
 
-        this.def_left = $('#win-' + this.id_win).css('left');
-        this.def_top = $('#win-' + this.id_win).css('top');
+        this.#def_left = $('#win-' + this.id_win).css('left');
+        this.#def_top = $('#win-' + this.id_win).css('top');
     }
 
+    // Load default Settings
     loadDef() {
-        $('#win-' + this.id_win).css('width', this.def_width);
-        $('#win-' + this.id_win).css('height', this.def_width);
+        $('#win-' + this.id_win).css('width', this.#def_width);
+        $('#win-' + this.id_win).css('height', this.#def_height);
         
-        $('#win-' + this.id_win).css('left', this.def_left);
-        $('#win-' + this.id_win).css('top', this.def_top);
-    }
-        
+        $('#win-' + this.id_win).css('left', this.#def_left);
+        $('#win-' + this.id_win).css('top', this.#def_top);
+    } 
 }

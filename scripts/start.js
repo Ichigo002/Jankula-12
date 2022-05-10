@@ -48,5 +48,5 @@ function basicFiles() {
         file_system.root_folder.getByName("Documents").pushBinder(new Folder("Lorem ipsum"));
     }
 
-    file_system.printHierarchyTree();
+    //file_system.printHierarchyTree();
 }

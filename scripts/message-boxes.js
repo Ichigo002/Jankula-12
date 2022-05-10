@@ -108,7 +108,7 @@ function _keyboardEvent_(id) {
 }
 
 function _defaultSettingsBox_(cnt) {
-    wins[iter].setContent(cnt).setPositionResizePoint().setCenter().GoTop();
+    wins[iter].setContent(cnt).setPositionResizePoint().setCenter().goTop();
     wins[iter].static = true;
 
     $("#win-" + iter + " > .win-top > span > i.icon-maximize").remove();
