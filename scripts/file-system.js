@@ -308,7 +308,7 @@ class BinderObject {
     #time_accessed;
 
     #icon = "icon-default-app";
-    #name;
+    #name = "";
 
     // VALUE: name => name of item
     constructor(name) {
@@ -324,30 +324,40 @@ class BinderObject {
         this.#time_accessed = this.#time_created;
 
         this.#icon = "icon-default-app";
-        this.#name = name;
 
         this.attributes = [REMOVABLE, EDITABLE, CHANGEABLE_NAME, COPYABLE];
+        return this.rename(name);
     }
 
     // Change the name of item
     rename(new_) {
-        console.log("fff", new_);
         if(this.checkAttr(CHANGEABLE_NAME)) {
-            if(new_ == undefined || new_ == null) {
-                return "UNDEFINED VALUE";
-            } else if(new_.length == 0) {
-                return "ZERO_LENGTH";
-            } else if(new_.includes('/') || new_.includes('\\')) {
-                return "FORBIDDEN_SIGNS";
-            } else {
+            let r = BinderObject.checkName(new_);
+            if(r == "CORRECT") {
                 this.refreshModifiedTime();
-                this.#name = new_; 
+                this.#name = new_;
+                return r;
+            } else {
+                return r;
             }
         } else {
             return "FORBIDDEN_RENAMING";
         }
-        
     }
+
+    // Check is argument name correct for item
+    static checkName(name) {
+        if(name == undefined || name == null) {
+            return "UNDEFINED VALUE";
+        } else if(name.length == 0) {
+            return "ZERO_LENGTH";
+        } else if(name.includes('/') || name.includes('\\')) {
+            return "FORBIDDEN_SIGNS";
+        } else {
+            return "CORRECT";
+        }
+    }
+
     // Returns name of item
     getName() {
         return this.#name;
@@ -552,9 +562,13 @@ class Folder extends BinderObject {
 }
 
 class File extends BinderObject {
-    // VALUE: name => name of new folder
+    _ext_ = "";
+    #data = "";
+
+    // VALUE: name => name of new file
     constructor(name, ico) {
         super(name); // calls constructor of BinderObject
+
         if(ico == undefined) {
             this.setIcon("icon-file");
         } else {
@@ -562,10 +576,66 @@ class File extends BinderObject {
         }
     }
 
+    // Overwrite current data saved as html
+    overwriteFile(_data) {
+        this.#data = _data;
+        return "Executed";
+    }
+
+    // Read current data saved as html
+    readFile() {
+        return this.#data;
+    }
+
+    // Add on the end of current data new data saved as html
+    appendData(_new_data) {
+        this.#data += _new_data;
+        return "Executed";
+    }
+
+    // EXTENDED METHOD
+    rename(new_) {
+        let r = super.rename(new_);
+
+        if(r == "CORRECT") {
+            this._ext_ = File.splitExt(new_);
+            return "CORRECT";
+        } else {
+            return r;
+        }
+    }
+
+    // Cut extension from name
+    static splitExt(name) {
+        if(name.includes(".")) {
+            let ex = "";
+            for (let i = name.length - 1; i >= 0; i--) {
+                if(name.at(i) == ".") {
+                    let rex = "";
+                    for(let j = ex.length - 1; j >= 0; j--) {
+                        rex += ex.at(j);
+                    }
+                    return rex;
+                } else {
+                    ex += name.at(i);
+                }
+            }
+        } else {
+            return "";
+        }
+        
+    }
+
     // Returns THIS object. Method extended
     getThis(name) {
         return this;
     }
+
+    // Returns the extension of file. If returns empty that means file hasn't got any extension
+    ext() {
+        return this._ext_;
+    }
+
     // Returns type of item [FILE]
     type() {
         return FILE;

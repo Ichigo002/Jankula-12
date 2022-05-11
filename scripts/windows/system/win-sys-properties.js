@@ -108,11 +108,21 @@ class Win_Properties extends Window {
         this.file = _file;
         this.setIcon(_file.getIcon());
         this.setNameProperty(_file.getName());
-        this.pushNewValue("Type", _file.type());
+        if(_file.type() == FILE) {
+            this.pushNewValue("Type", (_file.ext() != "")? _file.ext().toUpperCase() + " File" : _file.type());
+        } else {
+            this.pushNewValue("Type", _file.type());
+        }
 
         this.pushSeparator();
         this.pushNewValue("Path", path);
-        this.pushNewValue("Size", "null");
+        if(_file.type() == FILE) {
+            this.pushNewValue("Size", new Blob([_file.readFile()]).size + " Bytes");
+        } else {
+            this.pushNewValue("All Items", (_file.countAll() == -1)? 0 : _file.countAll());
+            this.pushNewValue("Files", (_file.countFiles() == -1)? 0 : _file.countFiles());
+            this.pushNewValue("Folders", (_file.countDirs() == -1)? 0 : _file.countDirs());
+        }
 
         this.pushSeparator();
         this.pushNewValue("Created", _file.getCreatedDate() + " " + _file.getCreatedTime());

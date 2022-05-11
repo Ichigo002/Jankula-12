@@ -175,24 +175,29 @@ class Win_Explorer extends Window {
         }
     }
     // Execute rename of file
-    execRename(accept, item_index) {
+    execRename(accept, item_index, change_ext_accepted) {
         if(accept != undefined) {
-
-            switch (this.#ptr.getItemByIndex(item_index).rename(accept)) 
-            {
-                case "FORBIDDEN_SIGNS":
-                    xwarning("Incorrect name", "Item's name cannot includes '/' or '\\'.");
+            if(File.splitExt(accept) && !change_ext_accepted) {
+                xquestion("Change file extension", 
+                "If you change file extension, the file might be unusable. <br/><br/> Are you sure?", 
+                `wins[${this.id_win}].execRename("${accept}", ${item_index}, true)`, "");
+            } else {
+                switch (this.#ptr.getItemByIndex(item_index).rename(accept)) 
+                {
+                    case "FORBIDDEN_SIGNS":
+                        xwarning("Incorrect name", "Item's name cannot includes '/' or '\\'.");
+                        break;
+                    case "ZERO_LENGTH":
+                        xwarning("Incorrect name", "Item must have new name.");
+                        break;
+                    case "FORBIDDEN_RENAMING": 
+                        xerror("Forbidden renaming item", "You cannot rename this item.");
                     break;
-                case "ZERO_LENGTH":
-                    xwarning("Incorrect name", "Item must have new name.");
-                    break;
-                case "FORBIDDEN_RENAMING": 
-                    xerror("Forbidden renaming item", "You cannot rename this item.");
-                break;
-                default:
-                    break;
+                    default:
+                        break;
+                }
+                this.refresh();
             }
-            this.refresh();
         }
     }
 
@@ -257,16 +262,27 @@ class Win_Explorer extends Window {
                 "wins["+this.id_win+"].mknew(NONE)");
                 break;
             case "D_RES_":
-                if(_res == '') {
-                    xwarning("Incorrect Name", "Created folder must has any name.");
-                } else {
-                    let r = this.#ptr.mkdir(_res);
-                    if(r.includes("ERRMK")) {
-                        xerror("Couldn't create new item", "No Folder can be created in this directory because it is forbidden.")
+                switch (BinderObject.checkName(_res)) {
+                    case "CORRECT":
+                        let r = this.#ptr.mkdir(_res);
+                        if(r.includes("ERRMK")) {
+                            xerror("Couldn't create new item", "No file can be created in this directory because it is forbidden.")
+                        }
+                        this.refresh();
+                        break;
+                    case "FORBIDDEN_SIGNS":
+                        xwarning("Incorrect name", "Item's name cannot includes '/' or '\\'.");
+                        break;
+                    case "ZERO_LENGTH":
+                        xwarning("Incorrect name", "Item must have new name.");
+                        break;
+                    case "FORBIDDEN_RENAMING": 
+                        xerror("Forbidden renaming item", "You cannot rename this item.");
+                    break;
+                    default:
+                        break;
                     }
-                    this.refresh();
-                }
-               break;
+                break;
             case FILE:
                 xinput("Create a new file", 
                 "Type name for a new file: ", 
@@ -275,15 +291,26 @@ class Win_Explorer extends Window {
                 "wins["+this.id_win+"].mknew(NONE)");
                 break;
             case "F_RES_":
-                if(_res == '') {
-                    xwarning("Incorrect Name", "Created file must has any name.");
-                } else {
-                    let r = this.#ptr.mkfile(_res);
-                    if(r.includes("ERRMK")) {
-                        xerror("Couldn't create new item", "No file can be created in this directory because it is forbidden.")
+                switch (BinderObject.checkName(_res)) {
+                    case "CORRECT":
+                        let r = this.#ptr.mkfile(_res);
+                        if(r.includes("ERRMK")) {
+                            xerror("Couldn't create new item", "No file can be created in this directory because it is forbidden.")
+                        }
+                        this.refresh();
+                        break;
+                    case "FORBIDDEN_SIGNS":
+                        xwarning("Incorrect name", "Item's name cannot includes '/' or '\\'.");
+                        break;
+                    case "ZERO_LENGTH":
+                        xwarning("Incorrect name", "Item must have new name.");
+                        break;
+                    case "FORBIDDEN_RENAMING": 
+                        xerror("Forbidden renaming item", "You cannot rename this item.");
+                    break;
+                    default:
+                        break;
                     }
-                    this.refresh();
-                }
                 break;
             case NONE: // Cancel creating
                 return false;
@@ -328,10 +355,12 @@ class Win_Explorer extends Window {
             let menu_id = cxtm.addMenu(this.CreateMenu(list[i]));
             this.#_item_cxt_menus_.push(menu_id);
 
+            let type = (list[i].type() == DIR)? "Folder": (list[i].ext() == "")? list[i].type() : list[i].ext();
+
             cnt += '<div class="exp-item" id="exp-item-' + i + '-' + this.id_win+ '" onclick="wins['+this.id_win+'].SelectItem('+i+')" oncontextmenu="wins['+this.id_win+'].SelectItem('+i+')" menuv="' + menu_id + '">' +
             '<div class="exp-item-name" menuv="' + menu_id + '">' + list[i].getName() + '</div>' +
             '<div class="exp-item-date" menuv="' + menu_id + '">'+list[i].getCreatedDate() +' ' + list[i].getCreatedTime() +'</div>' +
-            '<div class="exp-item-type" menuv="' + menu_id + '">'+((list[i].type() == DIR)? "Folder":list[i].type())+'</div></div>\n';
+            '<div class="exp-item-type" menuv="' + menu_id + '">'+type+'</div></div>\n';
         }
         
         $('#win-' + this.id_win + " > .win-content > .exp-wrapper > .exp-content").html(cnt);
@@ -356,7 +385,7 @@ class Win_Explorer extends Window {
             break;
             case FILE:
                 menu = new MenuTemplate('File ::   ' + item.name);
-                menu.pushNewOption("Open", item.refreshAccessedTime());
+                menu.pushNewOption("Open", null);
                 if(item.checkAttr(CHANGEABLE_NAME)) menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
                 if(item.checkAttr(REMOVABLE)) menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
                 menu.pushNewSeparator();
