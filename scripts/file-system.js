@@ -569,6 +569,8 @@ class File extends BinderObject {
     constructor(name, ico) {
         super(name); // calls constructor of BinderObject
 
+        this.rename(name);
+
         if(ico == undefined) {
             this.setIcon("icon-file");
         } else {
