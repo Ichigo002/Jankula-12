@@ -354,8 +354,23 @@ class Window {
     setToolBar(menu_template) {
         if(menu_template != undefined) {
             let html = "";
+
             menu_template.menu.forEach(e => {
-                html += this.ProcessItemToHTML(e);
+                if(e.type == SPLITTER) {
+                    let opts = "";
+
+                    e.submenu.menu.forEach(sbm => {
+                        opts += this.processItemToHTML(sbm);
+                    });
+    
+                    let posX = $('#cxtm').css('width');
+                    let posY = $('#cxtm').css('height');
+    
+                    html += '<div class="win-tb-first">' + e.content + '<div class="win-tb-splitted" style="left: '+posX+'; top: '+posY+';">' + opts + '</div></div>';
+    
+                } else {
+                    console.warn("First template menu should contains only splitter to correctly work");
+                }
             });
 
             $(`#win-${this.id_win} > .win-toolbar`).html(html);
@@ -363,7 +378,9 @@ class Window {
         }
     }
 
-    ProcessItemToHTML(element) {
+
+
+    processItemToHTML(element) {
         let html = "";
         switch(element.type) {
             case DISABLED:
@@ -377,13 +394,10 @@ class Window {
                 let opts = "";
 
                 element.submenu.menu.forEach(sbm => {
-                    opts += this.ProcessItemToHTML(sbm);
+                    opts += this.processItemToHTML(sbm);
                 });
 
-                let posX = $('#cxtm').css('width');
-                let posY = $('#cxtm').css('height');
-
-                html += '<div class="win-tb-option win-tb-splitter">' + element.content + '<span style="float: right; margin-right: 10px;">></span><div class="menu menu-splitted" style="left: '+posX+'; top: '+posY+';">' + opts + '</div></div>';
+                html += '<div class="win-tb-option win-tb-first">' + element.content + '<span style="float: right; margin-right: 10px; margin-left: 10px;">></span><div class="win-tb-splitted" style="">' + opts + '</div></div>';
             break;
             default: 
                 console.error("Type Option '" + element.type + "' is not available.");

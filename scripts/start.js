@@ -31,12 +31,27 @@ function Start() {
     //xerror("lorem ipsum", "lorem ipsum del qutiero monror rof EROOR fjos rar !");
     let t = new MenuTemplate("TEST");
     let st = new MenuTemplate("sub TEST");
+    let st1 = new MenuTemplate("sub rr");
+    let ss = new MenuTemplate("gg");
 
-    t.pushNewOption("File", null);
-    t.pushNewOption("feg", null);
+    ss.pushNewOption("best");
+    ss.pushNewSeparator();
+    ss.pushNewOption("gffdag");
+    ss.pushNewOption("gffdag");
+    ss.pushNewOption("gffdag");
+    ss.pushNewOption("gffdag");
+
+    st1.pushNewOption("sfagashg");
+    st1.pushNewSeparator();
+    st1.pushNewOption('ffff');
+
+    st.pushNewOption("www");
+    st.pushNewOption("wf");
+    st.pushNewOption("wwd");
+    st.pushNewSplitOption("tsetst", ss);
+
     t.pushNewSplitOption("haha", st);
-    t.pushNewOption("Fijjjle", null);
-    t.pushNewOption("hhhh", null);
+    t.pushNewSplitOption("hyhy", st1)
 
 
 

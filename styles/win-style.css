@@ -71,18 +71,44 @@
 /*Tool Bar */
 
 .win-toolbar-used {
-    background-color: #e6e6e6;
+    height: 25px;
+    background-color: #e4e4e4;
     color: #0b0b0b;
+    border-bottom: 1px solid black !important;
+}
+
+.win-tb-first {
+    text-align: center;
+    line-height: 25px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    float: left;
+}
+
+.win-tb-first:hover {
+    background-color: #e4e4e4;
+    cursor: default;
+}
+
+.win-tb-first:hover > .win-tb-splitted {
+    display: block;
+}
+
+.win-tb-splitted {
+    display: none;
 }
 
 .win-tb-option {
-    
+    cursor: pointer;
+    padding: 5px;
+}
+
+.win-tb-option:hover {
+    background-color: #adadad;
 }
 
 .win-tb-sep {
-
-}
-
-.win-tb-splitter {
-
+    margin: 4px 0 3px 0;
+    border-bottom: 1px solid black;
 }
