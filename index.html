@@ -24,6 +24,8 @@
         <script src="scripts/taskbar.js"></script>
         <script src="scripts/context-menu.js"></script>
 
+        <script src="scripts/windows/apps/win-notebook.js"></script>
+
         <script src="scripts/windows/system/win-sys-cmd.js"></script>
         <script src="scripts/windows/system/win-sys-explorer.js"></script>
         <script src="scripts/windows/system/win-sys-properties.js"></script>
@@ -50,27 +52,16 @@
 
 
         <div id="designer-cnt">
-            <div class="exp-top"><div class="exp-top-wrapper-btns"><i class="icon-up-arrow exp-top-btn"></i><i class="icon-down-arrow exp-top-btn"></i></div><div class="exp-top-path">R:/</div> </div>
-            <div class="exp-wrapper" style="height: 263px;">
-                <div class="exp-nav">
-                    <div class="exp-nav-item">-> Documents
-                        <div class="exp-nav-item-block">
-                            <div class="exp-nav-item">|  Disc</div>
-                            <div class="exp-nav-item">| -> Fuck</div>
-                        </div>
-                    </div>
-                    <div class="exp-nav-item">-> Disc</div>
-                    <div class="exp-nav-item">-> Fuck</div>
+            <div class="nb-top">
+                <div class="nb-option">File
+                    <div class="nb-sub-option">Open</div>
+                    <div class="nb-sub-option">Save</div>
+                    <div class="nb-sub-option">Save as</div>
+                    <div class="nb-sub-option">S</div>
                 </div>
-
-
-                <div class="exp-item-barinfo">
-                    <div class="exp-item-name">Name</div><div class="exp-item-date">Date Created</div><div class="exp-item-type">Type</div></div><div class="exp-content" menuv="6"><div class="exp-item" id="exp-item-0-2" onclick="wins[2].SelectItem(0)" oncontextmenu="wins[2].SelectItem(0)" menuv="7"><div class="exp-item-name" menuv="7">Testero.txt</div><div class="exp-item-date" menuv="7">4/6/2022 22:12</div><div class="exp-item-type" menuv="7">File</div></div>
-            <div class="exp-item" id="exp-item-1-2" onclick="wins[2].SelectItem(1)" oncontextmenu="wins[2].SelectItem(1)" menuv="8"><div class="exp-item-name" menuv="8">be_be</div><div class="exp-item-date" menuv="8">4/6/2022 22:12</div><div class="exp-item-type" menuv="8">File</div></div>
-            <div class="exp-item" id="exp-item-2-2" onclick="wins[2].SelectItem(2)" oncontextmenu="wins[2].SelectItem(2)" menuv="9"><div class="exp-item-name" menuv="9">xampp</div><div class="exp-item-date" menuv="9">4/6/2022 22:12</div><div class="exp-item-type" menuv="9">Folder</div></div>
-            <div class="exp-item" id="exp-item-3-2" onclick="wins[2].SelectItem(3)" oncontextmenu="wins[2].SelectItem(3)" menuv="10"><div class="exp-item-name" menuv="10">bin</div><div class="exp-item-date" menuv="10">4/6/2022 22:12</div><div class="exp-item-type" menuv="10">Folder</div></div>
-            <div class="exp-item" id="exp-item-4-2" onclick="wins[2].SelectItem(4)" oncontextmenu="wins[2].SelectItem(4)" menuv="11"><div class="exp-item-name" menuv="11">user</div><div class="exp-item-date" menuv="11">4/6/2022 22:12</div><div class="exp-item-type" menuv="11">Folder</div></div>
-            </div></div>
+                <div class="nb-option">Editor</div>
+            </div>
+            <div class="nb-cnt"></div>
         </div>
 
         

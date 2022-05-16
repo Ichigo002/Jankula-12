@@ -58,6 +58,7 @@ class Win_Properties extends Window {
                 break;
             }
         }
+        $("#handler_event").trigger("exp_refresh");
     }
 
     // Apply and close window

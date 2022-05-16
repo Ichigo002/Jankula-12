@@ -232,11 +232,13 @@ class DirFollower {
 
     // Continuation of del(name) method. Permanently delete item
     del_noq(name) {
-        
-        let index = this.system.readPath(this.#curr_path).getIndexOf(name);
-        console.log(name, this.#curr_path, index);
-        this.system.readPath(this.#curr_path).removeBinder(index);
+        let p = this.system.readPath(this.#curr_path);
+        let index = p.getIndexOf(name);
+        if(p.getByIndex(index).checkAttr(REMOVABLE)) {
+            p.removeBinder(index);
         return "Item " + name + " successfuly deleted from '" + this.#curr_path + "'";
+        }
+        return "FORBIDDEN";
     }
 
     // Count sepcific items by filterring data [DIR, FILE, ALL]

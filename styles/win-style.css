@@ -67,3 +67,22 @@
 .icon-close:hover {
     color: rgb(243, 48, 48);
 }
+
+/*Tool Bar */
+
+.win-toolbar-used {
+    background-color: #e6e6e6;
+    color: #0b0b0b;
+}
+
+.win-tb-option {
+    
+}
+
+.win-tb-sep {
+
+}
+
+.win-tb-splitter {
+
+}

@@ -10,5 +10,4 @@ TO DO:
 * make better minimizing from max to min window
 * complete option: pin to taskbar
 * complete warning for smartphones
-* complete properties
 * complete explore

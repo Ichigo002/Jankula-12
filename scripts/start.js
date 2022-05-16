@@ -27,8 +27,25 @@ function Start() {
     //stapp("demo-help");
     stapp("explorer");
     //stapp("src");
-    //stapp("design-studio");
+    
     //xerror("lorem ipsum", "lorem ipsum del qutiero monror rof EROOR fjos rar !");
+    let t = new MenuTemplate("TEST");
+    let st = new MenuTemplate("sub TEST");
+
+    t.pushNewOption("File", null);
+    t.pushNewOption("feg", null);
+    t.pushNewSplitOption("haha", st);
+    t.pushNewOption("Fijjjle", null);
+    t.pushNewOption("hhhh", null);
+
+
+
+    wins.push(new Win_Notebook(iter));
+    wins[iter].setPosition(400, 400);
+    wins[iter].setToolBar(t);
+    iter++;
+
+    //stapp("design-studio");
 }
 
 function basicFiles() {

@@ -97,6 +97,11 @@ class Win_Explorer extends Window {
                         wins[id].SelectItem(wins[id].selected_item + 1);
                     }
                 }
+                if(e.which == 46) { // Delete
+                    if(wins[id].selected_item < wins[id].items_length - 1) {
+                        wins[id].deleteItem();
+                    }
+                }
             }
         });
     }
@@ -205,18 +210,23 @@ class Win_Explorer extends Window {
     deleteItem() {
         if(this.selected_item != NONE) {
             let item = this.#ptr.getItemByIndex(this.selected_item);
-            let tp = item.type() == DIR ? "Folder" : "File";
-            let contains = "";
+            if(!item.checkAttr(REMOVABLE)) {
+                xerror("Deleting failed", "You cannot delete this item because this is forbidden.");
+            } else {
+                let tp = item.type() == DIR ? "Folder" : "File";
+                let contains = "";
 
-            if(item.type() == DIR && item.countAll() != 0) {
-                contains = "Folder contains: " + item.countAll() + (item.countAll() > 1 ? " Items" : " Item");
+                if(item.type() == DIR && item.countAll() != 0) {
+                    contains = "Folder contains: " + item.countAll() + (item.countAll() > 1 ? " Items" : " Item");
+                }
+
+
+                xquestion("Deleting " + item.getName() + " " + tp,
+                "Are you sure to delete 1 "+tp+"? <br/> " + contains,
+                'wins['+this.id_win+'].execDel("'+item.getName()+'")',
+                "");
             }
             
-            
-            xquestion("Deleting " + item.getName() + " " + tp,
-            "Are you sure to delete 1 "+tp+"? <br/> " + contains,
-            'wins['+this.id_win+'].execDel("'+item.getName()+'")',
-            "");
         }
     }
 

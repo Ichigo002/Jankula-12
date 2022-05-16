@@ -37,6 +37,7 @@ class Window {
         //Topbar Context Menu
         let menu = new MenuTemplate(name);
         menu.pushNewOption("Close", 'wins['+this.id_win+'].action_close()');
+        menu.pushNewOption("Duplicate", 'wins['+this.id_win+'].duplicate();');
         menu.pushNewOption("Maximize", 'wins['+this.id_win+'].action_max();');
         menu.pushNewOption("Minimize", 'wins['+this.id_win+'].action_min();');
 
@@ -52,7 +53,7 @@ class Window {
             '<i class="icon-maximize icon-all" onclick="wins[' + this.id_win + '].action_max()"></i>' +
             '<i class="icon-minimize icon-all" onclick="wins[' + this.id_win + '].action_min()"></i>' +
             '<div style="clear: both;"></div>' +
-            '</span> </div> <div class="win-content"></div>'+
+            '</span> </div> <div class="win-toolbar"></div><div class="win-content"></div>'+
             '<div class="win-resize-point"></div></div>';
         
         $('#desktop').append(gui);
@@ -222,19 +223,21 @@ class Window {
 
     // Duplicate this window. Method can be overwritten
     duplicate() {
-        let id = NewWindow(this.#name,
+        wins.push(new Window(
+            iter,
+            this.#name,
             $('#win-' + this.id_win).css('width'),
             $('#win-' + this.id_win).css('height'),
-            $('#win-' + this.id_win).css('left'),
-            $('#win-' + this.id_win).css('top'),
             $('#win-' + this.id_win + " > .win-top > i").attr('class'),
-            $('#win-' + this.id_win + " > .win-top > i").attr('style'));
+            $('#win-' + this.id_win + " > .win-top > i").attr('style')));
 
-        wins[id].setContent(this.getContent());
-        wins[id].setPosition(
+        wins[iter].setContent(this.getContent());
+        wins[iter].setPosition(
             parseInt($("#win-" + this.id_win).css("left")) + 40, 
             parseInt($("#win-" + this.id_win).css("top")) + 40);
-        return id;
+
+        iter++;
+        return iter-1;
     }
 
     // Set content of window
@@ -346,4 +349,47 @@ class Window {
         $('#win-' + this.id_win).css('left', this.#def_left);
         $('#win-' + this.id_win).css('top', this.#def_top);
     } 
+
+    // Set top Bar with tools to window. If not used, This doesn't show up
+    setToolBar(menu_template) {
+        if(menu_template != undefined) {
+            let html = "";
+            menu_template.menu.forEach(e => {
+                html += this.ProcessItemToHTML(e);
+            });
+
+            $(`#win-${this.id_win} > .win-toolbar`).html(html);
+            $(`#win-${this.id_win} > .win-toolbar`).addClass("win-toolbar-used");
+        }
+    }
+
+    ProcessItemToHTML(element) {
+        let html = "";
+        switch(element.type) {
+            case DISABLED:
+            case STANDARD:
+                html += '<div class="win-tb-option" onclick="' + element.action + '">'+element.content +'</div>';
+            break;
+            case SEPARATOR:
+                html += '<div class="win-tb-sep" onclick="' + element.action + '">'+element.content+'</div>';
+            break;
+            case SPLITTER: 
+                let opts = "";
+
+                element.submenu.menu.forEach(sbm => {
+                    opts += this.ProcessItemToHTML(sbm);
+                });
+
+                let posX = $('#cxtm').css('width');
+                let posY = $('#cxtm').css('height');
+
+                html += '<div class="win-tb-option win-tb-splitter">' + element.content + '<span style="float: right; margin-right: 10px;">></span><div class="menu menu-splitted" style="left: '+posX+'; top: '+posY+';">' + opts + '</div></div>';
+            break;
+            default: 
+                console.error("Type Option '" + element.type + "' is not available.");
+            break;
+        }
+
+        return html;
+    }
 }
