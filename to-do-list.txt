@@ -11,3 +11,7 @@ TO DO:
 * complete option: pin to taskbar
 * complete warning for smartphones
 * complete explore
+
+* duplicate content window fix
+* absolute value css to toolbar in notepad
+* "Duplicate Window" in the explorer fix!
