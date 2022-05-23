@@ -13,6 +13,7 @@ class Window {
     #maximized;
     #static;
     #toolbar_menu;
+    #split_id_toolbar;
 
     constructor(win_iterator, name, width, height, icon, style_icon) {
         
@@ -35,6 +36,7 @@ class Window {
         this.#maximized = false;
         this.#static = false;
         this.#toolbar_menu = undefined;
+        this.#split_id_toolbar = 0;
 
         //Topbar Context Menu
         let menu = new MenuTemplate(name);
@@ -409,10 +411,13 @@ class Window {
                     opts += this.processItemToHTML(sbm);
                 });
 
-                let _left = 73;
-                let _top = 50;
-
-                html += '<div class="win-tb-option win-tb-first">' + element.content + '<span style="float: right; margin-right: 10px; margin-left: 10px;">></span><div class="win-tb-splitted" style=" left: '+_left+'px; top:'+_top+'px;">' + opts + '</div></div>';
+                html += '<div class="win-tb-option win-tb-first" id="win-tb-before-'+this.#split_id_toolbar+'">' + element.content + 
+                '<span style="float: right; margin-right: 10px; margin-left: 10px;">></span>'+
+                '<div class="win-tb-splitted" id="win-tb-'+this.#split_id_toolbar+'">' + opts + '</div>'+
+                '<script>$("#win-tb-'+this.#split_id_toolbar+'").css("left", parseInt($("#win-tb-'+this.#split_id_toolbar+'").css("left")));'+
+                '$("#win-tb-'+this.#split_id_toolbar+'").css("top", 0);</script></div>';
+                //TO DO DODAOS OFGDRSG DRESHRHJTAE
+                this.#split_id_toolbar++;
             break;
             default: 
                 console.error("Type Option '" + element.type + "' is not available.");

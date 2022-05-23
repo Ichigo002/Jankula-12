@@ -12,6 +12,5 @@ TO DO:
 * complete warning for smartphones
 * complete explore
 
-* duplicate content window fix
-* absolute value css to toolbar in notepad
-* fix adding dates to files (0 month error)
+* make toolbar
+* fix adding dates to files (0 month error) (dd.getDay() system)

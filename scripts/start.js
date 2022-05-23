@@ -37,8 +37,8 @@ function Start() {
     ss.pushNewOption("best");
     ss.pushNewSeparator();
     ss.pushNewOption("gffdag");
-    ss.pushNewOption("gffdag");
-    ss.pushNewOption("gffdag");
+    ss.pushNewOption("gffhdrhdag");
+    ss.pushNewOption("hhhhh");
     ss.pushNewOption("gffdag");
 
     st1.pushNewOption("sfagashg");
@@ -48,7 +48,7 @@ function Start() {
     st.pushNewOption("www");
     st.pushNewOption("wf");
     st.pushNewOption("wwd");
-    st.pushNewSplitOption("tsetst", ss);
+    st.pushNewSplitOption("pod menu menusu", ss);
 
     t.pushNewSplitOption("haha", st);
     t.pushNewSplitOption("hyhy", st1)
