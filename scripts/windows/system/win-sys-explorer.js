@@ -22,7 +22,7 @@ class Win_Explorer extends Window {
         menu.pushNewOption("Go Into", "wins["+this.id_win+"].goIntoByDef()");
         menu.pushNewOption("Go Previous", "wins["+this.id_win+"].goOut()");
         menu.pushNewSeparator();
-        menu.pushNewOption("Duplicate Window", "wins["+this.id_win+"].Duplicate()");
+        menu.pushNewOption("Duplicate Window", "wins["+this.id_win+"].duplicate()");
         menu.pushNewSeparator();
         menu.pushNewSplitOption("New", newop);
         

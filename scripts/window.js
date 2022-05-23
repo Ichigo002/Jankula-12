@@ -12,6 +12,7 @@ class Window {
     #name;
     #maximized;
     #static;
+    #toolbar_menu;
 
     constructor(win_iterator, name, width, height, icon, style_icon) {
         
@@ -33,6 +34,7 @@ class Window {
         this.id_win = win_iterator;
         this.#maximized = false;
         this.#static = false;
+        this.#toolbar_menu = undefined;
 
         //Topbar Context Menu
         let menu = new MenuTemplate(name);
@@ -233,8 +235,10 @@ class Window {
 
         wins[iter].setContent(this.getContent());
         wins[iter].setPosition(
-            parseInt($("#win-" + this.id_win).css("left")) + 40, 
+            parseInt($("#win-" + this.id_win).css("left")) + 40,
             parseInt($("#win-" + this.id_win).css("top")) + 40);
+        
+        wins[iter].setToolBar(this.getToolBar());
 
         iter++;
         return iter-1;
@@ -350,9 +354,21 @@ class Window {
         $('#win-' + this.id_win).css('top', this.#def_top);
     } 
 
+    // Check is toolbar used in the window
+    isToolBarUsed() {
+        return this.#toolbar_menu != undefined;
+    }
+
+    // Get toolbar of window
+    getToolBar() {
+        return this.#toolbar_menu;
+    }
+
     // Set top Bar with tools to window. If not used, This doesn't show up
     setToolBar(menu_template) {
         if(menu_template != undefined) {
+            this.#toolbar_menu = menu_template;
+
             let html = "";
 
             menu_template.menu.forEach(e => {
@@ -363,10 +379,7 @@ class Window {
                         opts += this.processItemToHTML(sbm);
                     });
     
-                    let posX = $('#cxtm').css('width');
-                    let posY = $('#cxtm').css('height');
-    
-                    html += '<div class="win-tb-first">' + e.content + '<div class="win-tb-splitted" style="left: '+posX+'; top: '+posY+';">' + opts + '</div></div>';
+                    html += '<div class="win-tb-first">' + e.content + '<div class="win-tb-splitted" ">' + opts + '</div></div>';
     
                 } else {
                     console.warn("First template menu should contains only splitter to correctly work");
@@ -377,7 +390,6 @@ class Window {
             $(`#win-${this.id_win} > .win-toolbar`).addClass("win-toolbar-used");
         }
     }
-
 
 
     processItemToHTML(element) {
@@ -397,7 +409,10 @@ class Window {
                     opts += this.processItemToHTML(sbm);
                 });
 
-                html += '<div class="win-tb-option win-tb-first">' + element.content + '<span style="float: right; margin-right: 10px; margin-left: 10px;">></span><div class="win-tb-splitted" style="">' + opts + '</div></div>';
+                let _left = 73;
+                let _top = 50;
+
+                html += '<div class="win-tb-option win-tb-first">' + element.content + '<span style="float: right; margin-right: 10px; margin-left: 10px;">></span><div class="win-tb-splitted" style=" left: '+_left+'px; top:'+_top+'px;">' + opts + '</div></div>';
             break;
             default: 
                 console.error("Type Option '" + element.type + "' is not available.");

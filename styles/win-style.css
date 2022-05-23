@@ -93,6 +93,9 @@
 
 .win-tb-first:hover > .win-tb-splitted {
     display: block;
+    position: absolute;
+    background-color: #dddddd;
+    border-radius: 5px;
 }
 
 .win-tb-splitted {
@@ -101,11 +104,15 @@
 
 .win-tb-option {
     cursor: pointer;
-    padding: 5px;
+    padding: 1px 5px 1px 5px;
+    border-bottom: 1px solid #a9a9a9;
 }
 
 .win-tb-option:hover {
     background-color: #adadad;
+    border: 1px dashed #222;
+    padding: 0 4px 1px 4px;
+    border-radius: 5px;
 }
 
 .win-tb-sep {

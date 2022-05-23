@@ -14,5 +14,4 @@ TO DO:
 
 * duplicate content window fix
 * absolute value css to toolbar in notepad
-* "Duplicate Window" in the explorer fix!
 * fix adding dates to files (0 month error)
