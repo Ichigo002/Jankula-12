@@ -1,16 +1,22 @@
-TO DO:
-* *****make left navgiate bar in the explorer*******
-* make extensions
-* make notepad app
+-->MAKE:
+* make left navgiate bar in the explorer
 * make options in the items cut, copy, paste
 * make copy cut and paste class to do
-* customize checkboxes [CSS]
-* saving files by cookies
-* add cutting text if too long to '...'
 * make better minimizing from max to min window
+* make saving files by cookies
+* make explorer window to open files & saving files
+
+-->COMPLETE:
 * complete option: pin to taskbar
 * complete warning for smartphones
-* complete explore
+* complete explorer
+* complete notepad
 
-* make toolbar
-* fix adding dates to files (0 month error) (dd.getDay() system)
+-->FIX:
+* fix toolbar and duplicate
+* fix removing toolbar cxtms
+* fix adding dates to files (dd.getDay() system)
+
+-->ADD:
+* add checkbox to toolbar, so cxtm too
+* add cutting text if too long to '...'
