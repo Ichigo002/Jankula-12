@@ -125,7 +125,7 @@ input {
     .menu-option-disabled:hover {
         background-color: #d6d6d6;
         color: #959595;
-        cursor:default
+        cursor: default;
     }
 
 .menu-sep {

@@ -54,19 +54,56 @@ class ContextMenu {
         this.list_menus = _new;
     }
 
+    // call & display menu at the position
+    callMenu(id, posX, posY) {
+        if(id != undefined) {
+            this.curr = id;
+            this.refreshMenu();
+            $('#cxtm').css('display', 'block');
+
+            this.setActiveCorner("left-top");
+            $('#cxtm').css('left', posX + 3);
+            $('#cxtm').css('top', posY + 3);
+
+            let both = 0;
+
+            //Right border
+            if(posX + $('#cxtm').outerWidth() > parseInt($("body").css("width"))) {
+                this.setActiveCorner("right-top");
+                $('#cxtm').css('left', posX - $('#cxtm').outerWidth() - 3);
+                both++;
+            }
+            
+            //Bottom border
+            if(posY + $('#cxtm').outerHeight() > parseInt($("body").css("height")) - 245) {
+                this.setActiveCorner("left-bottom");
+                $('#cxtm').css('top', posY - $('#cxtm').outerHeight() - 3);
+                both++;
+            }
+
+            if(both == 2) {
+                this.setActiveCorner("right-bottom");
+            }
+            
+        }
+        else {
+            $('#cxtm').css('display', 'none'); 
+        }
+    }
+
     // Refresh menu
-    RefreshMenu() {
+    refreshMenu() {
         if(this.list_menus[this.curr] == null) {
             return null;
         }
 
         $('#cxtm').empty();
         this.list_menus[this.curr].menu.forEach(w => {
-            $('#cxtm').append(this.ProcessItemToHTML(w));
+            $('#cxtm').append(this.processItemToHTML(w));
         });
     }
 
-    ProcessItemToHTML(element) {
+    processItemToHTML(element) {
         let html = "";
         switch(element.type) {
             case STANDARD:
@@ -82,7 +119,7 @@ class ContextMenu {
                 let opts = "";
 
                 element.submenu.menu.forEach(sbm => {
-                    opts += this.ProcessItemToHTML(sbm);
+                    opts += this.processItemToHTML(sbm);
                 });
 
                 let posX = $('#cxtm').css('width');
@@ -107,41 +144,9 @@ class ContextMenu {
 
         $("body").on("mouseup", function(e) {
             if(e.which == 3) {
-                cxtm.curr = $(e.target).attr("menuv");
+                cxtm.callMenu($(e.target).attr("menuv"), e.pageX, e.pageY);
 
-                //displaying
-                if(cxtm.curr != undefined) {
-                    cxtm.RefreshMenu();
-                    $('#cxtm').css('display', 'block');
-
-                    cxtm.SetActiveCorner("left-top");
-                    $('#cxtm').css('left', e.pageX + 3);
-                    $('#cxtm').css('top', e.pageY + 3);
-
-                    let both = 0;
-
-                    //Right border
-                    if(e.pageX + $('#cxtm').outerWidth() > parseInt($("body").css("width"))) {
-                        cxtm.SetActiveCorner("right-top");
-                        $('#cxtm').css('left', e.pageX - $('#cxtm').outerWidth() - 3);
-                        both++;
-                    }
-                    
-                    //Bottom border
-                    if(e.pageY + $('#cxtm').outerHeight() > parseInt($("body").css("height")) - 245) {
-                        cxtm.SetActiveCorner("left-bottom");
-                        $('#cxtm').css('top', e.pageY - $('#cxtm').outerHeight() - 3);
-                        both++;
-                    }
-
-                    if(both == 2) {
-                        cxtm.SetActiveCorner("right-bottom");
-                    }
-                    
-                }
-                else {
-                    $('#cxtm').css('display', 'none'); 
-                }
+                
             } else {
                 if(!clicked) {
                     $('#cxtm').css('display', 'none'); 
@@ -158,7 +163,7 @@ class ContextMenu {
 
     }
 
-    SetActiveCorner(corner, r) {
+    setActiveCorner(corner, r) {
         if(r == undefined) {
             r = "8px";
         } else {
@@ -185,7 +190,6 @@ class MenuTemplate {
     constructor(temp_name) {
         this.menu = [];
         this.name = temp_name;
-
     }
 
     pushNewOption(title, action, disabled) {

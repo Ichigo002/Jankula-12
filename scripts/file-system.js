@@ -437,7 +437,6 @@ class BinderObject {
     }
 }
 class Folder extends BinderObject {
-
     // VALUE: name => name of new folder
     constructor(name) {
         super(name); // calls constructor of BinderObject

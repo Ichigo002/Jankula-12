@@ -377,12 +377,12 @@ class Window {
                 if(e.type == SPLITTER) {
                     let opts = "";
 
-                    e.submenu.menu.forEach(sbm => {
-                        opts += this.processItemToHTML(sbm);
-                    });
+                    let idm = cxtm.addMenu(e.submenu);
     
-                    html += '<div class="win-tb-first">' + e.content + '<div class="win-tb-splitted" ">' + opts + '</div></div>';
-    
+                    html += `<div class="win-tb-first" id="tb-${this.#split_id_toolbar}" onmouseover="cxtm.callMenu(${idm}, parseInt($('#tb-${this.#split_id_toolbar}').offset().left), parseInt($('#tb-${this.#split_id_toolbar}').offset().top) + parseInt($('#tb-${this.#split_id_toolbar}').height()))" >` + e.content + '</div>';
+                    
+                    this.#split_id_toolbar++;
+
                 } else {
                     console.warn("First template menu should contains only splitter to correctly work");
                 }
@@ -391,39 +391,5 @@ class Window {
             $(`#win-${this.id_win} > .win-toolbar`).html(html);
             $(`#win-${this.id_win} > .win-toolbar`).addClass("win-toolbar-used");
         }
-    }
-
-
-    processItemToHTML(element) {
-        let html = "";
-        switch(element.type) {
-            case DISABLED:
-            case STANDARD:
-                html += '<div class="win-tb-option" onclick="' + element.action + '">'+element.content +'</div>';
-            break;
-            case SEPARATOR:
-                html += '<div class="win-tb-sep" onclick="' + element.action + '">'+element.content+'</div>';
-            break;
-            case SPLITTER: 
-                let opts = "";
-
-                element.submenu.menu.forEach(sbm => {
-                    opts += this.processItemToHTML(sbm);
-                });
-
-                html += '<div class="win-tb-option win-tb-first" id="win-tb-before-'+this.#split_id_toolbar+'">' + element.content + 
-                '<span style="float: right; margin-right: 10px; margin-left: 10px;">></span>'+
-                '<div class="win-tb-splitted" id="win-tb-'+this.#split_id_toolbar+'">' + opts + '</div>'+
-                '<script>$("#win-tb-'+this.#split_id_toolbar+'").css("left", parseInt($("#win-tb-'+this.#split_id_toolbar+'").css("left")));'+
-                '$("#win-tb-'+this.#split_id_toolbar+'").css("top", 0);</script></div>';
-                //TO DO DODAOS OFGDRSG DRESHRHJTAE
-                this.#split_id_toolbar++;
-            break;
-            default: 
-                console.error("Type Option '" + element.type + "' is not available.");
-            break;
-        }
-
-        return html;
     }
 }

@@ -27,37 +27,9 @@ function Start() {
     //stapp("demo-help");
     stapp("explorer");
     //stapp("src");
-    
-    //xerror("lorem ipsum", "lorem ipsum del qutiero monror rof EROOR fjos rar !");
-    let t = new MenuTemplate("TEST");
-    let st = new MenuTemplate("sub TEST");
-    let st1 = new MenuTemplate("sub rr");
-    let ss = new MenuTemplate("gg");
-
-    ss.pushNewOption("best");
-    ss.pushNewSeparator();
-    ss.pushNewOption("gffdag");
-    ss.pushNewOption("gffhdrhdag");
-    ss.pushNewOption("hhhhh");
-    ss.pushNewOption("gffdag");
-
-    st1.pushNewOption("sfagashg");
-    st1.pushNewSeparator();
-    st1.pushNewOption('ffff');
-
-    st.pushNewOption("www");
-    st.pushNewOption("wf");
-    st.pushNewOption("wwd");
-    st.pushNewSplitOption("pod menu menusu", ss);
-
-    t.pushNewSplitOption("haha", st);
-    t.pushNewSplitOption("hyhy", st1)
-
-
 
     wins.push(new Win_Notebook(iter));
     wins[iter].setPosition(400, 400);
-    wins[iter].setToolBar(t);
     iter++;
 
     //stapp("design-studio");
