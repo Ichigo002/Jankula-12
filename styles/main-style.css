@@ -36,19 +36,14 @@
     }
 }
 
+/*Overwriting default tags*/
+
 body {
     background-color: #000000;
     padding: 0;
     margin: 0;
     overflow-x: hidden;
     overflow-y: hidden;
-}
-
-#desktop {
-    background-color: #62bb4b;
-    width: 100vw;
-    height: calc(100vh - 70px);
-                /*hegiht of task-bar*/
 }
 
 button {
@@ -77,6 +72,15 @@ input {
 
 
 }
+
+#desktop {
+    background-color: #62bb4b;
+    width: 100vw;
+    height: calc(100vh - 70px);
+                /*hegiht of task-bar*/
+}
+
+/*Context Menu after click right button mouse*/
 
 .menu {
     background-color: #d6d6d6;
@@ -150,3 +154,4 @@ input {
     
     display: block !important;
 }
+

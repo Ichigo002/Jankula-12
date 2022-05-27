@@ -13,9 +13,7 @@
 * complete notepad
 
 -->FIX:
-* fix toolbar and duplicate
-* fix removing toolbar cxtms
-* fix adding dates to files (dd.getDay() system)
+* 
 
 -->ADD:
 * add checkbox to toolbar, so cxtm too

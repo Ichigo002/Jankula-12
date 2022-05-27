@@ -13,7 +13,7 @@ class Window {
     #maximized;
     #static;
     #toolbar_menu;
-    #split_id_toolbar;
+    #toolbar_menulist_id;
 
     constructor(win_iterator, name, width, height, icon, style_icon) {
         
@@ -36,7 +36,7 @@ class Window {
         this.#maximized = false;
         this.#static = false;
         this.#toolbar_menu = undefined;
-        this.#split_id_toolbar = 0;
+        this.#toolbar_menulist_id = [];
 
         //Topbar Context Menu
         let menu = new MenuTemplate(name);
@@ -333,6 +333,9 @@ class Window {
     action_close() {
         this.onCloseEvent();
         this.task_item.removeItem();
+        this.#toolbar_menulist_id.forEach(item_id => {
+            cxtm.removeMenu(item_id);
+        });
         cxtm.removeMenu($('#win-' + this.id_win).attr("menuv"));
         $("div").remove('#win-' + this.id_win);
         wins[this.id_win] = null;
@@ -378,10 +381,11 @@ class Window {
                     let opts = "";
 
                     let idm = cxtm.addMenu(e.submenu);
+                    this.#toolbar_menulist_id.push(idm);
     
-                    html += `<div class="win-tb-first" id="tb-${this.#split_id_toolbar}" onmouseover="cxtm.callMenu(${idm}, parseInt($('#tb-${this.#split_id_toolbar}').offset().left), parseInt($('#tb-${this.#split_id_toolbar}').offset().top) + parseInt($('#tb-${this.#split_id_toolbar}').height()))" >` + e.content + '</div>';
+                    html += `<div class="win-tb-first" id="tb-${split_id_toolbar}" onmouseover="cxtm.callMenu(${idm}, parseInt($('#tb-${split_id_toolbar}').offset().left), parseInt($('#tb-${split_id_toolbar}').offset().top) + parseInt($('#tb-${split_id_toolbar}').height()))" >` + e.content + '</div>';
                     
-                    this.#split_id_toolbar++;
+                    split_id_toolbar++;
 
                 } else {
                     console.warn("First template menu should contains only splitter to correctly work");

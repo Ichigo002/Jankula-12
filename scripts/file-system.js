@@ -316,7 +316,7 @@ class BinderObject {
     constructor(name) {
         let dd = new Date();
 
-        this.#date_created = dd.getMonth() + "/" + dd.getDay() + "/" + dd.getFullYear();
+        this.#date_created = (dd.getMonth()+1) + "/" + dd.getDate() + "/" + dd.getFullYear();
         this.#time_created = ((dd.getHours() < 10)? "0":"") + dd.getHours() + ":" + ((dd.getMinutes() < 10)? "0":"") + dd.getMinutes();
 
         this.#date_modified = this.#date_created;

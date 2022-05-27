@@ -7,10 +7,13 @@ var cxtm; // context menu
 // windows
 var wins = [];
 var iter = 0;
+var split_id_toolbar = 0;
 // Z-index
 var min_z = 10;
 var max_z = 200;
 var z_index = min_z;
+//App specific variables:
+
 
 function Start() {
     //Disable default context menu of browser
