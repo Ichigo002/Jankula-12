@@ -365,7 +365,13 @@ class Win_Explorer extends Window {
             let menu_id = cxtm.addMenu(this.CreateMenu(list[i]));
             this.#_item_cxt_menus_.push(menu_id);
 
-            let type = (list[i].type() == DIR)? "Folder": (list[i].ext() == "")? list[i].type() : list[i].ext();
+            let _t = (list[i].type() == DIR)? "folder": (list[i].ext() == "")? list[i].type() : list[i].ext();
+            let type = "";
+
+            for (let i = 0; i < _t.length; i++) {
+                if(i == 0) type += _t[0].toUpperCase();
+                else type += _t[i];
+            }
 
             cnt += '<div class="exp-item" id="exp-item-' + i + '-' + this.id_win+ '" onclick="wins['+this.id_win+'].SelectItem('+i+')" oncontextmenu="wins['+this.id_win+'].SelectItem('+i+')" menuv="' + menu_id + '">' +
             '<div class="exp-item-name" menuv="' + menu_id + '">' + list[i].getName() + '</div>' +

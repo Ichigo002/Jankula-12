@@ -32,10 +32,14 @@ class Win_Notebook extends Window {
         size_fontsm.pushNewOption("Reset", null);
         viewm.pushNewSplitOption("Font Size", size_fontsm);
         viewm.pushNewOption("Preferences", null);
-    
+
         let aboutm = new MenuTemplate("Notebook - toolbar - about");
-        aboutm.pushNewOption("Help", null);
-        aboutm.pushNewOption("About App", null);
+
+        let about_action = "xinfo('About... ','Notebook is default system <br/> application created to read & write files.<br> App created by Wiktor B.');";
+        let help_action = "xinfo('Help','This app has not got any help support.<br/> We apologise we cannot help you ;(');"
+
+        aboutm.pushNewOption("Help", help_action);
+        aboutm.pushNewOption("About App", about_action);
 
         tbm.pushNewSplitOption("File", filem);    
         tbm.pushNewSplitOption("Edit", editm);    
@@ -43,5 +47,9 @@ class Win_Notebook extends Window {
         tbm.pushNewSplitOption("About", aboutm);    
 
         this.setToolBar(tbm);
+
+        let cnt = `<textarea class="win-txt-area" rows="10" cols="10"></textarea>`;
+
+        this.setContent(cnt);
     }
 }

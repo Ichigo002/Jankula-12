@@ -1,8 +1,7 @@
 class Win_Properties extends Window {
     constructor(iter) {
         super(iter, "Properties", 400, AUTO_RESIZE, 'icon-settings', 'color: #24ebff;');
-        console.log(iter + " ddd");
-        this.setPosition(400,430);
+        this.setPosition(400, 430);
 
         this.file;
 

@@ -153,14 +153,16 @@ class Window {
         $("#win-"+ id).on("mousemove mouseout", function(e) {
             if(drag)
             {
+                
                 if(wins[id].getStatusMax()) {
-                    wins[id].action_max();
+                    wins[id].action_max(true);
                 }
 
                 $('#win-' + id).css('left', (e.pageX - offsetX) + 'px');
                 $('#win-' + id).css('top', (e.pageY - offsetY) + 'px');
 
-                if(parseInt($('#win-' + id).css("left")) < 0)
+
+                /*if(parseInt($('#win-' + id).css("left")) < 0)
                 { $('#win-' + id).css("left", 1); }
                 if(parseInt($('#win-' + id).css("top")) < 0)
                 { $('#win-' + id).css("top", 1); }
@@ -168,7 +170,7 @@ class Window {
                 { $('#win-' + id).css("left", parseInt($('#win-' + id).css("left")) + parseInt($('#win-' + id).css("right")) - 1); }
                 if(parseInt($('#win-' + id).css("bottom")) < 0)
                 { $('#win-' + id).css("top", parseInt($('#win-' + id).css("top")) + parseInt($('#win-' + id).css("bottom")) - 1); }
-                wins[id].onDragEvent();
+                */wins[id].onDragEvent();
             }
         });
     }
@@ -307,14 +309,12 @@ class Window {
     }
 
     // Maximize and fill all screen by itself
-    action_max() {
+    action_max(smooth_min) {
         if(this.#maximized) {
-            console.log("gggg");
             this.#maximized = false;
-            this.loadDef();
+            this.loadDef(smooth_min);
             this.setPositionResizePoint();
         } else {
-            console.log("2222");
             this.action_unmin();
             this.#maximized = true;
             this.saveDef();
@@ -351,12 +351,15 @@ class Window {
     }
 
     // Load default Settings
-    loadDef() {
+    loadDef(unload_pos) {
         $('#win-' + this.id_win).css('width', this.#def_width);
         $('#win-' + this.id_win).css('height', this.#def_height);
         
-        $('#win-' + this.id_win).css('left', this.#def_left);
-        $('#win-' + this.id_win).css('top', this.#def_top);
+        if(!unload_pos) {
+            $('#win-' + this.id_win).css('left', this.#def_left);
+            $('#win-' + this.id_win).css('top', this.#def_top);
+        }
+        
     } 
 
     // Check is toolbar used in the window

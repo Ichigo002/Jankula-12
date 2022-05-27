@@ -40,13 +40,13 @@ function Start() {
 
 function basicFiles() {
     file_system.root_folder.getByName("Documents").pushBinder(new File("Testero.txt"));
-    file_system.root_folder.getByName("Documents").pushBinder(new File("be_be"));
+    file_system.root_folder.getByName("Documents").pushBinder(new File("be_be.fun"));
     file_system.root_folder.getByName("Documents").pushBinder(new Folder("xampp"));
     file_system.root_folder.getByName("Documents").pushBinder(new Folder("bin"));
     file_system.root_folder.getByName("Documents").pushBinder(new Folder("user"));
-    file_system.root_folder.getByName("Documents").getByName("xampp").pushBinder(new File("htdocs"));
-    file_system.root_folder.getByName("Documents").getByName("bin").pushBinder(new File("Elo"));
-    file_system.root_folder.getByName("Documents").getByName("bin").pushBinder(new File("W.txt"));
+    file_system.root_folder.getByName("Documents").getByName("xampp").pushBinder(new File("htdocs.xml"));
+    file_system.root_folder.getByName("Documents").getByName("bin").pushBinder(new File("Elo.uwu"));
+    file_system.root_folder.getByName("Documents").getByName("bin").pushBinder(new File("Wdxt"));
     file_system.root_folder.getByName("Documents").getByName("bin").pushBinder(new Folder("hot"));
     file_system.root_folder.getByName("Documents").getByName("bin").getByName("hot").pushBinder(new File("Nie dla psa kielbasa"));
        

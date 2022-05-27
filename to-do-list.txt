@@ -2,7 +2,6 @@
 * make left navgiate bar in the explorer
 * make options in the items cut, copy, paste
 * make copy cut and paste class to do
-* make better minimizing from max to min window
 * make saving files by cookies
 * make explorer window to open files & saving files
 
