@@ -164,6 +164,10 @@
     width: 350px;
 }
 
+.exp-dialog-bar > button {
+    margin: 5px;
+}
+
 .exp-dialog-bar > select {
     margin: 10px;
     float: right;

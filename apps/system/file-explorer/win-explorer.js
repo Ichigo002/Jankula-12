@@ -1,28 +1,27 @@
 var NONE = -1;
 
 var WORK_STD = 0,
-    WORK_OPEN_FILE = 1,
-    WORK_SAVE_FILE = 2;
+WORK_OPEN_FILE = 1,
+WORK_SAVE_FILE = 2;
 
+// FDOpener does easy opening diffrent files & directories.
+class FDOpener {
+    // openType: FILE or DIR value
+    // action_return_path: method must be like the pattern: foo(path);
+    // action_cancel: method: foo();
+    constructor(openType, action_return_path, action_cancel) {
+        if(openType == FILE) {
+            wins.push(new Win_Explorer(500, 350, iter, file_system, "Open File"));
+            wins[iter].setPosition(100, 100);
+            iter++;
+        } else if (openType == DIR) {
+            wins.push(new Win_Explorer(500, 350, iter, file_system, "Open Folder"));
+            wins[iter].setPosition(100, 100);
+            iter++;
 
-// Open Explorer in open work
-function startExplorerInMode(mode) {
-    if(mode == undefined) {
-        this.mode = WORK_STD;
-    } else if(mode > -1 && mode < 3) {
-        let name = "File Explorer";
-        if(mode == WORK_OPEN_FILE) {
-            name = "Open File";
+        } else {
+            console.error(`Invalid 'openType' value. Value must be FILE or DIR.`);
         }
-        if(mode == WORK_SAVE_FILE) {
-            name = "Save File";
-        }
-
-        wins.push(new Win_Explorer(500, 350, iter, file_system, mode, name));
-        wins[iter].setPosition(100, 100);
-        iter++;
-    } else {
-        console.error(`Work mode of file explorer is incorrect mode: ${mode}.`);
     }
 }
 
@@ -32,7 +31,7 @@ class Win_Explorer extends Window {
     #cnt_menu;
     work_mode;
 
-    constructor(width, height, iterator, file_system__, work_mode__, name="File Explorer") {
+    constructor(width, height, iterator, file_system__, name="File Explorer") {
         super(iterator, name, width, height, 'icon-folder-open', "color: #f7c96c;");
         this.setMinimalSize(415, 230);
         
@@ -40,13 +39,6 @@ class Win_Explorer extends Window {
         this.#ptr = new DirFollower(file_system__);
         this.items_length = 0;
 
-        if(work_mode__ == undefined) {
-            this.work_mode = WORK_STD;
-        } else if(work_mode__ > -1 && work_mode__ < 3) {
-            this.work_mode = work_mode__;
-        } else {
-            console.error(`Work mode of file explorer is incorrect mode: ${work_mode__}.`);
-        }
 
         //WORK MODE TYPE DELETE BUTTON TO MIN AND MAX
 
@@ -78,7 +70,7 @@ class Win_Explorer extends Window {
             '<div class="exp-content" menuv="' + this.#cnt_menu + '"></div></div>';
             
             if(this.work_mode != WORK_STD) {
-                content += '<div class="exp-dialog-bar"><input type="text"></div>';
+                content += `<div class="exp-dialog-bar"><input type="text"><button>Cancel</button><button onclick="">Ok</button></div>`;
                 //<select><option value="all files">All *.*</option></select>
             }
 
@@ -304,6 +296,19 @@ class Win_Explorer extends Window {
             $('#exp-item-' + this.selected_item + '-' + this.id_win).removeClass("exp-item-ghost-select");
             $('#exp-item-' + this.selected_item + '-' + this.id_win).removeClass("exp-item-selected");
             this.selected_item = index;
+
+            switch (this.work_mode) {
+                case WORK_OPEN_FILE:
+                    if(this.#ptr.getItemByIndex(this.selected_item).type() != DIR)
+                        $(`#win-${this.id_win} > .win-content > .exp-dialog-bar > input`).val(this.#ptr.getItemByIndex(this.selected_item).getName());
+                    break;
+                case WORK_SAVE_FILE:
+
+                    break;
+            
+                default:
+                    break;
+            }
 
             $('#exp-item-' + index + '-' + this.id_win).on("dblclick", function() {
                 wins[id].goInto();

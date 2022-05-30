@@ -28,8 +28,9 @@ function Start() {
     cxtm = new ContextMenu();
 
     //stapp("demo-help");
-    stapp("explorer");
+    //stapp("explorer");
     //stapp("src");
+    new FDOpener(FILE);
 
     wins.push(new Win_Notebook(iter));
     wins[iter].setPosition(700, 400);
