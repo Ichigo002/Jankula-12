@@ -48,7 +48,7 @@ class Win_Notebook extends Window {
 
         this.setToolBar(tbm);
 
-        let cnt = `<textarea class="win-txt-area" rows="10" cols="10"></textarea>`;
+        let cnt = `<textarea class="win-txt-area" style="width: 100px; resize: none;"></textarea>`;
 
         this.setContent(cnt);
     }

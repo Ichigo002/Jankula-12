@@ -6,29 +6,37 @@
         <meta name="description" content="Movable, clickable windows like window on the desktop!"/>
         <meta name="keywords" content="Dekstop windows, window, movable, action"/>
 
-        <link rel="icon" href="img/img/system-icon.png"/>
-
-        <link rel="stylesheet" href="styles/main-style.css" type="text/css"/>
-        <link rel="stylesheet" href="styles/taskbar-style.css" type="text/css"/>
-        <link rel="stylesheet" href="styles/win-style.css" type="text/css"/>
-        <link rel="stylesheet" href="styles/win-system.css" type="text/css"/>
         
-        <link rel="stylesheet" href="img/fontello/css/system-icons.css" type="text/css"/>
-        <script src="scripts/jquery-3.6.0.min.js"></script>
+        <script src="jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="core/icons/fontello/css/system-icons.css"/>
         
-        <script src="scripts/start.js"></script>
-        <script src="scripts/cmd.js"></script>
-        <script src="scripts/message-boxes.js"></script>
-        <script src="scripts/file-system.js"></script>
-        <script src="scripts/window.js"></script>
-        <script src="scripts/taskbar.js"></script>
-        <script src="scripts/context-menu.js"></script>
+        <!--CORE-->
+        <link rel="icon" href="core/icons/system-icon.png"/>
 
-        <script src="scripts/windows/apps/win-notebook.js"></script>
+        <link rel="stylesheet" href="core/styles/main-style.css"/>
+        <link rel="stylesheet" href="core/styles/taskbar-style.css"/>
+        <link rel="stylesheet" href="core/styles/win-style.css"/>
+        <link rel="stylesheet" href="core/styles/win-system.css"/>
 
-        <script src="scripts/windows/system/win-sys-explorer.js"></script>
-        <script src="scripts/windows/system/win-sys-properties.js"></script>
-        <script src="scripts/windows/win-dev/win-dev-design.js"></script>
+        <script src="core/scripts/start.js"></script>
+        <script src="core/scripts/window.js"></script>
+        <script src="core/scripts/file-system.js"></script>
+
+        <script src="core/scripts/taskbar.js"></script>
+        <script src="core/scripts/message-boxes.js"></script>
+        <script src="core/scripts/context-menu.js"></script>
+        <script src="core/scripts/cmd.js"></script>
+
+        <!--APPS-->
+            <link rel="stylesheet" href="apps/system/file-explorer/win-file-explorer.css"/>
+            <script src="apps/system/file-explorer/win-explorer.js"></script>
+
+            <link rel="stylesheet" href="apps/system/file-properties/win-exp-properties.css"/>
+            <script src="apps/system/file-properties/win-exp-properties.js"></script>
+
+            <link rel="stylesheet" href="apps/other/notebook/win-notebook.css"/>
+            <script src="apps/other/notebook/win-notebook.js"></script>
+
     </head>
     <body>
         <div id="block-warning">
@@ -38,7 +46,7 @@
         <div id="handler_event"></div>
         <div id="desktop"></div>
         <div id="task-bar">
-            <div class="task-item-style"><img src="img/img/system-icon.png" style="margin-top: 5px;"/></div>
+            <div class="task-item-style"><img src="core/icons/system-icon.png" style="margin-top: 5px;"/></div>
             <div class="task-item-style"><i class="icon-search"></i></div>
             <div id="task-bar-items"><!--ITEMS--></div>
             <div style="clear: both;"></div>
@@ -47,8 +55,6 @@
 
         <!--Context Menu-->
         <div id="cxtm" class="menu"></div>
-
-
 
         <div id="designer-cnt">
             <div class="nb-top">
