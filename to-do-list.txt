@@ -17,3 +17,4 @@
 -->ADD:
 * add checkbox to toolbar, so cxtm too
 * add cutting text if too long to '...'
+* filter of files by extension during open and save mode of explorer

@@ -1,6 +1,8 @@
 .win-txt-area {
     resize: none;
     text-decoration: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 textarea.win-txt-area:focus-visible {

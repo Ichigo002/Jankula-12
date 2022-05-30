@@ -32,7 +32,7 @@ function Start() {
     //stapp("src");
 
     wins.push(new Win_Notebook(iter));
-    wins[iter].setPosition(400, 400);
+    wins[iter].setPosition(700, 400);
     iter++;
 
     //stapp("design-studio");

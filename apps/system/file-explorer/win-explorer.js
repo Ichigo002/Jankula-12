@@ -1,17 +1,54 @@
 var NONE = -1;
 
+var WORK_STD = 0,
+    WORK_OPEN_FILE = 1,
+    WORK_SAVE_FILE = 2;
+
+
+// Open Explorer in open work
+function startExplorerInMode(mode) {
+    if(mode == undefined) {
+        this.mode = WORK_STD;
+    } else if(mode > -1 && mode < 3) {
+        let name = "File Explorer";
+        if(mode == WORK_OPEN_FILE) {
+            name = "Open File";
+        }
+        if(mode == WORK_SAVE_FILE) {
+            name = "Save File";
+        }
+
+        wins.push(new Win_Explorer(500, 350, iter, file_system, mode, name));
+        wins[iter].setPosition(100, 100);
+        iter++;
+    } else {
+        console.error(`Work mode of file explorer is incorrect mode: ${mode}.`);
+    }
+}
+
 class Win_Explorer extends Window {
     #ptr;
     #_item_cxt_menus_ = [];
     #cnt_menu;
+    work_mode;
 
-    constructor(width, height, iterator, file_system__) {
-        super(iterator, "File Explorer", width, height, 'icon-folder-open', "color: #f7c96c;");
+    constructor(width, height, iterator, file_system__, work_mode__, name="File Explorer") {
+        super(iterator, name, width, height, 'icon-folder-open', "color: #f7c96c;");
         this.setMinimalSize(415, 230);
         
         this.selected_item = 0;
         this.#ptr = new DirFollower(file_system__);
         this.items_length = 0;
+
+        if(work_mode__ == undefined) {
+            this.work_mode = WORK_STD;
+        } else if(work_mode__ > -1 && work_mode__ < 3) {
+            this.work_mode = work_mode__;
+        } else {
+            console.error(`Work mode of file explorer is incorrect mode: ${work_mode__}.`);
+        }
+
+        //WORK MODE TYPE DELETE BUTTON TO MIN AND MAX
 
         let newop = new MenuTemplate("Explorer Splitter Menu [New]");
         newop.pushNewOption("Folder", "wins["+this.id_win+"].mknew(DIR)");
@@ -38,7 +75,13 @@ class Win_Explorer extends Window {
                 '<div class="exp-item-name">Name</div>' +
                 '<div class="exp-item-date">Date Created</div>' +
                 '<div class="exp-item-type">Type</div></div>' +
-            '<div class="exp-content" menuv="' + this.#cnt_menu + '"></div>';
+            '<div class="exp-content" menuv="' + this.#cnt_menu + '"></div></div>';
+            
+            if(this.work_mode != WORK_STD) {
+                content += '<div class="exp-dialog-bar"><input type="text"></div>';
+                //<select><option value="all files">All *.*</option></select>
+            }
+
 
         this.setContent(content);
         this.onResizeEvent();
@@ -111,7 +154,15 @@ class Win_Explorer extends Window {
         super.onResizeEvent();
 
         let h = parseInt($('#win-' + this.id_win).css("height"));
-        $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h - 87);
+        switch (this.work_mode) {
+            case WORK_STD:
+                h -= 87
+                break;
+            case WORK_OPEN_FILE:
+            case WORK_SAVE_FILE:
+                h -= 155
+        }
+        $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h); // height of nav bar
     }
 
     // OVERWRITTEN EVENT

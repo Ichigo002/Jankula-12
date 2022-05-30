@@ -16,7 +16,6 @@
         <link rel="stylesheet" href="core/styles/main-style.css"/>
         <link rel="stylesheet" href="core/styles/taskbar-style.css"/>
         <link rel="stylesheet" href="core/styles/win-style.css"/>
-        <link rel="stylesheet" href="core/styles/win-system.css"/>
 
         <script src="core/scripts/start.js"></script>
         <script src="core/scripts/window.js"></script>
@@ -36,6 +35,8 @@
 
             <link rel="stylesheet" href="apps/other/notebook/win-notebook.css"/>
             <script src="apps/other/notebook/win-notebook.js"></script>
+
+            <script src="apps/dev-apps/win-dev-design.js"></script>
 
     </head>
     <body>
@@ -57,16 +58,18 @@
         <div id="cxtm" class="menu"></div>
 
         <div id="designer-cnt">
-            <div class="nb-top">
-                <div class="nb-option">File
-                    <div class="nb-sub-option">Open</div>
-                    <div class="nb-sub-option">Save</div>
-                    <div class="nb-sub-option">Save as</div>
-                    <div class="nb-sub-option">S</div>
-                </div>
-                <div class="nb-option">Editor</div>
-            </div>
-            <div class="nb-cnt"></div>
+            <div class="exp-top">
+                <div class="exp-top-wrapper-btns">
+                    <i class="icon-up-arrow exp-top-btn"></i>
+                    <i class="icon-down-arrow exp-top-btn"></i></div>
+                <div class="exp-top-path">R:/dfggshgs</div> </div>
+            <div class="exp-wrapper" styl>
+                <div class="exp-nav"></div>
+                <div class="exp-item-barinfo">
+                    <div class="exp-item-name">Name</div>
+                    <div class="exp-item-date">Date Created</div>
+                    <div class="exp-item-type">Type</div></div>
+                <div class="exp-content" menuv="' + this.#cnt_menu + '"></div>
         </div>
 
         
