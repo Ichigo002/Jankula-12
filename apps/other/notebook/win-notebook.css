@@ -1,0 +1,8 @@
+.win-txt-area {
+    resize: none;
+    text-decoration: none;
+}
+
+textarea.win-txt-area:focus-visible {
+    outline: none;
+}

@@ -75,6 +75,7 @@ class Window {
         this.setDraggingEvent();
         this.activeZIndex();
         this.setResizeEvent();
+        this.onResizeEvent();
         
         this.goTop();
     }
@@ -280,7 +281,7 @@ class Window {
 
         let win_sizeX = parseInt($('#win-' + this.id_win).outerWidth());
         let win_sizeY = parseInt($('#win-' + this.id_win).outerHeight());
-        console.log(sizeY/2);
+        
         this.setPosition(sizeX / 2 - win_sizeX / 2, sizeY / 2 - win_sizeY / 2 - 120);
         return this;
     }
