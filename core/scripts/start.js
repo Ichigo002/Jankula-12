@@ -31,6 +31,7 @@ function Start() {
     //stapp("explorer");
     //stapp("src");
     new FDOpener(FILE);
+    new FDOpener(DIR);
 
     wins.push(new Win_Notebook(iter));
     wins[iter].setPosition(700, 400);

@@ -159,12 +159,12 @@
 }
 
 .exp-dialog-bar > input {
-    margin: 10px;
+    margin: 20px 10px 27px 0;
     float: right;
-    width: 350px;
+    width: 300px;
 }
 
-.exp-dialog-bar > button {
+.exp-dialog-bar > .exp-wrapper-btns > button {
     margin: 5px;
 }
 
@@ -172,4 +172,10 @@
     margin: 10px;
     float: right;
     font-size: 17px;
+}
+
+.exp-wrapper-btns {
+    float: right;
+    margin-top: 17px;
+    margin-right: 4px;
 }

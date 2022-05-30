@@ -12,9 +12,12 @@
 * complete notepad
 
 -->FIX:
-* 
+* arrows up & down do not run in the FDOpener, why?
+* hide cxtm when mouse move out from toolbar
+* show cxtm only when toolbar is clicked
 
 -->ADD:
 * add checkbox to toolbar, so cxtm too
 * add cutting text if too long to '...'
 * filter of files by extension during open and save mode of explorer
+* auto destroying of FDOpener when user make choice

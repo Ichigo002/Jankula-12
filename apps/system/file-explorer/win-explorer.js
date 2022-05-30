@@ -7,21 +7,48 @@ WORK_SAVE_FILE = 2;
 // FDOpener does easy opening diffrent files & directories.
 class FDOpener {
     // openType: FILE or DIR value
-    // action_return_path: method must be like the pattern: foo(path);
+    // action_return_path: method must be like the pattern string: foo(  || without ')'
     // action_cancel: method: foo();
     constructor(openType, action_return_path, action_cancel) {
         if(openType == FILE) {
             wins.push(new Win_Explorer(500, 350, iter, file_system, "Open File"));
             wins[iter].setPosition(100, 100);
+
+            wins[iter].onSelectItemEvent = function(index) {
+                if(this.getPtr().getItemByIndex(this.selected_item).type() == FILE)
+                    $(`#win-${this.id_win} > .win-content > .exp-dialog-bar > input`).val(this.getPtr().getItemByIndex(this.selected_item).getName());
+            }
+
             iter++;
         } else if (openType == DIR) {
             wins.push(new Win_Explorer(500, 350, iter, file_system, "Open Folder"));
             wins[iter].setPosition(100, 100);
-            iter++;
 
+            wins[iter].onSelectItemEvent = function(index) {
+                if(this.getPtr().getItemByIndex(this.selected_item).type() == DIR)
+                    $(`#win-${this.id_win} > .win-content > .exp-dialog-bar > input`).val(this.getPtr().getItemByIndex(this.selected_item).getName());
+            }
+
+            iter++;
         } else {
             console.error(`Invalid 'openType' value. Value must be FILE or DIR.`);
+            return false;
         }
+
+        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="${action_cancel}">Cancel</button><button onclick="${action_return_path})">Ok</button></div><input type="text"></div>`;
+            //<select><option value="all files">All *.*</option></select>
+
+        wins[iter-1].setContent(wins[iter-1].getContent() + content);
+        wins[iter-1].onResizeEvent = function() {
+            let h = parseInt($('#win-' + this.id_win).css("height"));
+            $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h - 155);
+        }
+        wins[iter-1].onResizeEvent();
+
+        $("#win-" + (iter-1) + " > .win-top > span > i.icon-maximize").remove();
+        $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
+
+        return true;
     }
 }
 
@@ -68,12 +95,6 @@ class Win_Explorer extends Window {
                 '<div class="exp-item-date">Date Created</div>' +
                 '<div class="exp-item-type">Type</div></div>' +
             '<div class="exp-content" menuv="' + this.#cnt_menu + '"></div></div>';
-            
-            if(this.work_mode != WORK_STD) {
-                content += `<div class="exp-dialog-bar"><input type="text"><button>Cancel</button><button onclick="">Ok</button></div>`;
-                //<select><option value="all files">All *.*</option></select>
-            }
-
 
         this.setContent(content);
         this.onResizeEvent();
@@ -96,6 +117,12 @@ class Win_Explorer extends Window {
         }
     }
 
+    onSelectItemEvent(index) { ; }
+
+    getPtr() {
+        return this.#ptr;
+    }
+
     // ADD EVENT: Called when arrowed to follow path clicked
     setClickArrowsEvents() {
         let id = this.id_win;
@@ -103,6 +130,7 @@ class Win_Explorer extends Window {
         // Up arrow
         $('#win-' + id + " > .win-content > .exp-top > .exp-top-wrapper-btns > .icon-up-arrow").on('click', function() {
            wins[id].goOut();
+           
         });
         // Down arrow
         $('#win-' + id + " > .win-content > .exp-top > .exp-top-wrapper-btns > .icon-down-arrow").on('click', function() {
@@ -124,7 +152,7 @@ class Win_Explorer extends Window {
                 }
                 if(e.which == 38) { //up arrow
                     if(wins[id].selected_item > 0) {
-                        wins[id].selectItem(wins[id].selected_item - 1);
+                        wins[id].SelectItem(wins[id].selected_item - 1);
                     }
                 }
                 if(e.which == 40) { //down arrow
@@ -146,15 +174,7 @@ class Win_Explorer extends Window {
         super.onResizeEvent();
 
         let h = parseInt($('#win-' + this.id_win).css("height"));
-        switch (this.work_mode) {
-            case WORK_STD:
-                h -= 87
-                break;
-            case WORK_OPEN_FILE:
-            case WORK_SAVE_FILE:
-                h -= 155
-        }
-        $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h); // height of nav bar
+        $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h -= 87); // height of nav bar
     }
 
     // OVERWRITTEN EVENT
@@ -296,19 +316,7 @@ class Win_Explorer extends Window {
             $('#exp-item-' + this.selected_item + '-' + this.id_win).removeClass("exp-item-ghost-select");
             $('#exp-item-' + this.selected_item + '-' + this.id_win).removeClass("exp-item-selected");
             this.selected_item = index;
-
-            switch (this.work_mode) {
-                case WORK_OPEN_FILE:
-                    if(this.#ptr.getItemByIndex(this.selected_item).type() != DIR)
-                        $(`#win-${this.id_win} > .win-content > .exp-dialog-bar > input`).val(this.#ptr.getItemByIndex(this.selected_item).getName());
-                    break;
-                case WORK_SAVE_FILE:
-
-                    break;
-            
-                default:
-                    break;
-            }
+            this.onSelectItemEvent(index);
 
             $('#exp-item-' + index + '-' + this.id_win).on("dblclick", function() {
                 wins[id].goInto();
