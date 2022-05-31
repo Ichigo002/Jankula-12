@@ -10,6 +10,7 @@ class FDOpener {
     // action_return_path: method must be like the pattern string: foo(  || without ')'
     // action_cancel: method: foo();
     constructor(openType, action_return_path, action_cancel) {
+
         if(openType == FILE) {
             wins.push(new Win_Explorer(500, 350, iter, file_system, "Open File"));
             wins[iter].setPosition(100, 100);
@@ -35,7 +36,7 @@ class FDOpener {
             return false;
         }
 
-        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="${action_cancel}">Cancel</button><button onclick="${action_return_path})">Ok</button></div><input type="text"></div>`;
+        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="${action_cancel}">Cancel</button><button onclick="FDOpener.execAcceptAction('`+action_return_path+`', ${iter - 1}, '${openType}')">Ok</button></div><input type="text"></div>`;
             //<select><option value="all files">All *.*</option></select>
 
         wins[iter-1].setContent(wins[iter-1].getContent() + content);
@@ -49,6 +50,15 @@ class FDOpener {
         $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
 
         return true;
+    }
+
+    static execAcceptAction(action_rtn_p, curr_iter, type) {
+        if(type == DIR) {
+            eval(`${action_rtn_p} '${wins[curr_iter].getPtr().getPath()}')`);
+        } else {
+            eval(`${action_rtn_p} '${wins[curr_iter].getPtr().getBinders().at(wins[curr_iter].getSelectedItemIndex()).getName()}')`);
+        }
+        
     }
 }
 
@@ -121,6 +131,10 @@ class Win_Explorer extends Window {
 
     getPtr() {
         return this.#ptr;
+    }
+
+    getSelectedItemIndex() {
+        return this.selected_item;
     }
 
     // ADD EVENT: Called when arrowed to follow path clicked

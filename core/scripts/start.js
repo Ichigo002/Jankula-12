@@ -30,8 +30,8 @@ function Start() {
     //stapp("demo-help");
     //stapp("explorer");
     //stapp("src");
-    new FDOpener(FILE);
-    new FDOpener(DIR);
+    new FDOpener(FILE, `console.log(`, "console.log('looser')");
+    new FDOpener(DIR, `console.log(`, "console.log('looser')");
 
     wins.push(new Win_Notebook(iter));
     wins[iter].setPosition(700, 400);
