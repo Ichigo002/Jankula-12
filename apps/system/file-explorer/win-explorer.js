@@ -58,12 +58,14 @@ class FDOpener {
         if(type == DIR) {
             eval(`${action_rtn_p} '${wins[curr_iter].getPtr().getPath()}')`);
             wins[curr_iter].action_close();
+            delete this;
         } else {
             let path = `${wins[curr_iter].getPtr().getPath()}${wins[curr_iter].getPtr().getBinders().at(wins[curr_iter].getSelectedItemIndex()).getName()}`;
 
             if(wins[curr_iter].getPtr().system.readPath(path).type() == FILE) {
                 eval(`${action_rtn_p} '${path}')`);
                 wins[curr_iter].action_close();
+                delete this;
             } else {
                 xwarning("Open File", "You did not choose any file.<br/> You must open any file or cancel action.");
             }
@@ -74,6 +76,7 @@ class FDOpener {
     static execCancelAction(action_cnc, curr_iter) {
         eval('"' + action_cnc + '"');
         wins[curr_iter].action_close();
+        delete this;
     }
 }
 
