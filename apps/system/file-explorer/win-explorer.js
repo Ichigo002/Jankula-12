@@ -77,6 +77,11 @@ class FDOpener {
     }
 }
 
+class FileSaver {
+    //
+    constructor(file, action_return_path, action_cancel) {
+    }
+}
 
 class Win_Explorer extends Window {
     #ptr;
