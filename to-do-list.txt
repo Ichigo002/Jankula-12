@@ -3,7 +3,7 @@
 * make options in the items cut, copy, paste
 * make copy cut and paste class to do
 * make saving files by cookies
-* make explorer window to open files & saving files
+* make explorer window to save files
 
 -->COMPLETE:
 * complete option: pin to taskbar
@@ -12,9 +12,7 @@
 * complete notepad
 
 -->FIX:
-* arrows up & down do not run in the FDOpener, why?
 * hide cxtm when mouse move out from toolbar
-* show cxtm only when toolbar is clicked
 
 -->ADD:
 * add checkbox to toolbar, so cxtm too

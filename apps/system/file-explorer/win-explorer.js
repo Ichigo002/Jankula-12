@@ -49,6 +49,8 @@ class FDOpener {
         $("#win-" + (iter-1) + " > .win-top > span > i.icon-maximize").remove();
         $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
 
+        wins[iter-1].setClickArrowsEvents();
+
         return true;
     }
 
@@ -80,7 +82,6 @@ class Win_Explorer extends Window {
     #ptr;
     #_item_cxt_menus_ = [];
     #cnt_menu;
-    work_mode;
 
     constructor(width, height, iterator, file_system__, name="File Explorer") {
         super(iterator, name, width, height, 'icon-folder-open', "color: #f7c96c;");
@@ -89,9 +90,6 @@ class Win_Explorer extends Window {
         this.selected_item = 0;
         this.#ptr = new DirFollower(file_system__);
         this.items_length = 0;
-
-
-        //WORK MODE TYPE DELETE BUTTON TO MIN AND MAX
 
         let newop = new MenuTemplate("Explorer Splitter Menu [New]");
         newop.pushNewOption("Folder", "wins["+this.id_win+"].mknew(DIR)");
@@ -158,7 +156,6 @@ class Win_Explorer extends Window {
         // Up arrow
         $('#win-' + id + " > .win-content > .exp-top > .exp-top-wrapper-btns > .icon-up-arrow").on('click', function() {
            wins[id].goOut();
-           
         });
         // Down arrow
         $('#win-' + id + " > .win-content > .exp-top > .exp-top-wrapper-btns > .icon-down-arrow").on('click', function() {

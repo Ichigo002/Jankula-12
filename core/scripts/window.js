@@ -387,7 +387,7 @@ class Window {
                     let idm = cxtm.addMenu(e.submenu);
                     this.#toolbar_menulist_id.push(idm);
     
-                    html += `<div class="win-tb-first" id="tb-${split_id_toolbar}" onmouseover="cxtm.callMenu(${idm}, parseInt($('#tb-${split_id_toolbar}').offset().left), parseInt($('#tb-${split_id_toolbar}').offset().top) + parseInt($('#tb-${split_id_toolbar}').height()))" >` + e.content + '</div>';
+                    html += `<div class="win-tb-first" id="tb-${split_id_toolbar}" onclick="cxtm.callMenu(${idm}, parseInt($('#tb-${split_id_toolbar}').offset().left), parseInt($('#tb-${split_id_toolbar}').offset().top) + parseInt($('#tb-${split_id_toolbar}').height()))" >` + e.content + '</div>';
                     
                     split_id_toolbar++;
 
