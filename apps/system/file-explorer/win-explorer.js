@@ -36,7 +36,7 @@ class FDOpener {
             return false;
         }
 
-        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="${action_cancel}">Cancel</button><button onclick="FDOpener.execAcceptAction('`+action_return_path+`', ${iter - 1}, '${openType}')">Ok</button></div><input type="text"></div>`;
+        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="FDOpener.execCancelAction('${action_cancel}', ${iter - 1})">Cancel</button><button onclick="FDOpener.execAcceptAction('`+action_return_path+`', ${iter - 1}, '${openType}')">Ok</button></div><input type="text" disabled="disabled"></div>`;
             //<select><option value="all files">All *.*</option></select>
 
         wins[iter-1].setContent(wins[iter-1].getContent() + content);
@@ -55,12 +55,26 @@ class FDOpener {
     static execAcceptAction(action_rtn_p, curr_iter, type) {
         if(type == DIR) {
             eval(`${action_rtn_p} '${wins[curr_iter].getPtr().getPath()}')`);
+            wins[curr_iter].action_close();
         } else {
-            eval(`${action_rtn_p} '${wins[curr_iter].getPtr().getBinders().at(wins[curr_iter].getSelectedItemIndex()).getName()}')`);
+            let path = `${wins[curr_iter].getPtr().getPath()}${wins[curr_iter].getPtr().getBinders().at(wins[curr_iter].getSelectedItemIndex()).getName()}`;
+
+            if(wins[curr_iter].getPtr().system.readPath(path).type() == FILE) {
+                eval(`${action_rtn_p} '${path}')`);
+                wins[curr_iter].action_close();
+            } else {
+                xwarning("Open File", "You did not choose any file.<br/> You must open any file or cancel action.");
+            }
+            
         }
-        
+    }
+
+    static execCancelAction(action_cnc, curr_iter) {
+        eval('"' + action_cnc + '"');
+        wins[curr_iter].action_close();
     }
 }
+
 
 class Win_Explorer extends Window {
     #ptr;
