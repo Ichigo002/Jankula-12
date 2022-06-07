@@ -9,10 +9,10 @@ class FDOpener {
     // openType: FILE or DIR value
     // action_return_path: method must be like the pattern string: foo(  || without ')'
     // action_cancel: method: foo();
-    constructor(openType, action_return_path, action_cancel) {
+    constructor(openType, action_return_path, action_cancel, file_system__) {
 
         if(openType == FILE) {
-            wins.push(new Win_Explorer(500, 350, iter, file_system, "Open File"));
+            wins.push(new Win_Explorer(500, 350, iter, file_system__, "Open File"));
             wins[iter].setPosition(100, 100);
 
             wins[iter].onSelectItemEvent = function(index) {
@@ -22,7 +22,7 @@ class FDOpener {
 
             iter++;
         } else if (openType == DIR) {
-            wins.push(new Win_Explorer(500, 350, iter, file_system, "Open Folder"));
+            wins.push(new Win_Explorer(500, 350, iter, file_system__, "Open Folder"));
             wins[iter].setPosition(100, 100);
 
             wins[iter].onSelectItemEvent = function(index) {
@@ -74,7 +74,7 @@ class FDOpener {
     }
 
     static execCancelAction(action_cnc, curr_iter) {
-        eval('"' + action_cnc + '"');
+        eval( action_cnc );
         wins[curr_iter].action_close();
         delete this;
     }
@@ -82,7 +82,11 @@ class FDOpener {
     // open file without any GUI in the default system file or in the chosen system.
     static openFile(path, sys) {
         if(sys == undefined) {
-            return file_system.readPath(path);
+            let r = file_system.readPath(path);
+            if(r.type() == FILE)
+                return r;
+            else
+                return ERRFILE;
         } else {
             return sys.readPath(path);
         }
@@ -91,8 +95,47 @@ class FDOpener {
 
 // FDSaver does easy saving files and creating them.
 class FDSaver {
-    //
-    constructor(file, action_return_path, action_cancel) {
+    // file: file object what you want to save
+    // action_return_path: action where will be returned path of new file
+    // action_cancel: action when creating will be cancelled
+    constructor(file, action_return_path, action_cancel, file_system__) {
+        if(file == undefined || file.type() != FILE) {
+            console.error("file value in the FDSaver is invalid to correctly run.");
+            return -1;
+        } 
+
+        wins.push(new Win_Explorer(500, 350, iter, file_system__, "Save file"));
+        wins[iter].setPosition(300, 150);
+        wins[iter]._saving_file_keeper_ = file;
+        iter++;
+
+        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="FDSaver.execCancelAction('${action_cancel}', ${iter - 1})">Cancel</button><button onclick="FDSaver.execAcceptAction('`+action_return_path+`', ${iter - 1})">Ok</button></div><input type="text" value="${file.getName()}"></div>`;
+            //<select><option value="all files">All *.*</option></select>
+
+        wins[iter-1].setContent(wins[iter-1].getContent() + content);
+        wins[iter-1].onResizeEvent = function() {
+            let h = parseInt($('#win-' + this.id_win).css("height"));
+            $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h - 155);
+        }
+        wins[iter-1].onResizeEvent();
+
+        $("#win-" + (iter-1) + " > .win-top > span > i.icon-maximize").remove();
+        $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
+
+        wins[iter-1].setClickArrowsEvents();
+    }
+
+    static execAcceptAction(action_rtn_p, curr_iter) {
+        let w = wins[curr_iter];
+        console.log(w.getPtr().addfile(w._saving_file_keeper_));
+        // HIERE DOKONCZYC
+        eval(`${action_rtn_p} '${wins[curr_iter].getPtr().getPath()}')`);
+    }
+
+    static execCancelAction(action_cnc, curr_iter) {
+        eval(action_cnc);
+        wins[curr_iter].action_close();
+        delete this;
     }
 }
 
@@ -105,6 +148,7 @@ class Win_Explorer extends Window {
         super(iterator, name, width, height, 'icon-folder-open', "color: #f7c96c;");
         this.setMinimalSize(415, 230);
         
+        this._saving_file_keeper_ = undefined;
         this.selected_item = 0;
         this.#ptr = new DirFollower(file_system__);
         this.items_length = 0;

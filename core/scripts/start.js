@@ -25,16 +25,21 @@ function Start() {
         basicFiles();
         tr = new DirFollower(file_system); // ONLY FOR TESTS
         cxtm = new ContextMenu();
+        wins.push(new Win_Notebook(iter));
+        wins[iter].setPosition(700, 400);
+        iter++;
 
         //stapp("demo-help");
         //stapp("explorer");
         //stapp("src");
-        new FDOpener(FILE, `console.log(`, "console.log('looser')");
-        new FDOpener(DIR, `console.log(`, "console.log('looser')");
+        //new FDOpener(FILE, `console.log(`, "console.log(`looser`)", file_system);
+        new FDOpener(DIR, `console.log(`, "console.log(`looser`)", file_system);
 
-        wins.push(new Win_Notebook(iter));
-        wins[iter].setPosition(700, 400);
-        iter++;
+        let f = new File("watashi.ga");
+        f.appendData("I love wikiw");
+        new FDSaver(f, `console.log(`, "console.log(`looser`)", file_system);
+
+        
 
         //stapp("design-studio");
 }

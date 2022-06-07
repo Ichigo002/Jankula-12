@@ -63,7 +63,7 @@ class FileSystem {
 
         while(curr_level < dirs.length)
         {
-            //if(curr_dir != -1) {
+            if(curr_dir != -1) {
                 if(dirs[curr_level] == curr_dir.getName())
                 {
                     curr_level++;
@@ -73,9 +73,9 @@ class FileSystem {
                 else {
                     return ERRFILE;
                 }
-           // } else {
-            //    return ERRFILE;
-            //}
+            } else {
+                return ERRFILE;
+            }
             
         }
         return curr_dir;
@@ -180,6 +180,20 @@ class DirFollower {
     // Returns currently chose directory [object]
     getCurrentDir() {
         return this.system.readPath(this.#curr_path);
+    }
+
+    // Add file to current path
+    addfile(file) {
+        if(this.system.existPath(this.#curr_path)) {
+            if(!this.system.readPath(this.#curr_path).checkAttr(FORBID_MK_ITEMS)) {
+                this.system.readPath(this.#curr_path).pushBinder(file);
+                return "File Created at place '" + this.#curr_path + file.getName() + "'";
+            } else {
+                return "ERRMK: The directory at " + this.#curr_path + " has forbidden adding new items."; 
+            }
+        } else {
+            return "ERREXT: Path to make directory doesn't exist";
+        }
     }
 
     // Create directory in the current path
