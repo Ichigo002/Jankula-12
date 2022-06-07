@@ -78,9 +78,19 @@ class FDOpener {
         wins[curr_iter].action_close();
         delete this;
     }
+
+    // open file without any GUI in the default system file or in the chosen system.
+    static openFile(path, sys) {
+        if(sys == undefined) {
+            return file_system.readPath(path);
+        } else {
+            return sys.readPath(path);
+        }
+    }
 }
 
-class FileSaver {
+// FDSaver does easy saving files and creating them.
+class FDSaver {
     //
     constructor(file, action_return_path, action_cancel) {
     }

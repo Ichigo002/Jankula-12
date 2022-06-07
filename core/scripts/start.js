@@ -14,30 +14,29 @@ var max_z = 200;
 var z_index = min_z;
 //App specific variables:
 
-
 function Start() {
-    //Disable default context menu of browser
-    $(document).bind("contextmenu",function(e){
-        return false;
-    });
+        //Disable default context menu of browser
+        $(document).bind("contextmenu",function(e){
+            return false;
+        });
 
-    // Creating basic systems
-    file_system = new FileSystem("R:");
-    basicFiles();
-    tr = new DirFollower(file_system); // ONLY FOR TESTS
-    cxtm = new ContextMenu();
+        // Creating basic systems
+        file_system = new FileSystem("R:");
+        basicFiles();
+        tr = new DirFollower(file_system); // ONLY FOR TESTS
+        cxtm = new ContextMenu();
 
-    //stapp("demo-help");
-    //stapp("explorer");
-    //stapp("src");
-    new FDOpener(FILE, `console.log(`, "console.log('looser')");
-    new FDOpener(DIR, `console.log(`, "console.log('looser')");
+        //stapp("demo-help");
+        //stapp("explorer");
+        //stapp("src");
+        new FDOpener(FILE, `console.log(`, "console.log('looser')");
+        new FDOpener(DIR, `console.log(`, "console.log('looser')");
 
-    wins.push(new Win_Notebook(iter));
-    wins[iter].setPosition(700, 400);
-    iter++;
+        wins.push(new Win_Notebook(iter));
+        wins[iter].setPosition(700, 400);
+        iter++;
 
-    //stapp("design-studio");
+        //stapp("design-studio");
 }
 
 function basicFiles() {

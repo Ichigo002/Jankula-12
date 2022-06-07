@@ -63,17 +63,21 @@ class FileSystem {
 
         while(curr_level < dirs.length)
         {
-            if(dirs[curr_level] == curr_dir.getName())
-            {
-                curr_level++;
-                if(curr_level < dirs.length)
-                    curr_dir = curr_dir.getByName(dirs[curr_level]);
-            }
-            else {
-                
-                return ERRFILE;
-            }
-        } 
+            //if(curr_dir != -1) {
+                if(dirs[curr_level] == curr_dir.getName())
+                {
+                    curr_level++;
+                    if(curr_level < dirs.length)
+                        curr_dir = curr_dir.getByName(dirs[curr_level]);
+                }
+                else {
+                    return ERRFILE;
+                }
+           // } else {
+            //    return ERRFILE;
+            //}
+            
+        }
         return curr_dir;
     }
 
