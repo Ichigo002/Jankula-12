@@ -30,7 +30,7 @@ function Start() {
         iter++;
 
         //stapp("demo-help");
-        //stapp("explorer");
+        stapp("explorer");
         //stapp("src");
         //new FDOpener(FILE, `console.log(`, "console.log(`looser`)", file_system);
         //new FDOpener(DIR, `console.log(`, "console.log(`looser`)", file_system);

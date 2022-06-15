@@ -350,7 +350,7 @@ class BinderObject {
     rename(new_) {
         if(this.checkAttr(CHANGEABLE_NAME)) {
             let r = BinderObject.checkName(new_);
-            if(r == "CORRECT") {
+            if(r == SUCCESS) {
                 this.refreshModifiedTime();
                 this.#name = new_;
                 return r;
@@ -365,11 +365,11 @@ class BinderObject {
     // Check is argument name correct for item
     static checkName(name) {
         if(name == undefined || name == null) {
-            return new ERROR("FileSystem -> checkName(...)", "ERROR_INAVLID_CHECKING", `Check item has got no name.`);
+            return "NO_NAME";
         } else if(name.length == 0) {
-            return new ERROR("FileSystem -> checkName(...)", "ERROR_INAVLID_CHECKING", `Check item has got 0 length of name.`);
+            return "ZERO_LENGTH";
         } else if(name.includes('/') || name.includes('\\')) {
-            return new ERROR("FileSystem -> checkName(...)", "ERROR_FORBIDDEN_SIGNS", `Path contains forbidden signs: / or \\`);
+            return "FORBIDDEN_SIGNS";
         } else {
             return SUCCESS;
         }
@@ -487,9 +487,9 @@ class Folder extends BinderObject {
     }
 
     // Returns item object by name
-    // ERROR CASE: Returns ERRFILE
+    // ERROR CASE: Returns ERRORV
     getByName(name) {
-        let result = ERRFILE;
+        let result = ERRORV;
 
         this.binder_list.forEach(bind => {
             if(bind.getName() == name) {

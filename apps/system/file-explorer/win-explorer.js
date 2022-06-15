@@ -32,7 +32,7 @@ class FDOpener {
 
             iter++;
         } else {
-            console.error(`Invalid 'openType' value. Value must be FILE or DIR.`);
+            throwErr(new ERROR("FDOpener -> constructor()", "ERROR_INVALID_VALUE", `Incorrect openType. Shall be DIR or FILE`))
             return false;
         }
 
@@ -86,7 +86,7 @@ class FDOpener {
             if(r.type() == FILE)
                 return r;
             else
-                return ERRFILE;
+                return ERRORV;
         } else {
             return sys.readPath(path);
         }
@@ -150,7 +150,7 @@ class Win_Explorer extends Window {
         this.setMinimalSize(415, 230);
         
         this._saving_file_keeper_ = undefined;
-        this.selected_item = 0;
+        this.selected_item = -1;
         this.#ptr = new DirFollower(file_system__);
         this.items_length = 0;
 
@@ -160,7 +160,7 @@ class Win_Explorer extends Window {
         newop.pushNewOption("File", "wins["+this.id_win+"].mknew(FILE)");
 
         let menu = new MenuTemplate("Explorer Content Menu");
-        menu.pushNewOption("Go Into", "wins["+this.id_win+"].goIntoByDef()");
+        menu.pushNewOption("Go Into", "wins["+this.id_win+"].goInto()");
         menu.pushNewOption("Go Previous", "wins["+this.id_win+"].goOut()");
         menu.pushNewSeparator();
         menu.pushNewOption("Duplicate Window", "wins["+this.id_win+"].duplicate()");
@@ -425,9 +425,9 @@ class Win_Explorer extends Window {
                 break;
             case "D_RES_":
                 switch (BinderObject.checkName(_res)) {
-                    case "CORRECT":
+                    case SUCCESS:
                         let r = this.#ptr.mkdir(_res);
-                        if(r.includes("ERRMK")) {
+                        if(ERROR.check(r) && r.type() == "ERROR_MUSTN_ADDING") {
                             xerror("Couldn't create new item", "No file can be created in this directory because it is forbidden.")
                         }
                         this.refresh();
@@ -454,9 +454,9 @@ class Win_Explorer extends Window {
                 break;
             case "F_RES_":
                 switch (BinderObject.checkName(_res)) {
-                    case "CORRECT":
+                    case SUCCESS:
                         let r = this.#ptr.mkfile(_res);
-                        if(r.includes("ERRMK")) {
+                        if(ERROR.check(r) && r.type() == "ERROR_MUSTN_ADDING") {
                             xerror("Couldn't create new item", "No file can be created in this directory because it is forbidden.")
                         }
                         this.refresh();
@@ -477,7 +477,7 @@ class Win_Explorer extends Window {
             case NONE: // Cancel creating
                 return false;
             default:
-                console.log("mknew(what, _res) does not know this type creating: " + what);
+                throwErr(new ERROR("Win_Explorer -> mknew(...)", "ERROR_UNKNOWN_TYPE", "Unknown type operation: " + what));
                 break;
         }
     }
