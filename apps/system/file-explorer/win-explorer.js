@@ -126,6 +126,7 @@ class FDSaver {
     }
 
     static execAcceptAction(action_rtn_p, curr_iter) {
+        // HIERE WORK. REDUNDANCJA PLIKÓW
         wins[curr_iter].getPtr().addfile(wins[curr_iter]._saving_file_keeper_);
         wins[curr_iter].refresh();
         eval(`${action_rtn_p} '${wins[curr_iter].getPtr().getPath()}')`);
