@@ -36,7 +36,7 @@ class FDOpener {
             return false;
         }
 
-        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="FDOpener.execCancelAction('${action_cancel}', ${iter - 1})">Cancel</button><button onclick="FDOpener.execAcceptAction('`+action_return_path+`', ${iter - 1}, '${openType}')">Ok</button></div><input type="text" disabled="disabled"></div>`;
+        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="FDOpener.execCancelAction('`+action_cancel+`', ${iter - 1})">Cancel</button><button onclick="FDOpener.execAcceptAction('`+action_return_path+`', ${iter - 1}, '${openType}')">Ok</button></div><input type="text" disabled="disabled"></div>`;
             //<select><option value="all files">All *.*</option></select>
 
         wins[iter-1].setContent(wins[iter-1].getContent() + content);
@@ -74,7 +74,7 @@ class FDOpener {
     }
 
     static execCancelAction(action_cnc, curr_iter) {
-        eval( action_cnc );
+        eval(action_cnc);
         wins[curr_iter].action_close();
         delete this;
     }
@@ -126,10 +126,11 @@ class FDSaver {
     }
 
     static execAcceptAction(action_rtn_p, curr_iter) {
-        let w = wins[curr_iter];
-        console.log(w.getPtr().addfile(w._saving_file_keeper_));
-        // HIERE DOKONCZYC
+        wins[curr_iter].getPtr().addfile(wins[curr_iter]._saving_file_keeper_);
+        wins[curr_iter].refresh();
         eval(`${action_rtn_p} '${wins[curr_iter].getPtr().getPath()}')`);
+        wins[curr_iter].action_close();
+        delete this;
     }
 
     static execCancelAction(action_cnc, curr_iter) {
