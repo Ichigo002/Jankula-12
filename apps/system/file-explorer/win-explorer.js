@@ -138,6 +138,15 @@ class FDSaver {
         wins[curr_iter].action_close();
         delete this;
     }
+
+    // save file without any GUI in the default system file or in the chosen system.
+    static saveFile(file, path, sys) {
+        if(sys.existPath(path)) {
+            sys.readPath(path).pushBinder(file);
+            $("#handler_event").trigger('exp_refresh');
+        }
+        
+    }
 }
 
 class Win_Explorer extends Window {

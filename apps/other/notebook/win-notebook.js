@@ -1,15 +1,20 @@
 class Win_Notebook extends Window {
+    #last_path;
+    #curr_file;
+
     constructor(iter) {
         super(iter, "Notebook", 600, 400, "icon-app-notebook", "color: #0ff;");
+
+        this.#curr_file = new File("Co to.txt");
 
         let tbm = new MenuTemplate("Notebook - toolbar");
 
         let filem = new MenuTemplate("Notebook - toolbar - file");
         filem.pushNewOption("New", `wins[${iter}].askNew()`);
         filem.pushNewOption("New Window", `wins[${iter}].duplicate()`);
-        filem.pushNewOption("Open...", null);
-        filem.pushNewOption("Save", null);
-        filem.pushNewOption("Save as", null);
+        filem.pushNewOption("Open...", `wins[${iter}].openFile()`);
+        filem.pushNewOption("Save", `wins[${iter}].saveFile()`);
+        filem.pushNewOption("Save as", `wins[${iter}].saveAsFile()`);
         filem.pushNewSeparator();
         filem.pushNewOption("Close", `wins[${iter}].action_close()`);
 
@@ -55,6 +60,33 @@ class Win_Notebook extends Window {
         this.setContent(cnt);
         this.onResizeEvent();
         this.fontReset();
+    }
+
+    openFile(path) {
+        if(path == undefined) {
+            new FDOpener(FILE, `wins[${this.id_win}].openFile(`, ``, file_system);
+        } else {
+            this.#curr_file = FDOpener.openFile(path,file_system);
+            this.setTxtProperty("cnt", this.#curr_file.readFile());
+        }
+    }
+
+    saveFile() {
+        if(this.#last_path == undefined) {
+            this.saveAsFile();
+        } else {
+            this.#curr_file.overwriteFile(this.getTxtProperty("cnt"));
+            FDSaver.saveFile(this.#curr_file, this.#last_path, file_system);
+        }
+    }
+
+    saveAsFile(path) {
+        if(path == undefined) {
+            this.#curr_file.overwriteFile(this.getTxtProperty("cnt"));
+            new FDSaver(this.#curr_file, `wins[${this.id_win}].saveAsFile(`, ``, file_system);
+        } else {
+            this.#last_path = path;
+        }
     }
 
     onResizeEvent() {
