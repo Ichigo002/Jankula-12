@@ -39,8 +39,6 @@ function Start() {
         //f.appendData("I love wikiw");
         //new FDSaver(f, `console.log(`, "console.log(`looser`)", file_system);
 
-        let err = new ErrorHandler();
-
         //stapp("design-studio");
 }
 

@@ -1,6 +1,4 @@
-// Errors
-const ERRFILE = -1;
-
+ERRFILE = -1;
 // Types
 const BINDER = "Binder Object";
 const FILE = "File";
@@ -16,7 +14,6 @@ const REMOVABLE = 0,
     READ_ONLY = 5,
     FORBID_MK_ITEMS = 6,
     CUTABLE = 7;
-
 
 
 class FileSystem {
@@ -71,10 +68,11 @@ class FileSystem {
                         curr_dir = curr_dir.getByName(dirs[curr_level]);
                 }
                 else {
-                    return ERRFILE;
+                    
+                    return new ERROR("FileSystem -> readPath(...)", "ERROR_READ_PATH", `Not found path: <br/>'${path}'`);
                 }
             } else {
-                return ERRFILE;
+                return new ERROR("FileSystem -> readPath(...)", "ERROR_READ_PATH", `Not found path: <br/>'${path}'`);
             }
             
         }
@@ -85,10 +83,10 @@ class FileSystem {
     // RETURNS: true or false
     existPath(path) {
         let f = this.readPath(path);
-        if(f != ERRFILE) {
-            return true;
-        } else {
+        if(ERROR.check(f)) {
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -144,7 +142,7 @@ class DirFollower {
     goto(dir) {
         if(dir == "..") {
             if(this.#curr_path == this.system.begin() + '/') {
-                return "Cannot go back directory";
+                return new ERROR("FileSystem -> goto(...)", "ERROR_GOTO", "Cannot go back directory.", `Pointer cannot go already previous direcotry <br/> because it is pointing on ${this.system.begin()}`);
             } else {
                 let splitp = this.#curr_path.split('/');
                 let new_p = "";
@@ -154,9 +152,9 @@ class DirFollower {
                 if(this.system.existPath(new_p)) {
                     this.#curr_path = new_p;
                     this.onChangePathEvent();
-                    return "Successful executed";
+                    return SUCCESS;
                 } else {
-                    return "ERRGO: Invalid Coming back";
+                    return new ERROR("FileSystem -> goto(...)", "ERROR_GOTO_BACK", `Invalid coming back in the path`);
                 }
             }
         } else {
@@ -170,9 +168,9 @@ class DirFollower {
                 this.#curr_path = new_p;
                 this.onChangePathEvent();
                 this.system.readPath(new_p).refreshAccessedTime();
-                return "Successful executed";
+                return SUCCESS;
             } else {
-                return "ERRFIND: Invalid Directory '" + dir +"'";
+                return new ERROR("FileSystem -> ", "ERROR_CANNOT_FIND", `Invalid Directory: '${dir}'.`);
             }
         }
     }
@@ -183,30 +181,32 @@ class DirFollower {
     }
 
     // Add file to current path
+    // Returns path of new file
     addfile(file) {
         if(this.system.existPath(this.#curr_path)) {
             if(!this.system.readPath(this.#curr_path).checkAttr(FORBID_MK_ITEMS)) {
                 this.system.readPath(this.#curr_path).pushBinder(file);
-                return "File Created at place '" + this.#curr_path + file.getName() + "'";
+                return this.#curr_path + file.getName();
             } else {
-                return "ERRMK: The directory at " + this.#curr_path + " has forbidden adding new items."; 
+                return new ERROR("FileSystem -> addfile(...)", "ERROR_MUSTN_ADDING", `The directory at <br/> '${this.#curr_path}' has forbidden adding  new files`);
             }
         } else {
-            return "ERREXT: Path to make directory doesn't exist";
+            return new ERROR("FileSystem -> addfile(...)", "ERROR_PATH_EXISTANCE", `Path '${this.#curr_path}' doesn't exist. <br/> Cannot add file`);
         }
     }
 
     // Create directory in the current path
+    // Returns path of created directory
     mkdir(name_dir) {
         if(this.system.existPath(this.#curr_path)) {
             if(!this.system.readPath(this.#curr_path).checkAttr(FORBID_MK_ITEMS)) {
                 this.system.readPath(this.#curr_path).pushBinder(new Folder(name_dir));
-                return "Directory Created at place '" + this.#curr_path + name_dir + "/'";
+                return this.#curr_path + name_dir;
             } else {
-                return "ERRMK: The directory at " + this.#curr_path + " has forbidden adding new items."; 
+                return new ERROR("FileSystem -> mkdir(...)", "ERROR_MUSTN_ADDING", `The directory at <br/> '${this.#curr_path}' has forbidden making new directories`);
             }
         } else {
-            return "ERREXT: Path to make directory doesn't exist";
+            return new ERROR("FileSystem -> mkdir(...)", "ERROR_PATH_EXISTANCE", `Path '${this.#curr_path}' doesn't exist. <br/> Cannot make directory`);
         }
     }
 
@@ -217,14 +217,15 @@ class DirFollower {
                 this.system.readPath(this.#curr_path).pushBinder(new File(name_file));
                 return "File Created at place '" + this.#curr_path + name_file + "'";
             } else {
-                return "ERRMK: The directory at " + this.#curr_path + " has forbidden adding new items."; 
+                return new ERROR("FileSystem -> mkfile(...)", "ERROR_MUSTN_ADDING", `The directory at <br/> '${this.#curr_path}' has forbidden making new files`); 
             }
         } else {
-            return "ERREXT: Path to make directory doesn't exist";
+            return new ERROR("FileSystem -> mkfile(...)", "ERROR_PATH_EXISTANCE", `Path '${this.#curr_path}' doesn't exist. <br/> Cannot make file`);
         }
     }
 
     // Delete the binder from current path [CONSOLE]
+    // OBSOLETE!!!!!
     del(name) {
         if(this.system.existPath(this.#curr_path)) {
             if(this.system.readPath(this.#curr_path + name).type() == DIR) {
@@ -254,9 +255,9 @@ class DirFollower {
         let index = p.getIndexOf(name);
         if(p.getByIndex(index).checkAttr(REMOVABLE)) {
             p.removeBinder(index);
-        return "Item " + name + " successfuly deleted from '" + this.#curr_path + "'";
+        return SUCCESS;
         }
-        return "FORBIDDEN";
+        return new ERROR("FileSystem -> mkfile(...)", "ERROR_REMOVING_FORBIDDEN", `Cannot delete item ${name} at '${this.#curr_path}'`);
     }
 
     // Count sepcific items by filterring data [DIR, FILE, ALL]
@@ -264,16 +265,12 @@ class DirFollower {
         switch (filter) {
             case DIR:
                 return this.system.readPath(this.#curr_path).countDirs();
-                break;
             case FILE:
                 return this.system.readPath(this.#curr_path).countFiles();
-            break;
             case ALL:
                 return this.system.readPath(this.#curr_path).countAll();
-                break;
             default:
-                return "ERRCNT: Invalid filter. Available filters counting: [DIR], [FILE], [ALL]";
-                break;
+                return new ERROR("FileSystem -> count(...)", "ERROR_FILTERRING", `Incorrect filter. Available filters: [DIR], [FILE], [ALL]`);
         }
     }
 
@@ -289,7 +286,7 @@ class DirFollower {
         if(index > -1 && index < this.getBinders().length) {
             return this.getBinders()[index];
         } else {
-            return "INVALID INDEX";
+            return new ERROR("FileSystem -> getItemByIndex(...)", "ERROR_INAVLID_INDEX", `Invalid argument index. Index ${index} is out of range this.getBinders()[].`);
         }
     }
 
@@ -300,7 +297,7 @@ class DirFollower {
                 return this.getBinders()[i];
             }
         }
-        return "INVALID NAME";
+        return new ERROR("FileSystem -> getItemByName(...)", "ERROR_INAVLID_NAME", `Invalid argument name.<br/> this.getBinders()[] doesn't contain item with name ${name}.`);
     }
 
     // Print currently chosen directory
@@ -361,20 +358,20 @@ class BinderObject {
                 return r;
             }
         } else {
-            return "FORBIDDEN_RENAMING";
+            return new ERROR("FileSystem -> rename(...)", "ERROR_RENAMING_FORBIDDEN", `Renaming this item is forbidden.`);
         }
     }
 
     // Check is argument name correct for item
     static checkName(name) {
         if(name == undefined || name == null) {
-            return "UNDEFINED VALUE";
+            return new ERROR("FileSystem -> checkName(...)", "ERROR_INAVLID_CHECKING", `Check item has got no name.`);
         } else if(name.length == 0) {
-            return "ZERO_LENGTH";
+            return new ERROR("FileSystem -> checkName(...)", "ERROR_INAVLID_CHECKING", `Check item has got 0 length of name.`);
         } else if(name.includes('/') || name.includes('\\')) {
-            return "FORBIDDEN_SIGNS";
+            return new ERROR("FileSystem -> checkName(...)", "ERROR_FORBIDDEN_SIGNS", `Path contains forbidden signs: / or \\`);
         } else {
-            return "CORRECT";
+            return SUCCESS;
         }
     }
 
@@ -600,7 +597,7 @@ class File extends BinderObject {
     // Overwrite current data saved as html
     overwriteFile(_data) {
         this.#data = _data;
-        return "Executed";
+        return SUCCESS;
     }
 
     // Read current data saved as html
@@ -611,16 +608,16 @@ class File extends BinderObject {
     // Add on the end of current data new data saved as html
     appendData(_new_data) {
         this.#data += _new_data;
-        return "Executed";
+        return SUCCESS;
     }
 
     // EXTENDED METHOD
     rename(new_) {
         let r = super.rename(new_);
 
-        if(r == "CORRECT") {
+        if(r == SUCCESS) {
             this._ext_ = File.splitExt(new_);
-            return "CORRECT";
+            return SUCCESS;
         } else {
             return r;
         }
