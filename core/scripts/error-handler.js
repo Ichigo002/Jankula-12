@@ -2,7 +2,7 @@ const ERRORV = -9;
 const SUCCESS = 0;
 
 // if true, it will force to every occurred error to execute them. 
-var FORCED_THROW = true;
+var FORCED_THROW = false;
 
 // Throw error on the desktop of user when error takes place.
 // Specific value returned by throwErr is -9.

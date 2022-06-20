@@ -47,6 +47,7 @@ class FDOpener {
         $("#win-" + (iter-1) + " > .win-top > span > i.icon-maximize").remove();
         $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
 
+        wins[iter-1].setKeyboardEvents();
         wins[iter-1].setClickArrowsEvents();
 
         $(window).keydown(function(e) {
@@ -118,7 +119,6 @@ class FDSaver {
         wins[iter].setPosition(300, 150);
         wins[iter]._saving_file_keeper_ = file;
         iter++;
-        console.log(action_return_path);
 
         let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button class="q-btns-no" onclick="FDSaver.execCancelAction('${action_cancel}', ${iter - 1})">Cancel</button><button class="q-btns-yes" onclick="FDSaver.execAcceptAction('`+action_return_path+`', ${iter - 1}, true)">Ok</button></div><input type="text" value="${file.getName()}"></div>`;
             //<select><option value="all files">All *.*</option></select>
@@ -133,6 +133,7 @@ class FDSaver {
         $("#win-" + (iter-1) + " > .win-top > span > i.icon-maximize").remove();
         $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
 
+        wins[iter-1].setKeyboardEvents();
         wins[iter-1].setClickArrowsEvents();
 
         $(window).keydown(function(e) {
@@ -174,11 +175,15 @@ class FDSaver {
 
     // save file without any GUI in the default system file or in the chosen system.
     static saveFile(file, path, sys) {
+        
         if(sys.existPath(path)) {
             let obj = sys.readPath(path);
+            if(obj.type() == FILE) {
+                return throwErr(new ERROR("FDSaver -> saveFile(...)", "ERROR_INVALID_PATH", "Path where will be saved file must<br/> contain only folders. Cannot contains any files."));
+            }
             if(!obj.checkAttr(FORBID_MK_ITEMS)) {
                 let rt = 0;
-                let namev = obj.getByName(file.getName());
+                let namev = obj.getByName(file.getName()).getName();
                 if(namev != ERRORV) {
                     obj.removeBinder(obj.getIndexOf(namev));
                 }

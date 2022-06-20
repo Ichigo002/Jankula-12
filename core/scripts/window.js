@@ -51,8 +51,8 @@ class Window {
 
         //Graphic User Interface
         let gui = '<div class="win" id="win-' + this.id_win + '" menuv="'+cxt_id+'">' +
-            '<div class="win-top" menuv="'+cxt_id+'"><i class="'+ icon +'" style="'+style_icon+'"></i> ' + this.#name + 
-            '<span style="margin-left: 15px;">' +
+            '<div class="win-top" menuv="'+cxt_id+'"><i class="'+ icon +'" style="'+style_icon+'"></i> <span class="title">' + this.#name + 
+            '</span><span style="margin-left: 15px;">' +
             '<i class="icon-close icon-all" onclick="wins[' + this.id_win + '].action_close()"></i>' +
             '<i class="icon-maximize icon-all" onclick="wins[' + this.id_win + '].action_max()"></i>' +
             '<i class="icon-minimize icon-all" onclick="wins[' + this.id_win + '].action_min()"></i>' +
@@ -122,6 +122,10 @@ class Window {
     setStatic(s) {
         this.#static = s;
         return this;
+    }
+
+    changeTitle(new_name) {
+        $(`#win-${this.id_win} > .win-top > .title`).html(new_name);
     }
 
     // ADD EVENT: Go window top after click its
@@ -230,6 +234,10 @@ class Window {
 
     // Duplicate this window. Method can be overwritten
     duplicate() {
+        if(this.getToolBar() != undefined) {
+            return throwErr(new ERROR("Window -> duplicate()", "ERROR_INVALID_DUPLICATE", "Duplicating Toolbar for Window is not overwritten.<br/> This might cause some problems with using Toolbar.", "Fix:. Overwrite duplicate() method & init new <br/> toolbar manually. It's necessary to the correctly work because <br/> every toolbar has owned its id keys."));
+        }
+        
         wins.push(new Window(
             iter,
             this.#name,
@@ -242,8 +250,6 @@ class Window {
         wins[iter].setPosition(
             parseInt($("#win-" + this.id_win).css("left")) + 40,
             parseInt($("#win-" + this.id_win).css("top")) + 40);
-        
-        wins[iter].setToolBar(this.getToolBar());
 
         iter++;
         return iter-1;

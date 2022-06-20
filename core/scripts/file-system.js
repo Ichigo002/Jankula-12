@@ -155,7 +155,7 @@ class DirFollower {
     goto(dir) {
         if(dir == "..") {
             if(this.#curr_path == this.system.begin() + '/') {
-                return new ERROR("DirFollower -> goto(...)", "ERROR_GOTO", "Cannot go back directory.", `Pointer cannot go already previous direcotry <br/> because it is pointing on ${this.system.begin()}`);
+                return new ERROR("DirFollower -> goto(...)", "ERROR_GOTO", "Cannot go back directory.", `Pointer cannot go already previous directory <br/> because it is pointing on ${this.system.begin()}`);
             } else {
                 let splitp = this.#curr_path.split('/');
                 let new_p = "";

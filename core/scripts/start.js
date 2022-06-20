@@ -30,10 +30,6 @@ function Start() {
         wins[iter].setPosition(700, 400);
         iter++;
 
-        wins.push(new Win_Notebook(iter));
-        wins[iter].setPosition(1000, 400);
-        iter++;
-
         //stapp("demo-help");
         stapp("explorer");
         //stapp("src");
@@ -48,6 +44,7 @@ function Start() {
 }
 
 function basicFiles() {
+    file_system.root_folder.getByName("Desktop").pushBinder(new File("Testero.txt"));
     file_system.root_folder.getByName("Documents").pushBinder(new File("Testero.txt"));
     file_system.root_folder.getByName("Documents").pushBinder(new File("be_be.fun"));
     file_system.root_folder.getByName("Documents").pushBinder(new Folder("xampp"));

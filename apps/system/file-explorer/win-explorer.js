@@ -1,4 +1,4 @@
-var NONE = -1;
+var NONE = 0;
 
 class Win_Explorer extends Window {
     #ptr;
@@ -10,7 +10,7 @@ class Win_Explorer extends Window {
         this.setMinimalSize(415, 230);
         
         this._saving_file_keeper_ = undefined;
-        this.selected_item = -1;
+        this.selected_item = 0;
         this.#ptr = new DirFollower(file_system__);
         this.items_length = 0;
 
@@ -92,10 +92,10 @@ class Win_Explorer extends Window {
 
         $(window).keydown(function(e) {
             if($('#win-' + id).css('z-index') == z_index) {
-                if(e.which == 37 || e.which == 8) { //left arrow || backspace
+                if(e.which == 37) { //left arrow
                     wins[id].goOut();
                 }
-                if(e.which == 39 || e.which == 13) { //right arrow || enter
+                if(e.which == 39) { //right arrow 
                     wins[id].goInto();
                 }
                 if(e.which == 38) { //up arrow

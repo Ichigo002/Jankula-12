@@ -64,15 +64,27 @@ class Win_Notebook extends Window {
         this.fontReset();
     }
 
-    openFile(path) {
+    // Open file [Menu Option]
+    openFile(path, keep) {
         if(path == undefined) {
             new FDOpener(FILE, `wins[${this.id_win}].openFile(`, ``, file_system);
         } else {
-            this.#curr_file = FDOpener.openFile(path,file_system);
-            this.setTxtProperty("cnt", this.#curr_file.readFile());
+            if(keep == undefined && !this.#saved && this.getTxtProperty("cnt") != "") {
+                xquestion("Unsaved document",
+                "Are you sure to close unsaved file?", 
+                `wins[${this.id_win}].openFile("${path}", true)`, 
+                ``);
+            } else {
+                //this.#last_path = path;
+                this.#curr_file = FDOpener.openFile(path,file_system);
+                this.setTxtProperty("cnt", this.#curr_file.readFile());
+                this.changeTitle("Notebook - " + this.#curr_file.getName());
+            }
+            
         }
     }
 
+    // Quick Save file [Menu Option]
     saveFile() {
         if(this.#last_path == undefined) {
             this.saveAsFile();
@@ -82,19 +94,34 @@ class Win_Notebook extends Window {
         }
     }
 
+    // Std Save file [Menu Option]
     saveAsFile(path) {
         if(path == undefined) {
             this.#curr_file.overwriteFile(this.getTxtProperty("cnt"));
             new FDSaver(this.#curr_file, `wins[${this.id_win}].saveAsFile(`, ``, file_system);
         } else {
+            this.#saved = true;
             this.#last_path = path;
         }
     }
 
+    // Overwritten event from Window
     onResizeEvent() {
         let diff = parseInt($(`#win-${this.id_win}`).css("height")) - ( parseInt($(`#win-${this.id_win} > .win-top`).css("height")) + parseInt($(`#win-${this.id_win} > .win-toolbar`).css("height")) );
         this.setTxtProperty("width", parseInt($(`#win-${this.id_win} > .win-content`).css("width")) - 5);
         this.setTxtProperty("height", diff - 18);
+    }
+
+    duplicate() {
+        wins.push(new Win_Notebook(iter));
+
+        wins[iter].setContent(this.getContent());
+        wins[iter].setPosition(
+            parseInt($("#win-" + this.id_win).css("left")) + 40,
+            parseInt($("#win-" + this.id_win).css("top")) + 40);
+
+        iter++;
+        return iter-1;
     }
 
     setTxtProperty(what, value) {
@@ -127,7 +154,7 @@ class Win_Notebook extends Window {
     }
 
     askNew() {
-        if(this.getTxtProperty("cnt") != "") {
+        if(this.getTxtProperty("cnt") != "" && !this.#saved) {
             xquestion("Unsaved document",
              "Are you sure to close unsaved file? <br/> Then you lose your document forever.", 
              `wins[${this.id_win}].new()`, 
@@ -138,6 +165,9 @@ class Win_Notebook extends Window {
     }
 
     new() {
+        this.#saved = false;
+        this.#last_path = undefined;
+        this.#curr_file = new File("Untitled.txt");
         this.setTxtProperty("cnt", "");
     }
 }
