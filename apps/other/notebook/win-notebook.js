@@ -1,11 +1,13 @@
 class Win_Notebook extends Window {
     #last_path;
     #curr_file;
+    #saved;
 
     constructor(iter) {
         super(iter, "Notebook", 600, 400, "icon-app-notebook", "color: #0ff;");
 
-        this.#curr_file = new File("Co to.txt");
+        this.#curr_file = new File("Untitled.txt");
+        this.#saved = false;
 
         let tbm = new MenuTemplate("Notebook - toolbar");
 

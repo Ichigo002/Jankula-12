@@ -25,8 +25,13 @@ function Start() {
         basicFiles();
         tr = new DirFollower(file_system); // ONLY FOR TESTS
         cxtm = new ContextMenu();
+
         wins.push(new Win_Notebook(iter));
         wins[iter].setPosition(700, 400);
+        iter++;
+
+        wins.push(new Win_Notebook(iter));
+        wins[iter].setPosition(1000, 400);
         iter++;
 
         //stapp("demo-help");

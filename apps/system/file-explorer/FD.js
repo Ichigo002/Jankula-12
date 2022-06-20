@@ -155,14 +155,15 @@ class FDSaver {
         
         if(q && w.getPtr().system.readPath(w.getPtr().getPath()).getByName(namefile) != ERRORV) {
             xquestion("Overwrite file", `Are you sure to overwrite file "${namefile}"? <br/> You lose file's data forever.`, `FDSaver.execAcceptAction("${action_rtn_p}", ${curr_iter}, false);`, `wins[${curr_iter}].action_close();`);
+        } else {
+            if(!ErrorHandler.throwIf(w._saving_file_keeper_.rename(namefile)) && 
+            !ErrorHandler.throwIf(FDSaver.saveFile(w._saving_file_keeper_, w.getPtr().getPath(), w.getPtr().system))) {
+                eval(`${action_rtn_p} '${w.getPtr().getPath()}')`);
+                w.action_close();
+            }
         }
 
-        if(!ErrorHandler.throwIf(w._saving_file_keeper_.rename(namefile)) && 
-        !ErrorHandler.throwIf(FDSaver.saveFile(w._saving_file_keeper_, w.getPtr().getPath(), w.getPtr().system))) {
-            eval(`${action_rtn_p} '${w.getPtr().getPath()}')`);
-        }
-        w.action_close();
-        delete this;
+        
     }
 
     static execCancelAction(action_cnc, curr_iter) {
