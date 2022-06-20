@@ -34,7 +34,7 @@ class FDOpener {
             return false;
         }
 
-        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="FDOpener.execCancelAction('`+action_cancel+`', ${iter - 1})">Cancel</button><button onclick="FDOpener.execAcceptAction('`+action_return_path+`', ${iter - 1}, '${openType}')">Ok</button></div><input type="text" disabled="disabled"></div>`;
+        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button class = "q-btns-no" onclick="FDOpener.execCancelAction('`+action_cancel+`', ${iter - 1})">Cancel</button><button class='q-btns-yes' onclick="FDOpener.execAcceptAction('`+action_return_path+`', ${iter - 1}, '${openType}')">Ok</button></div><input type="text" disabled="disabled"></div>`;
             //<select><option value="all files">All *.*</option></select>
 
         wins[iter-1].setContent(wins[iter-1].getContent() + content);
@@ -48,6 +48,18 @@ class FDOpener {
         $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
 
         wins[iter-1].setClickArrowsEvents();
+
+        $(window).keydown(function(e) {
+            let id = iter - 1;
+            if($('#win-' + id).css('z-index') == z_index) {
+                if(e.which == 13) { //enter
+                    $('#win-' + id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-yes").trigger("onclick");
+                }
+                if(e.which == 27) { //escape
+                    $('#win-' + id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-no").trigger("onclick");
+                }
+            }
+        });
 
         return true;
     }
@@ -106,8 +118,9 @@ class FDSaver {
         wins[iter].setPosition(300, 150);
         wins[iter]._saving_file_keeper_ = file;
         iter++;
+        console.log(action_return_path);
 
-        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button onclick="FDSaver.execCancelAction('${action_cancel}', ${iter - 1})">Cancel</button><button onclick="FDSaver.execAcceptAction('`+action_return_path+`', ${iter - 1})">Ok</button></div><input type="text" value="${file.getName()}"></div>`;
+        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button class="q-btns-no" onclick="FDSaver.execCancelAction('${action_cancel}', ${iter - 1})">Cancel</button><button class="q-btns-yes" onclick="FDSaver.execAcceptAction('`+action_return_path+`', ${iter - 1}, true)">Ok</button></div><input type="text" value="${file.getName()}"></div>`;
             //<select><option value="all files">All *.*</option></select>
 
         wins[iter-1].setContent(wins[iter-1].getContent() + content);
@@ -121,11 +134,29 @@ class FDSaver {
         $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
 
         wins[iter-1].setClickArrowsEvents();
+
+        $(window).keydown(function(e) {
+            let id = iter - 1;
+            if($('#win-' + id).css('z-index') == z_index) {
+                if(e.which == 13) { //enter
+                    $('#win-' + id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-yes").trigger("onclick");
+                }
+                if(e.which == 27) { //escape
+                    $('#win-' + id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-no").trigger("onclick");
+                }
+            }
+        });
     }
 
-    static execAcceptAction(action_rtn_p, curr_iter) {
+    static execAcceptAction(action_rtn_p, curr_iter, q) {
         let w = wins[curr_iter]; // window
         let namefile = $(`#win-${curr_iter} > .win-content > .exp-dialog-bar > input`).val();
+
+        
+        if(q && w.getPtr().system.readPath(w.getPtr().getPath()).getByName(namefile) != ERRORV) {
+            xquestion("Overwrite file", `Are you sure to overwrite file "${namefile}"? <br/> You lose file's data forever.`, `FDSaver.execAcceptAction("${action_rtn_p}", ${curr_iter}, false);`, `wins[${curr_iter}].action_close();`);
+        }
+
         if(!ErrorHandler.throwIf(w._saving_file_keeper_.rename(namefile)) && 
         !ErrorHandler.throwIf(FDSaver.saveFile(w._saving_file_keeper_, w.getPtr().getPath(), w.getPtr().system))) {
             eval(`${action_rtn_p} '${w.getPtr().getPath()}')`);
