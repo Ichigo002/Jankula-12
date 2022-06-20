@@ -1,6 +1,9 @@
 const ERRORV = -9;
 const SUCCESS = 0;
 
+// if true, it will force to every occurred error to execute them. 
+var FORCED_THROW = true;
+
 // Throw error on the desktop of user when error takes place.
 // Specific value returned by throwErr is -9.
 function throwErr(err) {
@@ -17,6 +20,7 @@ class ErrorHandler {
         
     }
 
+    // Handle erro by its displaying
     static handle(err) {
         let tp_cnt = "Not Specified Error";
         if(err.type(err.type() != undefined && err.type() != "") ) {
@@ -52,7 +56,7 @@ class ErrorHandler {
             ${dtls_cnt}
         </p>
         <p style='both:clear;'>
-            <button onclick='${actionOk}' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button>
+            <button onclick='${actionOk}' class='q-btns-yes' style='float:right; margin: 5px 15px 15px 5px; width: 90px; height: 27px;'>Ok</button>
             
             ${dtls_btn}
         </p>`;
@@ -62,6 +66,7 @@ class ErrorHandler {
         return iter - 1;
     }
 
+    // Show & Hide details at errors on the screen
     static execDetails(i) {
         let p = `#win-${i} > .win-content > p > .qerr-details`;
         if($(p).css("display") != "none") {
@@ -72,6 +77,20 @@ class ErrorHandler {
         
     }
 
+    //Check is value error or not
+    static check(obj) {
+        return (obj instanceof ERROR);
+    }
+
+    // Check is value error. If object is error, it will be thrown on the screen
+    static throwIf(obj) {
+        if(ErrorHandler.check(obj)) {
+            throwErr(obj);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 class ERROR {
@@ -90,10 +109,10 @@ class ERROR {
         this.#type = _type;
         this.#cause = _cause;
         this.#details = _details;
-    }
 
-    static check(obj) {
-        return (obj instanceof ERROR);
+        if(FORCED_THROW) {
+            throwErr(this);
+        }
     }
 
     // Clear all tags html: <br/> 

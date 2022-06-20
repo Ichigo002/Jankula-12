@@ -35,9 +35,9 @@ function Start() {
         //new FDOpener(FILE, `console.log(`, "console.log(`looser`)", file_system);
         //new FDOpener(DIR, `console.log(`, "console.log(`looser`)", file_system);
 
-        let f = new File("watashi.ga");
-        f.appendData("I love wikiw");
-        new FDSaver(f, `console.log(`, "console.log(`looser`)", file_system);
+        //let f = new File("watashi.ga");
+        //f.appendData("I love wikiw");
+        //new FDSaver(f, `console.log(`, "console.log(`looser`)", file_system);
 
         //stapp("design-studio");
 }

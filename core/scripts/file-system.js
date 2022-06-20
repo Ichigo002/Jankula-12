@@ -48,7 +48,6 @@ class FileSystem {
     }
 
     // Reads input path and returns directory on which path pointed
-    // ERROR CASE: Returns ERRFILE
     readPath(path) {
         let dirs = path.split('/');
         let curr_dir = this.root_folder;
@@ -83,10 +82,24 @@ class FileSystem {
     // RETURNS: true or false
     existPath(path) {
         let f = this.readPath(path);
-        if(ERROR.check(f)) {
+        if(ErrorHandler.check(f)) {
             return false;
         } else {
             return true;
+        }
+    }
+
+    // Push file into the path
+    pushIntoPath(path, file) {
+        if(this.existPath(path)) {
+            if(!this.readPath(path).checkAttr(FORBID_MK_ITEMS)) {
+                this.readPath(path).pushBinder(file);
+                return path + file.getName();
+            } else {
+                return new ERROR("FileSystem -> addfile(...)", "ERROR_MUSTN_ADDING", `The directory at <br/> '${path}' has forbidden adding  new files`);
+            }
+        } else {
+            return new ERROR("FileSystem -> addfile(...)", "ERROR_PATH_EXISTANCE", `Path '${path}' doesn't exist. <br/> Cannot add file`);
         }
     }
 
@@ -142,7 +155,7 @@ class DirFollower {
     goto(dir) {
         if(dir == "..") {
             if(this.#curr_path == this.system.begin() + '/') {
-                return new ERROR("FileSystem -> goto(...)", "ERROR_GOTO", "Cannot go back directory.", `Pointer cannot go already previous direcotry <br/> because it is pointing on ${this.system.begin()}`);
+                return new ERROR("DirFollower -> goto(...)", "ERROR_GOTO", "Cannot go back directory.", `Pointer cannot go already previous direcotry <br/> because it is pointing on ${this.system.begin()}`);
             } else {
                 let splitp = this.#curr_path.split('/');
                 let new_p = "";
@@ -154,7 +167,7 @@ class DirFollower {
                     this.onChangePathEvent();
                     return SUCCESS;
                 } else {
-                    return new ERROR("FileSystem -> goto(...)", "ERROR_GOTO_BACK", `Invalid coming back in the path`);
+                    return new ERROR("DirFollower -> goto(...)", "ERROR_GOTO_BACK", `Invalid coming back in the path`);
                 }
             }
         } else {
@@ -170,7 +183,7 @@ class DirFollower {
                 this.system.readPath(new_p).refreshAccessedTime();
                 return SUCCESS;
             } else {
-                return new ERROR("FileSystem -> ", "ERROR_CANNOT_FIND", `Invalid Directory: '${dir}'.`);
+                return new ERROR("DirFollower -> goto(...)", "ERROR_CANNOT_FIND", `Invalid Directory: '${dir}'.`);
             }
         }
     }
@@ -183,16 +196,7 @@ class DirFollower {
     // Add file to current path
     // Returns path of new file
     addfile(file) {
-        if(this.system.existPath(this.#curr_path)) {
-            if(!this.system.readPath(this.#curr_path).checkAttr(FORBID_MK_ITEMS)) {
-                this.system.readPath(this.#curr_path).pushBinder(file);
-                return this.#curr_path + file.getName();
-            } else {
-                return new ERROR("FileSystem -> addfile(...)", "ERROR_MUSTN_ADDING", `The directory at <br/> '${this.#curr_path}' has forbidden adding  new files`);
-            }
-        } else {
-            return new ERROR("FileSystem -> addfile(...)", "ERROR_PATH_EXISTANCE", `Path '${this.#curr_path}' doesn't exist. <br/> Cannot add file`);
-        }
+        return pushIntoPath(this.#curr_path, file);
     }
 
     // Create directory in the current path
@@ -217,10 +221,10 @@ class DirFollower {
                 this.system.readPath(this.#curr_path).pushBinder(new File(name_file));
                 return "File Created at place '" + this.#curr_path + name_file + "'";
             } else {
-                return new ERROR("FileSystem -> mkfile(...)", "ERROR_MUSTN_ADDING", `The directory at <br/> '${this.#curr_path}' has forbidden making new files`); 
+                return new ERROR("DirFollower -> mkfile(...)", "ERROR_MUSTN_ADDING", `The directory at <br/> '${this.#curr_path}' has forbidden making new files`); 
             }
         } else {
-            return new ERROR("FileSystem -> mkfile(...)", "ERROR_PATH_EXISTANCE", `Path '${this.#curr_path}' doesn't exist. <br/> Cannot make file`);
+            return new ERROR("DirFollower -> mkfile(...)", "ERROR_PATH_EXISTANCE", `Path '${this.#curr_path}' doesn't exist. <br/> Cannot make file`);
         }
     }
 
@@ -257,7 +261,7 @@ class DirFollower {
             p.removeBinder(index);
         return SUCCESS;
         }
-        return new ERROR("FileSystem -> mkfile(...)", "ERROR_REMOVING_FORBIDDEN", `Cannot delete item ${name} at '${this.#curr_path}'`);
+        return new ERROR("DirFollower -> mkfile(...)", "ERROR_REMOVING_FORBIDDEN", `Cannot delete item ${name} at '${this.#curr_path}'`);
     }
 
     // Count sepcific items by filterring data [DIR, FILE, ALL]
@@ -270,7 +274,7 @@ class DirFollower {
             case ALL:
                 return this.system.readPath(this.#curr_path).countAll();
             default:
-                return new ERROR("FileSystem -> count(...)", "ERROR_FILTERRING", `Incorrect filter. Available filters: [DIR], [FILE], [ALL]`);
+                return new ERROR("DirFollower -> count(...)", "ERROR_FILTERRING", `Incorrect filter. Available filters: [DIR], [FILE], [ALL]`);
         }
     }
 
@@ -286,7 +290,7 @@ class DirFollower {
         if(index > -1 && index < this.getBinders().length) {
             return this.getBinders()[index];
         } else {
-            return new ERROR("FileSystem -> getItemByIndex(...)", "ERROR_INAVLID_INDEX", `Invalid argument index. Index ${index} is out of range this.getBinders()[].`);
+            return new ERROR("DirFollower -> getItemByIndex(...)", "ERROR_INAVLID_INDEX", `Invalid argument index. Index ${index} is out of range this.getBinders()[].`);
         }
     }
 
@@ -297,7 +301,7 @@ class DirFollower {
                 return this.getBinders()[i];
             }
         }
-        return new ERROR("FileSystem -> getItemByName(...)", "ERROR_INAVLID_NAME", `Invalid argument name.<br/> this.getBinders()[] doesn't contain item with name ${name}.`);
+        return new ERROR("DirFollower -> getItemByName(...)", "ERROR_INAVLID_NAME", `Invalid argument name.<br/> this.getBinders()[] doesn't contain item with name ${name}.`);
     }
 
     // Print currently chosen directory
@@ -451,6 +455,7 @@ class BinderObject {
         return BINDER;
     }
 }
+
 class Folder extends BinderObject {
     // VALUE: name => name of new folder
     constructor(name) {
