@@ -109,9 +109,9 @@ class FileSystem {
 
         this.root_folder.binder_list.forEach(bind => {
             if(bind.type() == FILE) {
-                c += "  \\_ [FILE] | " + bind.name + '\n';
+                c += "  \\_ [FILE] | " + bind.getName() + '\n';
             } else {
-                c += "  \\_ [DIR]  | " + bind.name + '\n';
+                c += "  \\_ [DIR]  | " + bind.getName() + '\n';
                 c += bind.__print_tree(2);
             }
         });
@@ -507,13 +507,13 @@ class Folder extends BinderObject {
 
     // Prints in the js console items of the folder
     printDir() {
-        let c = "DIR " + this.name + ":\n";
+        let c = "DIR " + this.getName() + ":\n";
 
         this.binder_list.forEach(bind => {
             if(bind.type() == FILE) {
-                c += "\\_ [FILE] | " + bind.name + '\n';
+                c += "\\_ [FILE] | " + bind.getName() + '\n';
             } else {
-                c += "\\_ [DIR]  | " + bind.name + '\n';
+                c += "\\_ [DIR]  | " + bind.getName() + '\n';
             }
         });
 
@@ -528,9 +528,9 @@ class Folder extends BinderObject {
         }
         this.binder_list.forEach(bind => {
             if(bind.type() == FILE) {
-                c += add + "\\_ [FILE] | " + bind.name + '\n';
+                c += add + "\\_ [FILE] | " + bind.getName() + '\n';
             } else {
-                c += add + "\\_ [DIR]  | " + bind.name + '\n';
+                c += add + "\\_ [DIR]  | " + bind.getName() + '\n';
                 c += bind.__print_tree(a+2);
             }
         });

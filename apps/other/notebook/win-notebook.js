@@ -90,7 +90,7 @@ class Win_Notebook extends Window {
             this.saveAsFile();
         } else {
             this.#curr_file.overwriteFile(this.getTxtProperty("cnt"));
-            FDSaver.saveFile(this.#curr_file, this.#last_path, file_system);
+            ErrorHandler.throwIf(FDSaver.saveFile(this.#curr_file, this.#last_path, file_system));
         }
     }
 

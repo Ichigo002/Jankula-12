@@ -164,7 +164,7 @@ class FDSaver {
             }
         }
 
-        
+
     }
 
     static execCancelAction(action_cnc, curr_iter) {
@@ -174,8 +174,10 @@ class FDSaver {
     }
 
     // save file without any GUI in the default system file or in the chosen system.
-    static saveFile(file, path, sys) {
-        
+    static saveFile(__file, path, sys) {
+        let file = new File(__file.getName(), __file.getIcon());
+        file.overwriteFile(__file.readFile());
+
         if(sys.existPath(path)) {
             let obj = sys.readPath(path);
             if(obj.type() == FILE) {
@@ -183,17 +185,17 @@ class FDSaver {
             }
             if(!obj.checkAttr(FORBID_MK_ITEMS)) {
                 let rt = 0;
-                let namev = obj.getByName(file.getName()).getName();
-                if(namev != ERRORV) {
-                    obj.removeBinder(obj.getIndexOf(namev));
+                if(obj.getByName(file.getName()) != ERRORV) {
+                    obj.removeBinder(obj.getIndexOf(file.getName()));
                 }
+                
                 rt = sys.pushIntoPath(path, file);
                 $("#handler_event").trigger('exp_refresh');
                 return rt;
             } else {
                 return new ERROR("FDSaver -> saveFile(...)", "ERROR_FORBIDDEN_MK", `Chosen folder ${obj.getName()} by user has forbidden rights to save file.`);
             }
-            ;
+            
         } else {
             return new ERROR("FDSaver -> saveFile(...)", "ERROR_PATH_EXISTANCE", `Path '${path}' doesn't exist in the file system.`);
         }
