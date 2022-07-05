@@ -1,5 +1,4 @@
-
-
+var NOTEBOOK_APP = "Notebook";
 class Win_Notebook extends Window {
     #last_path;
     #curr_file;
@@ -72,10 +71,22 @@ class Win_Notebook extends Window {
         this.updateTitleStatus();
     }
 
+    // Called by the AppManager script
+    // x, y -> coordinates of window
+    // p -> path to file // DELETE 'p' value IF you make app with no extension support
     static caller(x, y, p) {
-        wins.push(new Win_Notebook(iter));
+        wins.push(new AppPattern(iter));
         wins[iter].setPosition(x, y);
+        if(p != undefined) {
+            let file = file_system.readPath(p);
+            // continue using file . . .
+        }
         iter++;
+    }
+
+    //Close window event
+    onCloseEvent() {
+        app_mng.updatePosOfApp(NOTEBOOK_APP, parseInt($('#win-' + this.id_win).css('left')), parseInt($('#win-' + this.id_win).css('top')));
     }
 
     // Open file [Menu Option]

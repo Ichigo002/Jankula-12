@@ -1,5 +1,6 @@
 var NONE = undefined;
 
+var EXPLORER_APP = "File Explorer";
 class Win_Explorer extends Window {
     #ptr;
     #_item_cxt_menus_ = [];
@@ -59,7 +60,22 @@ class Win_Explorer extends Window {
         this.onCloseEvent = function() {
             this.removeCXTMenus();
             cxtm.removeMenu(this.#cnt_menu);
+            app_mng.updatePosOfApp(EXPLORER_APP, parseInt($('#win-' + this.id_win).css('left')), parseInt($('#win-' + this.id_win).css('top')));
+
         }
+    }
+
+    // Called by the AppManager script
+    // x, y -> coordinates of window
+    // p -> path to file // DELETE 'p' value IF you make app with no extension support
+    static caller(x, y, p) {
+        wins.push(new AppPattern(iter));
+        wins[iter].setPosition(x, y);
+        if(p != undefined) {
+            let file = file_system.readPath(p);
+            // continue using file . . .
+        }
+        iter++;
     }
 
     onSelectItemEvent(index) { ; }

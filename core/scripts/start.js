@@ -28,15 +28,7 @@ function Start() {
         cxtm = new ContextMenu();
         app_mng = new AppManager();
 
-        // Default apps: 
-        app_mng.setDefaultAppFor("txt",
-        "Notebook",
-        "icon-app-notebook",
-        "Win_Notebook.caller($posX$, $posY$, $path$)",
-        "Win_Notebook.caller($posX$, $posY$)");
-
-        app_mng.setDefaultAppFor("ptt", APP_NAME, "",
-        "AppPattern.caller($posX$, $posY$, $path$)", "AppPattern.caller($posX$, $posY$)");
+        
 
         //stapp("demo-help");
         stapp("explorer");
@@ -49,6 +41,13 @@ function Start() {
         //new FDSaver(f, `console.log(`, "console.log(`looser`)", file_system);
 
         //stapp("design-studio");
+}
+
+function setApps() {
+    app_mng.setDefaultAppFor("txt", NOTEBOOK_APP, "icon-app-notebook",
+        "AppPattern.caller($posX$, $posY$, $path$)", "AppPattern.caller($posX$, $posY$)");
+
+    
 }
 
 function basicFiles() {

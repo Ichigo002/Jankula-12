@@ -50,6 +50,36 @@ class AppManager {
         this.#app_ext_list[l-1]._posY = this.default_pos_y;
     }
 
+    // COMPLETE // EXTENSION CHANGE TO NAME APP LOOK FOR IN THE LOOP
+    addStdApp(name_app, icon_app, app_caller) {
+        if(name_app == "" || name_app == undefined) {
+            return new ERROR("AppManager -> setDefaultAppFor(...)", "ERROR_MISSING_DATA", `Not typed name of app to set.`);
+        }
+        if(icon_app == "" || icon_app == undefined) {
+            icon_app = "default-icon";
+        }
+        let found = false;
+        let l;
+        let i_;
+        for (let i = 0; i < this.#app_ext_list.length; i++) {
+            if(this.#app_ext_list.at(i)._ext.toUpperCase() == ext) {
+                found = true;
+                i_ = i;
+            }
+        }
+
+        if(found) {
+            this.#app_ext_list[i_].change(ext, name_app, icon_app, app_file_caller, app_caller);
+            l = i_ + 1;
+        } else {
+            l = this.#app_ext_list.push(new Linker(ext, name_app, icon_app, app_file_caller, app_caller));
+        }
+
+
+        this.#app_ext_list[l-1]._posX = this.default_pos_x;
+        this.#app_ext_list[l-1]._posY = this.default_pos_y;
+    }
+
     // Call app by name or extension
     callApp(search) {
         let r;
