@@ -3,6 +3,9 @@ class Win_Notebook extends Window {
     #curr_file;
     #saved;
 
+    area_focuesd;
+    __last_input_txt__;
+
     constructor(iter) {
         super(iter, "Notebook", 600, 400, "icon-app-notebook", "color: #0ff;");
 
@@ -18,7 +21,7 @@ class Win_Notebook extends Window {
         filem.pushNewOption("Save", `wins[${iter}].saveFile()`);
         filem.pushNewOption("Save as", `wins[${iter}].saveAsFile()`);
         filem.pushNewSeparator();
-        filem.pushNewOption("Close", `wins[${iter}].action_close()`);
+        filem.pushNewOption("Close", `wins[${iter}].close()`);
 
         let editm = new MenuTemplate("Notebook - toolbar - edit");
         editm.pushNewOption("Undo", null);
@@ -57,11 +60,14 @@ class Win_Notebook extends Window {
 
         this.setToolBar(tbm);
 
-        let cnt = `<textarea class="win-txt-area"></textarea>`;
+        let cnt = `<textarea class="win-txt-area" id="txt-area-ntb-${this.id_win}"></textarea>`;
 
         this.setContent(cnt);
         this.onResizeEvent();
+        this.onKeyboardEvent();
         this.fontReset();
+
+        this.updateTitleStatus();
     }
 
     // Open file [Menu Option]
@@ -78,7 +84,7 @@ class Win_Notebook extends Window {
                 //this.#last_path = path;
                 this.#curr_file = FDOpener.openFile(path,file_system);
                 this.setTxtProperty("cnt", this.#curr_file.readFile());
-                this.changeTitle("Notebook - " + this.#curr_file.getName());
+                this.updateTitleStatus();
             }
             
         }
@@ -101,6 +107,7 @@ class Win_Notebook extends Window {
             new FDSaver(this.#curr_file, `wins[${this.id_win}].saveAsFile(`, ``, file_system);
         } else {
             this.#saved = true;
+            this.updateTitleStatus();
             this.#last_path = path;
         }
     }
@@ -110,6 +117,48 @@ class Win_Notebook extends Window {
         let diff = parseInt($(`#win-${this.id_win}`).css("height")) - ( parseInt($(`#win-${this.id_win} > .win-top`).css("height")) + parseInt($(`#win-${this.id_win} > .win-toolbar`).css("height")) );
         this.setTxtProperty("width", parseInt($(`#win-${this.id_win} > .win-content`).css("width")) - 5);
         this.setTxtProperty("height", diff - 18);
+    }
+
+    // Focus textarea & call onEnterText() method
+    onKeyboardEvent() {
+        let id = this.id_win;
+        $(`#txt-area-ntb-${id}`).focusin(function(e) {
+            wins[id].area_focuesd = true;
+            wins[id].__last_input_txt__ = wins[id].getTxtProperty("cnt");
+        });
+        $(`#txt-area-ntb-${id}`).focusout(function(e) {
+            wins[id].area_focuesd = false;
+        });
+
+        $(window).keyup(function(e) {
+            if($('#win-' + id).css('z-index') == z_index && wins[id].area_focuesd) {
+                let arg = "";
+                let last_leng = wins[id].__last_input_txt__.length;
+                let curr_leng = wins[id].getTxtProperty("cnt").length;
+
+                wins[id].__last_input_txt__ = wins[id].getTxtProperty("cnt");
+
+                if(curr_leng >= last_leng) {
+                    for (let i = last_leng; i < curr_leng; i++) {
+                        arg += wins[id].__last_input_txt__[i];
+                    }
+                    if(arg != "")
+                        wins[id].onEnterText(arg);
+                } else {
+                    wins[id].onRemoveText(wins[id].__last_input_txt__);
+                }
+            }
+        });
+    }
+
+    onEnterText(args) {
+        this.#saved = false;
+        this.updateTitleStatus();
+    }
+
+    onRemoveText(txt) {
+        this.#saved = false;
+        this.updateTitleStatus();
     }
 
     duplicate() {
@@ -122,6 +171,24 @@ class Win_Notebook extends Window {
 
         iter++;
         return iter-1;
+    }
+
+    close() {
+        if(!this.#saved && this.getTxtProperty("cnt") != "") {
+            xquestion("Unsaved document",
+                "Are you sure to close unsaved file?", 
+                `wins[${this.id_win}].action_close();`, 
+                ``);
+        } else {
+            wins[this.id_win].action_close();
+        }
+        
+    }
+
+    updateTitleStatus() {
+        let s = this.#saved ? '' : '*';
+        console.log(s, "dddd");
+        this.changeTitle(`${s}Notebook - ${this.#curr_file.getName()}`);
     }
 
     setTxtProperty(what, value) {
