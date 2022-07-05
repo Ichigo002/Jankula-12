@@ -3,19 +3,15 @@
 * make options in the items cut, copy, paste
 * make copy cut and paste class to do
 * make saving files by cookies
-* make explorer window to save files
 
 -->COMPLETE:
 * complete option: pin to taskbar
 * complete warning for smartphones
-* complete explorer
-* complete notepad
+* complete notepad toolbar
 
 -->FIX:
-* hide cxtm when mouse move out from toolbar
+
 
 -->ADD:
-* add checkbox to toolbar, so cxtm too
 * add cutting text if too long to '...'
-* filter of files by extension during open and save mode of explorer
-* auto destroying of FDOpener when user make choice
+* 

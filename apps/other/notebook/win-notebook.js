@@ -151,16 +151,19 @@ class Win_Notebook extends Window {
         });
     }
 
+    // Event called on entering new text to notepad
     onEnterText(args) {
         this.#saved = false;
         this.updateTitleStatus();
     }
 
+    // event called on removing text
     onRemoveText(txt) {
         this.#saved = false;
         this.updateTitleStatus();
     }
 
+    // overwrite method from window
     duplicate() {
         wins.push(new Win_Notebook(iter));
 
@@ -173,6 +176,7 @@ class Win_Notebook extends Window {
         return iter-1;
     }
 
+    // close notepad correctly
     close() {
         if(!this.#saved && this.getTxtProperty("cnt") != "") {
             xquestion("Unsaved document",
@@ -185,12 +189,14 @@ class Win_Notebook extends Window {
         
     }
 
+    // Update status of title
     updateTitleStatus() {
         let s = this.#saved ? '' : '*';
         console.log(s, "dddd");
         this.changeTitle(`${s}Notebook - ${this.#curr_file.getName()}`);
     }
 
+    // Set property of Text area
     setTxtProperty(what, value) {
         if(what == "cnt") {
             $(`#win-${this.id_win} > .win-content > .win-txt-area`).val(value);
@@ -199,6 +205,7 @@ class Win_Notebook extends Window {
         }
     }
 
+    // get property of Text area
     getTxtProperty(what) {
         if(what == "cnt") {
             return $(`#win-${this.id_win} > .win-content > .win-txt-area`).val();
@@ -208,18 +215,20 @@ class Win_Notebook extends Window {
         
     }
 
+    // View option
     fontIncrease() {
         this.setTxtProperty("font-size", parseInt(this.getTxtProperty("font-size")) + 2);
     }
-
+    // View option
     fontDecrease() {
         this.setTxtProperty("font-size", parseInt(this.getTxtProperty("font-size")) - 2);
     }
-
+    // View option
     fontReset() {
         this.setTxtProperty("font-size", 18);
     }
 
+    // questiopn to user for new file
     askNew() {
         if(this.getTxtProperty("cnt") != "" && !this.#saved) {
             xquestion("Unsaved document",
@@ -231,6 +240,7 @@ class Win_Notebook extends Window {
         }
     }
 
+    // Creating new file
     new() {
         this.#saved = false;
         this.#last_path = undefined;
