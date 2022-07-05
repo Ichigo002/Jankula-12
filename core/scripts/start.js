@@ -15,7 +15,6 @@ var min_z = 10;
 var max_z = 200;
 var z_index = min_z;
 
-
 function Start() {
         //Disable default context menu of browser
         $(document).bind("contextmenu",function(e){
@@ -36,15 +35,8 @@ function Start() {
         "Win_Notebook.caller($posX$, $posY$, $path$)",
         "Win_Notebook.caller($posX$, $posY$)");
 
-        app_mng.setDefaultAppFor("txt",
-        "Notebookoo",
-        "icon-app-notebook",
-        "Win_Notebook.caller($posX$, $posY$, $path$)",
-        "Win_Notebook.caller($posX$, $posY$)");
-
-       // wins.push(new Win_Notebook(iter));
-        //wins[iter].setPosition(700, 400);
-       // iter++;
+        app_mng.setDefaultAppFor("ptt", APP_NAME, "",
+        "AppPattern.caller($posX$, $posY$, $path$)", "AppPattern.caller($posX$, $posY$)");
 
         //stapp("demo-help");
         stapp("explorer");

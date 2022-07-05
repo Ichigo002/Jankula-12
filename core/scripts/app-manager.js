@@ -129,5 +129,7 @@ class Linker {
         this._app_caller = app_caller;
         this._posX = undefined;
         this._posY = undefined;
+        this._resX = undefined;
+        this._resY = undefined;
     }
 }
