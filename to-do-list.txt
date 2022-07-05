@@ -14,4 +14,4 @@
 
 -->ADD:
 * add cutting text if too long to '...'
-* 
+* add method at AppManager in order to adding apps opening no extension, ex: calculator

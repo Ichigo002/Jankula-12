@@ -70,6 +70,12 @@ class Win_Notebook extends Window {
         this.updateTitleStatus();
     }
 
+    static caller(x, y, p) {
+        wins.push(new Win_Notebook(iter));
+        wins[iter].setPosition(x, y);
+        iter++;
+    }
+
     // Open file [Menu Option]
     openFile(path, keep) {
         if(path == undefined) {
@@ -192,7 +198,6 @@ class Win_Notebook extends Window {
     // Update status of title
     updateTitleStatus() {
         let s = this.#saved ? '' : '*';
-        console.log(s, "dddd");
         this.changeTitle(`${s}Notebook - ${this.#curr_file.getName()}`);
     }
 

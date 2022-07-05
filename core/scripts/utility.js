@@ -3,7 +3,7 @@ class Utility {
         return throwErr(new ERROR("Utility -> constructor()", "ERR_CREATE_STATIC_OBJ", "You cannot create static object<br/> beacuse it has nothing method and features of object."));
     }
 
-    //Replace same array of signs like key_ to replace_ value and return replaced input
+    // Replace same array of signs like key_ to replace_ value and return replaced input
     //
     // input - text to search
     // replace_ - inserted value in the place of key
@@ -22,7 +22,7 @@ class Utility {
                 for (let j = 0; j < replace_.length; j++) {
                     txt += replace_.at(j);
                 }
-                i += st_pos + key_.length + 2;
+                i = st_pos + key_.length + 1;
             } else {
                 txt += input.at(i);
             }

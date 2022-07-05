@@ -1,4 +1,4 @@
-console.log("---\n For basic commands and variables type command: 'help()'\n---")
+//console.log("---\n For basic commands and variables type command: 'help()'\n---")
 
 function help() {
     console.log("------ Commands ------ \n"+

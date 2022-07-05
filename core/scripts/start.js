@@ -27,10 +27,24 @@ function Start() {
         basicFiles();
         tr = new DirFollower(file_system); // ONLY FOR TESTS
         cxtm = new ContextMenu();
+        app_mng = new AppManager();
 
-        wins.push(new Win_Notebook(iter));
-        wins[iter].setPosition(700, 400);
-        iter++;
+        // Default apps: 
+        app_mng.setDefaultAppFor("txt",
+        "Notebook",
+        "icon-app-notebook",
+        "Win_Notebook.caller($posX$, $posY$, $path$)",
+        "Win_Notebook.caller($posX$, $posY$)");
+
+        app_mng.setDefaultAppFor("txt",
+        "Notebookoo",
+        "icon-app-notebook",
+        "Win_Notebook.caller($posX$, $posY$, $path$)",
+        "Win_Notebook.caller($posX$, $posY$)");
+
+       // wins.push(new Win_Notebook(iter));
+        //wins[iter].setPosition(700, 400);
+       // iter++;
 
         //stapp("demo-help");
         stapp("explorer");

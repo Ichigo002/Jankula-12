@@ -1,4 +1,4 @@
-var NONE = 0;
+var NONE = undefined;
 
 class Win_Explorer extends Window {
     #ptr;
@@ -175,10 +175,9 @@ class Win_Explorer extends Window {
     goOut() {
         this.#ptr.getCurrentDir().slct_pos = this.selected_item;
         this.#ptr.goto("..");
-        $('#exp-item-' + this.selected_item + '-' + this.id_win).addClass('exp-item-ghost-select');
     }
 
-    // Rename Item with GUi's help
+    // Rename Item with GUI's help
     renameItem() {
         if(this.selected_item != NONE) {
             let item = this.#ptr.getItemByIndex(this.selected_item);
@@ -259,9 +258,8 @@ class Win_Explorer extends Window {
         let id = this.id_win;
 
         $('#exp-item-' + index + '-' + this.id_win).addClass('exp-item-selected');
-        
-        $('#exp-item-' + this.selected_item + '-' + this.id_win).removeClass("exp-item-ghost-select");
-        $('#exp-item-' + this.selected_item + '-' + this.id_win).removeClass("exp-item-selected");
+        if(index != this.selected_item)
+            $('#exp-item-' + this.selected_item + '-' + this.id_win).removeClass("exp-item-selected");
         this.selected_item = index;
         this.onSelectItemEvent(index);
 

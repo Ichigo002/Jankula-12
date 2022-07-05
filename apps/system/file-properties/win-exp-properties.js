@@ -119,9 +119,9 @@ class Win_Properties extends Window {
         if(_file.type() == FILE) {
             this.pushNewValue("Size", new Blob([_file.readFile()]).size + " Bytes");
         } else {
-            this.pushNewValue("All Items", (_file.countAll() == -1)? 0 : _file.countAll());
             this.pushNewValue("Files", (_file.countFiles() == -1)? 0 : _file.countFiles());
             this.pushNewValue("Folders", (_file.countDirs() == -1)? 0 : _file.countDirs());
+            this.pushNewValue("All Items", (_file.countAll() == -1)? 0 : _file.countAll());
         }
 
         this.pushSeparator();
