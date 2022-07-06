@@ -210,19 +210,9 @@ class Window {
                 wins[id].maximized = false;
                 let n_w = e.pageX - parseInt($('#win-' + id).css("left")) - 10;
                 let n_h = e.pageY - parseInt($('#win-' + id).css("top")) - 10;
-
-                $('#win-' + id).css("height", n_h);
-                $('#win-' + id).css("width", n_w);
                 
-                if(parseInt($('#win-' + id).css("width")) <= minw) {
-                    $('#win-' + id).css("width", minw + 1);
-                }
-                if(parseInt($('#win-' + id).css("height")) <= minh) {
-                    $('#win-' + id).css("height", minh + 1);
-                }
 
-                wins[id].setPositionResizePoint();
-                wins[id].onResizeEvent();
+                wins[id].resizeTo(n_w, n_h);
             }
         });
     }
@@ -253,6 +243,21 @@ class Window {
 
         iter++;
         return iter-1;
+    }
+
+    resizeTo(w, h) {
+        $('#win-' + this.id_win).css("height", h);
+        $('#win-' + this.id_win).css("width", w);
+        
+        if(parseInt($('#win-' + this.id_win).css("width")) <= this.#def_min_w) {
+            $('#win-' + this.id_win).css("width", this.#def_min_w + 1);
+        }
+        if(parseInt($('#win-' + this.id_win).css("height")) <= this.#def_min_h) {
+            $('#win-' + this.id_win).css("height", this.#def_min_h + 1);
+        }
+
+        this.setPositionResizePoint();
+        this.onResizeEvent();
     }
 
     // Set content of window

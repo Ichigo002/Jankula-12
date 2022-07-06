@@ -1,27 +1,22 @@
-//console.log("---\n For basic commands and variables type command: 'help()'\n---")
+console.log("--- For basic commands and variables type command: 'help()' ---")
 
 function help() {
     console.log("------ Commands ------ \n"+
-    "* func getAmountWins()       | return amount of all windows\n" +
-    "* func CloseWindow(name)     | Close ALL windows with 'name'\n" +
-    "* func stapp(name)           | Open system windows by name'\n" +
-    "    -> 'default'\n" +
-    "    -> 'explorer'\n" +
-    "    -> 'demo-help'\n" +
-    "    -> 'src'\n" +
-    "    -> 'design-studio'\n" +
+    "app_mng.callApp(NAME_APP)  | Open the app with name 'NAME_APP'\n" +
+    " Apps' name: NOTEBOOK_APP, EXPLORER_APP\n" +
     "\n" +
     "------ Vars ------ \n" +
-    "* wins[]         | All existing windows in the website\n" +
+    "* wins[]         | All existing windows in the system\n" +
     "* file_system    | Variable keeps all file system with files. You can use it to manipulate files\n" +
     "* tr             | Directory follower is used to manipulate files. It's smart pointer. [ONLY FOR TESTS]\n" +
     "* cxtm           | Context menu is shown if you click right button.\n" +
-    "* min_z          | Minimal z-index value of active window\n" +
-    "* max_z          | Maximal z-index value of active window\n" +
+    "* app_mng        | App manager. you can now easily open apps." +
     "* z_index        | Last used z-index value by window\n");
 
     return "executed";
 }
+
+// [OBSOLOTE] Not recommended
 
 function stapp(name) {
     switch(name) {

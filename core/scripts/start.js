@@ -21,33 +21,23 @@ function Start() {
             return false;
         });
 
-        // Creating basic systems
+        // Creating Systems
         file_system = new FileSystem("R:");
-        basicFiles();
-        tr = new DirFollower(file_system); // ONLY FOR TESTS
         cxtm = new ContextMenu();
         app_mng = new AppManager();
-
         
+        tr = new DirFollower(file_system); // ONLY FOR TESTS
 
-        //stapp("demo-help");
-        stapp("explorer");
-        //stapp("src");
-        //new FDOpener(FILE, `console.log(`, "console.log(`looser`)", file_system);
-        //new FDOpener(DIR, `console.log(`, "console.log(`looser`)", file_system);
+        basicFiles();
+        setApps();
 
-        //let f = new File("watashi.ga");
-        //f.appendData("I love wikiw");
-        //new FDSaver(f, `console.log(`, "console.log(`looser`)", file_system);
-
-        //stapp("design-studio");
+        app_mng.callApp(EXPLORER_APP);
+        app_mng.callApp(NOTEBOOK_APP);
 }
 
 function setApps() {
-    app_mng.setDefaultAppFor("txt", NOTEBOOK_APP, "icon-app-notebook",
-        "AppPattern.caller($posX$, $posY$, $path$)", "AppPattern.caller($posX$, $posY$)");
-
-    
+    app_mng.addApp(NOTEBOOK_APP, "icon-app-notebook", "color: #0ff;", "Win_Notebook", "txt");
+    app_mng.addApp(EXPLORER_APP, "icon-folder-open", "color: #f7c96c;", "Win_Explorer", undefined, undefined, undefined, 300, 200);
 }
 
 function basicFiles() {

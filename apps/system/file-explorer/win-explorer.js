@@ -60,17 +60,20 @@ class Win_Explorer extends Window {
         this.onCloseEvent = function() {
             this.removeCXTMenus();
             cxtm.removeMenu(this.#cnt_menu);
+            app_mng.updateResOfApp(EXPLORER_APP, parseInt($('#win-' + this.id_win).css('width')), parseInt($('#win-' + this.id_win).css('height')));
             app_mng.updatePosOfApp(EXPLORER_APP, parseInt($('#win-' + this.id_win).css('left')), parseInt($('#win-' + this.id_win).css('top')));
-
+    
         }
     }
 
     // Called by the AppManager script
     // x, y -> coordinates of window
+    // rx. ry -> size of window
     // p -> path to file // DELETE 'p' value IF you make app with no extension support
-    static caller(x, y, p) {
-        wins.push(new AppPattern(iter));
+    static caller(x, y, rx, ry, p) {
+        wins.push(new Win_Explorer(rx, ry, iter, file_system));
         wins[iter].setPosition(x, y);
+
         if(p != undefined) {
             let file = file_system.readPath(p);
             // continue using file . . .
