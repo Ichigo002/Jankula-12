@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'system-icons';
-  src: url('../font/system-icons.eot?57378403');
-  src: url('../font/system-icons.eot?57378403#iefix') format('embedded-opentype'),
-       url('../font/system-icons.woff2?57378403') format('woff2'),
-       url('../font/system-icons.woff?57378403') format('woff'),
-       url('../font/system-icons.ttf?57378403') format('truetype'),
-       url('../font/system-icons.svg?57378403#system-icons') format('svg');
+  src: url('../font/system-icons.eot?70576472');
+  src: url('../font/system-icons.eot?70576472#iefix') format('embedded-opentype'),
+       url('../font/system-icons.woff2?70576472') format('woff2'),
+       url('../font/system-icons.woff?70576472') format('woff'),
+       url('../font/system-icons.ttf?70576472') format('truetype'),
+       url('../font/system-icons.svg?70576472#system-icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'system-icons';
-    src: url('../font/system-icons.svg?57378403#system-icons') format('svg');
+    src: url('../font/system-icons.svg?70576472#system-icons') format('svg');
   }
 }
 */
@@ -23,6 +23,7 @@
   font-family: "system-icons";
   font-style: normal;
   font-weight: normal;
+  speak: never;
 
   display: inline-block;
   text-decoration: inherit;
@@ -76,6 +77,7 @@
 .icon-volume-off:before { content: '\e814'; } /* '' */
 .icon-volume-down:before { content: '\e815'; } /* '' */
 .icon-volume-up:before { content: '\e816'; } /* '' */
+.icon-app-apps-manager:before { content: '\f0e8'; } /* '' */
 .icon-app-notebook:before { content: '\f14b'; } /* '' */
 .icon-file:before { content: '\f15b'; } /* '' */
 .icon-maximize:before { content: '\f2d0'; } /* '' */

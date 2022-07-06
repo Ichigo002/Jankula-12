@@ -37,7 +37,6 @@ class AppManager {
         if(ext == undefined) { // add just app
             let i_;
             for (let i = 0; i < this.#app_ext_list.length; i++) {
-                console.log(this.#app_ext_list.at(i));
                 if(this.#app_ext_list.at(i)._name_app.toUpperCase() == name_app.toUpperCase()) {
                     i_ = i;
                 }
@@ -138,8 +137,6 @@ class AppManager {
         });
     }
 }
-
-
 
 class Linker {
     constructor(ext, name_app, icon_app, style_icon, app_caller) {

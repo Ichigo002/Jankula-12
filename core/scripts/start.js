@@ -32,12 +32,13 @@ function Start() {
         setApps();
 
         app_mng.callApp(EXPLORER_APP);
-        app_mng.callApp(NOTEBOOK_APP);
+        app_mng.callApp(APPS_MANAGER_APP);
 }
 
 function setApps() {
     app_mng.addApp(NOTEBOOK_APP, "icon-app-notebook", "color: #0ff;", "Win_Notebook", "txt");
     app_mng.addApp(EXPLORER_APP, "icon-folder-open", "color: #f7c96c;", "Win_Explorer", undefined, undefined, undefined, 300, 200);
+    app_mng.addApp(APPS_MANAGER_APP, "icon-app-apps-manager", "color: #ff2c2c", "Win_AppManager");
 }
 
 function basicFiles() {
