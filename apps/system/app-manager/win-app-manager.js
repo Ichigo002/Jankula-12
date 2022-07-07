@@ -6,7 +6,7 @@ class Win_AppManager extends Window {
         let cnt = 
         `<div class="mng-cnt">
             <div class="mng-info-text">
-                In this place you can edit easily default apps which opens file's extensions. Likewise under the Default Apps you find Other apps. Where you may see all apps on your Jankula-12.
+                In this place you can edit easily default apps which opens file's extensions. Likewise under the Default Apps you find Other apps. Where you may run all apps on your Jankula-12.
             </div>
             <h2 style="letter-spacing: 1.5px;">Default Apps</h2>
             <div class="mng-defapps-cnt">

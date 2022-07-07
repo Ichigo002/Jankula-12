@@ -331,7 +331,7 @@ class Win_Explorer extends Window {
                 switch (BinderObject.checkName(_res)) {
                     case SUCCESS:
                         let r = this.#ptr.mkfile(_res);
-                        if(ERROR.check(r) && r.type() == "ERROR_MUSTN_ADDING") {
+                        if(ErrorHandler.check(r) && r.type() == "ERROR_MUSTN_ADDING") {
                             xerror("Couldn't create new item", "No file can be created in this directory because it is forbidden.")
                         }
                         this.refresh();
@@ -359,6 +359,7 @@ class Win_Explorer extends Window {
 
     // Refresh all explorers
     refresh() {
+        console.log('refres')
         $("#handler_event").trigger('exp_refresh');
     }
 

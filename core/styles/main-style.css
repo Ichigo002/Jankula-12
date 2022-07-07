@@ -23,6 +23,31 @@
     src: url("./../fonts/CourierPrime-Regular.ttf");
 }
 
+/*SCROLL BAR CSS*/
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #c6c6c6; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+/*END SCROLLBAR*/
+
+
+
 @media only screen and (max-width: 600px)  {
     #block-warning {
         display: block !important;
@@ -47,19 +72,26 @@ body {
 }
 
 button {
-    background-color: #d6d6d6;
+    border: none;
     border-radius: 5px;
-    letter-spacing: 1.1px;
+    background-color: #c8c8c8;
+    padding: 5px;
+    font-size: 17px;
 
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
+    -webkit-transition: background 0.1s linear;
+    -moz-transition: background 0.1s linear;
+    -ms-transition: background 0.1s linear;
+    -o-transition: background 0.1s linear;
+    transition: background 0.1s linear;
+
+    -webkit-box-shadow: 1px 1px 5px 0px rgba(59, 59, 59, 1);
+    -moz-box-shadow: 1px 1px 5px 0px rgba(59, 59, 59, 1);
+    box-shadow: 1px 1px 5px 0px rgba(59, 59, 59, 1);
 }
 
 button:hover {
-    background-color: #efeeee;
+    border: none;
+    background-color: #f0f0f0;
 }
 
 input {
