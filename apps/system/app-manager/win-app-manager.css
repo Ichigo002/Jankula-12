@@ -17,6 +17,7 @@
 .mng-defapp-option {
     background-color: #cecece;
     padding: 11px;
+    height: 32px;
     border-radius: 4px;
     margin-bottom: 5px;
 
@@ -30,20 +31,27 @@
     -o-transition: background 0.1s linear;
     transition: background 0.1s linear;
 }
+    .mng-option-group {
+        float: left;
+    }
 
     .mng-defapp-option:hover {
         background-color: #dddddd;
     }
 
-    .mng-defapp-option > i {
+    .mng-defapp-option > .mng-option-group > i {
         font-size: 24px;
         margin-left: 10px;
+        padding: 2px;
+        border-radius: 5px;
+        background-color: #4e4e4e;
+        float: left;
     }
 
     .mng-def-option-name {
         float: left;
-        padding-left: 5px;
         margin-top: 3px;
+        margin-left: 8px;
     }
 
     .mng-def-option-ext {

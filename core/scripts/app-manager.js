@@ -20,7 +20,7 @@ class AppManager {
     // [Optional]
     // * ext - handle extension by app
     // * def_resX, def_resY - default resized size of window X & Y
-    // * def_posX, def_posX - default position on the desktop of window X & Y
+    // * def_posX, def_posY - default position on the desktop of window X & Y
     addApp(name_app, icon_app, style_icon, app_caller, ext=undefined, def_resX=undefined, def_resY=undefined, def_posX=undefined, def_posY=undefined) {
         if(name_app == "" || name_app == undefined) {
             return new ERROR("AppManager -> setDefaultAppFor(...)", "ERROR_MISSING_DATA", `Not typed name of app to set.`);
@@ -135,6 +135,11 @@ class AppManager {
                 link._resY = h;
             }
         });
+    }
+
+    // Retrive data
+    __retrive__() {
+        return this.#app_ext_list;
     }
 }
 
