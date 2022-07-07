@@ -33,13 +33,14 @@ class AppPattern extends Window {
 
         let d = new AppData(
         /*Name*/  NAME_APP,
-        /*Icon app*/ "icon-app-example",
+        /*Icon app*/ "icon-",
         /*Style*/ "",
         /*Short Desc*/ sh_description,
         /*Long Desc*/  description,
         /*Version*/ "1.0.0v",
         /*Ext list*/ ["txt", "txt2", "txt3"],
-        /*Icon File*/ "icon-example"
+        /*Icon File*/ "icon-",
+        /*Style File*/ ""
         );
 
         //d.posX = ; // Default position X

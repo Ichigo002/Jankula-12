@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'system-icons';
-  src: url('../font/system-icons.eot?70576472');
-  src: url('../font/system-icons.eot?70576472#iefix') format('embedded-opentype'),
-       url('../font/system-icons.woff2?70576472') format('woff2'),
-       url('../font/system-icons.woff?70576472') format('woff'),
-       url('../font/system-icons.ttf?70576472') format('truetype'),
-       url('../font/system-icons.svg?70576472#system-icons') format('svg');
+  src: url('../font/system-icons.eot?52535507');
+  src: url('../font/system-icons.eot?52535507#iefix') format('embedded-opentype'),
+       url('../font/system-icons.woff2?52535507') format('woff2'),
+       url('../font/system-icons.woff?52535507') format('woff'),
+       url('../font/system-icons.ttf?52535507') format('truetype'),
+       url('../font/system-icons.svg?52535507#system-icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'system-icons';
-    src: url('../font/system-icons.svg?70576472#system-icons') format('svg');
+    src: url('../font/system-icons.svg?52535507#system-icons') format('svg');
   }
 }
 */
@@ -77,8 +77,23 @@
 .icon-volume-off:before { content: '\e814'; } /* '' */
 .icon-volume-down:before { content: '\e815'; } /* '' */
 .icon-volume-up:before { content: '\e816'; } /* '' */
+.icon-folder:before { content: '\e817'; } /* '' */
+.icon-picture-folder:before { content: '\e818'; } /* '' */
+.icon-folder-desktop:before { content: '\e819'; } /* '' */
+.icon-file-documents:before { content: '\f0c5'; } /* '' */
 .icon-app-apps-manager:before { content: '\f0e8'; } /* '' */
 .icon-app-notebook:before { content: '\f14b'; } /* '' */
-.icon-file:before { content: '\f15b'; } /* '' */
+.icon-file-black:before { content: '\f15b'; } /* '' */
+.icon-file:before { content: '\f15c'; } /* '' */
+.icon-file-pdf:before { content: '\f1c1'; } /* '' */
+.icon-file-word:before { content: '\f1c2'; } /* '' */
+.icon-file-excel:before { content: '\f1c3'; } /* '' */
+.icon-file-powerpoint:before { content: '\f1c4'; } /* '' */
+.icon-file-image:before { content: '\f1c5'; } /* '' */
+.icon-file-archive:before { content: '\f1c6'; } /* '' */
+.icon-file-audio:before { content: '\f1c7'; } /* '' */
+.icon-file-video:before { content: '\f1c8'; } /* '' */
+.icon-file-code:before { content: '\f1c9'; } /* '' */
+.icon-bin:before { content: '\f1f8'; } /* '' */
 .icon-maximize:before { content: '\f2d0'; } /* '' */
 .icon-default-icon:before { content: '\f601'; } /* '' */

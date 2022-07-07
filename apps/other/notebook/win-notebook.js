@@ -101,7 +101,8 @@ class Win_Notebook extends Window {
         /*Long Desc*/  description,
         /*Version*/ "2.0.0v",
         /*Ext list*/ ["txt"],
-        /*Icon File*/ "icon-picture"
+        /*Icon File*/ "icon-file-word",
+        /*Style File*/ "color: #0540b1"
         );
         return d;
     }

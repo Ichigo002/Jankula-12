@@ -69,16 +69,10 @@ class Win_Explorer extends Window {
     // Called by the AppManager script
     // x, y -> coordinates of window
     // rx. ry -> size of window
-    // p -> path to file // DELETE 'p' value IF you make app with no extension support
-    static caller(x, y, rx, ry, p) {
+    static caller(x, y, rx, ry) {
         wins.push(new Win_Explorer(iter, file_system));
         wins[iter].setPosition(x, y);
         wins[iter].resizeTo(rx, ry);
-
-        if(p != undefined) {
-            let file = file_system.readPath(p);
-            // continue using file . . .
-        }
         iter++;
     }
 
@@ -95,6 +89,9 @@ class Win_Explorer extends Window {
         /*Long Desc*/  description,
         /*Version*/ "4.1.0v",
         );
+
+        d.posX = 300;
+        d.posY = 100;
         return d;
     }
 
@@ -412,13 +409,28 @@ class Win_Explorer extends Window {
             let _t = (list[i].type() == DIR)? "folder": (list[i].ext() == "")? list[i].type() : list[i].ext();
             let type = "";
 
+            let ico = "icon-file";
+            let style = "color: #b99d7b";
+
+            if(_t != 'folder') {
+                let appdata = app_mng.getDataByExt(_t);
+                if(appdata != undefined) {
+                    ico = appdata.icon_file;
+                    style = appdata.style_file;
+                }
+            } else {
+                
+                ico = list[i].icon == undefined ? "icon-folder-open" : list[i].icon;
+                style = list[i].style_icon == undefined ? "color: #ffa000" : list[i].style_icon;
+            }
+
             for (let i = 0; i < _t.length; i++) {
                 if(i == 0) type += _t[0].toUpperCase();
                 else type += _t[i];
             }
 
             cnt += '<div class="exp-item" id="exp-item-' + i + '-' + this.id_win+ '" onclick="wins['+this.id_win+'].SelectItem('+i+')" oncontextmenu="wins['+this.id_win+'].SelectItem('+i+')" menuv="' + menu_id + '">' +
-            '<div class="exp-item-name" menuv="' + menu_id + '">' + list[i].getName() + '</div>' +
+            '<div class="exp-item-name" menuv="' + menu_id + '"><i class="' + ico+ '" style="'+style+'"></i>' + list[i].getName() + '</div>' +
             '<div class="exp-item-date" menuv="' + menu_id + '">'+list[i].getCreatedDate() +' ' + list[i].getCreatedTime() +'</div>' +
             '<div class="exp-item-type" menuv="' + menu_id + '">'+type+'</div></div>\n';
         }

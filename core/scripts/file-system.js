@@ -27,16 +27,16 @@ class FileSystem {
 
         this.root_folder = new Folder(this.begin()).addAttr(FORBID_MK_ITEMS);
 
-        this._mkDefDir_("Desktop");
-        this._mkDefDir_("Documents");
-        this._mkDefDir_("Pictures");
-        this._mkDefDir_("Jankula");
+        this._mkDefDir_("Desktop", undefined, "icon-folder-desktop", "color: #22cbc9");
+        this._mkDefDir_("Documents", undefined, "icon-file-documents", "color: #000");
+        this._mkDefDir_("Pictures", undefined, "icon-picture-folder", "color: #237400");
+        this._mkDefDir_("Jankula", undefined, "icon-fix", "color: #000");
     }
 
     // create default folder unremoveable, uneditable, unchangeable name, uncutable at the chosen folder
     // If path is undefined then create at the root folder
-    _mkDefDir_(name, path) {
-        let fol = new Folder(name);
+    _mkDefDir_(name, path, icon, style_icon) {
+        let fol = new Folder(name, icon, style_icon);
         fol.removeAttr(REMOVABLE).removeAttr(EDITABLE).removeAttr(CHANGEABLE_NAME).removeAttr(CUTABLE);
 
         if(path == undefined) {
@@ -328,7 +328,6 @@ class BinderObject {
     #date_accessed;
     #time_accessed;
 
-    #icon = "icon-default-app";
     #name = "";
 
     // VALUE: name => name of item
@@ -343,8 +342,6 @@ class BinderObject {
 
         this.#date_accessed = this.#date_created;
         this.#time_accessed = this.#time_created;
-
-        this.#icon = "icon-default-app";
 
         this.attributes = [REMOVABLE, EDITABLE, CHANGEABLE_NAME, COPYABLE];
         return this.rename(name);
@@ -382,15 +379,6 @@ class BinderObject {
     // Returns name of item
     getName() {
         return this.#name;
-    }
-    // Returns class icon
-    getIcon() {
-        return this.#icon;
-    }
-    // Set new class icon
-    setIcon(class_icon) {
-        if(class_icon != '' || class_icon != undefined)
-            this.#icon = class_icon;
     }
     // Removes Attribute
     removeAttr(attr) {
@@ -458,11 +446,12 @@ class BinderObject {
 
 class Folder extends BinderObject {
     // VALUE: name => name of new folder
-    constructor(name) {
+    constructor(name, specific_icon, style_icon) {
         super(name); // calls constructor of BinderObject
         this.binder_list = [];
         this.slct_pos = NONE;
-        this.setIcon('icon-folder-open');
+        this.icon = specific_icon;
+        this.style_icon = style_icon;
     }
 
     // Pushes to folder new Item
@@ -591,12 +580,6 @@ class File extends BinderObject {
         super(name); // calls constructor of BinderObject
 
         this.rename(name);
-
-        if(ico == undefined) {
-            this.setIcon("icon-file");
-        } else {
-            this.setIcon(ico);
-        }
     }
 
     // Overwrite current data saved as html

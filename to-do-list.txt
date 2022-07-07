@@ -10,6 +10,7 @@
 * complete notepad toolbar
 
 -->FIX:
+* FDSaver & FDOpener, doesn't work correctly
 
 -->ADD:
 * add cutting text if too long to '...'

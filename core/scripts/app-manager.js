@@ -124,10 +124,26 @@ class AppManager {
     __retrive__() {
         return this.#app_list;
     }
+
+    getDataByExt(ext) {
+        let data;
+
+        this.#app_list.forEach(appd => {
+            if(appd.ext_list != undefined) {
+                appd.ext_list.forEach(_ext => {
+                    if(ext.toUpperCase() == _ext.toUpperCase()) {
+                        data = appd;
+                    }
+                });
+            }
+            
+        });
+        return data;
+    }
 }
 
 class AppData { 
-    constructor(name, icon_app, style_icon, short_desc, long_desc, version="1.0.0v", ext_list=undefined, icon_file=undefined) {
+    constructor(name, icon_app, style_icon, short_desc, long_desc, version="1.0.0v", ext_list=undefined, icon_file=undefined, style_file=undefined) {
         this.name = name;
         this.icon_app =  icon_app;
         this.style_icon = style_icon;
@@ -136,6 +152,7 @@ class AppData {
         this.ver = version;
         this.ext_list = ext_list;
         this.icon_file = icon_file;
+        this.style_file = style_file;
 
         this.posX = undefined;
         this.posY = undefined;
