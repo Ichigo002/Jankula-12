@@ -8,7 +8,7 @@ class Win_Notebook extends Window {
     __last_input_txt__;
 
     constructor(iter) {
-        super(iter, "Notebook", 600, 400, "icon-app-notebook", "color: #0ff;");
+        super(iter, Win_Notebook.getAppData().name, 600, 400, Win_Notebook.getAppData().icon_app, Win_Notebook.getAppData().style_icon);
 
         this.#curr_file = new File("Untitled.txt");
         this.#saved = false;
@@ -86,6 +86,24 @@ class Win_Notebook extends Window {
             // continue using file . . .
         }
         iter++;
+    }
+
+    // Returns App data 
+    static getAppData() {
+        let description = "make notes and edit your text files everywhere!";
+        let sh_description = "Edit text files";
+
+        let d = new AppData(
+        /*Name*/  NOTEBOOK_APP,
+        /*Icon app*/ "icon-app-notebook",
+        /*Style*/ "color: #0ff;",
+        /*Short Desc*/ sh_description,
+        /*Long Desc*/  description,
+        /*Version*/ "2.0.0v",
+        /*Ext list*/ ["txt"],
+        /*Icon File*/ "icon-picture"
+        );
+        return d;
     }
 
     //Close window event

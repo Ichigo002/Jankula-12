@@ -1,7 +1,7 @@
 var APPS_MANAGER_APP = "Manager of Apps";
 class Win_AppManager extends Window {
     constructor(iter) {
-        super(iter, APPS_MANAGER_APP, 600, 400, "icon-app-apps-manager", "color: #ff2c2c");
+        super(iter, Win_AppManager.getAppData().name, 600, 400, Win_AppManager.getAppData().icon_app, Win_AppManager.getAppData().style_icon);
     
         let cnt = 
         `<div class="mng-cnt">
@@ -36,6 +36,22 @@ class Win_AppManager extends Window {
         iter++;
     }
 
+    // Returns App data 
+    static getAppData() {
+        let description = "In the manager of apps you can open and change your default apps.";
+        let sh_description = "Manage your apps";
+
+        let d = new AppData(
+        /*Name*/  APPS_MANAGER_APP,
+        /*Icon app*/ "icon-app-apps-manager",
+        /*Style*/ "color: #ff2c2c",
+        /*Short Desc*/ sh_description,
+        /*Long Desc*/  description,
+        /*Version*/ "1.4.1v"
+        );
+        return d;
+    }
+
     //Close window event
     onCloseEvent() {
         app_mng.updateResOfApp(APPS_MANAGER_APP, parseInt($('#win-' + this.id_win).css('width')), parseInt($('#win-' + this.id_win).css('height')));
@@ -53,7 +69,7 @@ class Win_AppManager extends Window {
         data.sort(this._sortData_);
 
         data.forEach(elem => {
-            if(elem._ext != undefined) {
+            if(elem.ext_list != undefined) {
                 this.pushDefaultApp(elem);
             }
             this.pushApp(elem);
@@ -61,19 +77,25 @@ class Win_AppManager extends Window {
     }
 
     _sortData_(x, y) {
-        return x._name_app.localeCompare(y._name_app);
+        return x.name.localeCompare(y.name);
     }
 
     // push app to default apps with extensions
-    pushDefaultApp(linker) {
+    pushDefaultApp(data) {
+        let exts = "";
+
+        data.ext_list.forEach(ext => {
+            exts += ext.toUpperCase() + ', ';
+        });
+
         let cnt = 
         `<div class="mng-defapp-option">
             <div class="mng-option-group">
-                <i class="${linker._icon_app}" style="${linker._style_icon}"></i>
-                <div class="mng-def-option-name">${linker._name_app}</div>
+                <i class="${data.icon_app}" style="${data.style_icon}"></i>
+                <div class="mng-def-option-name">${data.name}</div>
             </div>
             <div class="mng-def-group">
-                <div class="mng-def-option-ext">${linker._ext.toUpperCase()}</div>
+                <div class="mng-def-option-ext">${exts}</div>
                 <button onclick="">Change</button>
             </div>
         </div>`;
@@ -82,15 +104,15 @@ class Win_AppManager extends Window {
     }
 
     // push app to all category
-    pushApp(linker) {
+    pushApp(data) {
         let cnt = 
         `<div class="mng-defapp-option">
             <div class="mng-option-group">
-                <i class="${linker._icon_app}" style="${linker._style_icon}"></i>
-                <div class="mng-def-option-name">${linker._name_app}</div>
+                <i class="${data.icon_app}" style="${data.style_icon}"></i>
+                <div class="mng-def-option-name">${data.name}</div>
             </div>
             <div class="mng-def-group">
-                <button onclick="app_mng.callApp('${linker._name_app}')">Run App</button>
+                <button onclick="app_mng.callApp('${data.name}')">Run App</button>
             </div>
         </div>`;
 

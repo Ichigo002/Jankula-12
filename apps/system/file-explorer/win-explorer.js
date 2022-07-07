@@ -6,8 +6,8 @@ class Win_Explorer extends Window {
     #_item_cxt_menus_ = [];
     #cnt_menu;
 
-    constructor(width, height, iterator, file_system__, name="File Explorer") {
-        super(iterator, name, width, height, 'icon-folder-open', "color: #f7c96c;");
+    constructor(iter, file_system__) {
+        super(iter, Win_Explorer.getAppData().name, 600, 400, Win_Explorer.getAppData().icon_app, Win_Explorer.getAppData().style_icon);
         this.setMinimalSize(415, 230);
         
         this._saving_file_keeper_ = undefined;
@@ -71,14 +71,31 @@ class Win_Explorer extends Window {
     // rx. ry -> size of window
     // p -> path to file // DELETE 'p' value IF you make app with no extension support
     static caller(x, y, rx, ry, p) {
-        wins.push(new Win_Explorer(rx, ry, iter, file_system));
+        wins.push(new Win_Explorer(iter, file_system));
         wins[iter].setPosition(x, y);
+        wins[iter].resizeTo(rx, ry);
 
         if(p != undefined) {
             let file = file_system.readPath(p);
             // continue using file . . .
         }
         iter++;
+    }
+
+    // Returns App data 
+    static getAppData() {
+        let description = "Explore files and folders. You can edit, modify, delete etc. your files.";
+        let sh_description = "Explore and manage your files";
+
+        let d = new AppData(
+        /*Name*/  EXPLORER_APP,
+        /*Icon app*/ "icon-folder-open",
+        /*Style*/ "color: #f7c96c;",
+        /*Short Desc*/ sh_description,
+        /*Long Desc*/  description,
+        /*Version*/ "4.1.0v",
+        );
+        return d;
     }
 
     onSelectItemEvent(index) { ; }
@@ -359,7 +376,6 @@ class Win_Explorer extends Window {
 
     // Refresh all explorers
     refresh() {
-        console.log('refres')
         $("#handler_event").trigger('exp_refresh');
     }
 

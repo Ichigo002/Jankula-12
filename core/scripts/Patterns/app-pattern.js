@@ -7,7 +7,7 @@
 var NAME_APP = "Pattern"; // Rename to your own app variable
 class AppPattern extends Window {
     constructor(iter) {
-        super(iter, "PATTERN", 600, 400, "icon-default-icon", "");
+        super(iter, AppPattern.getAppData().name, 600, 400, AppPattern.getAppData().icon_app, AppPattern.getAppData().style_icon);
     }
 
     // Called by the AppManager script
@@ -24,6 +24,29 @@ class AppPattern extends Window {
             // continue using file . . .
         }
         iter++;
+    }
+
+    // Returns App data 
+    static getAppData() {
+        let description = "";
+        let sh_description = "";
+
+        let d = new AppData(
+        /*Name*/  NAME_APP,
+        /*Icon app*/ "icon-app-example",
+        /*Style*/ "",
+        /*Short Desc*/ sh_description,
+        /*Long Desc*/  description,
+        /*Version*/ "1.0.0v",
+        /*Ext list*/ ["txt", "txt2", "txt3"],
+        /*Icon File*/ "icon-example"
+        );
+
+        //d.posX = ; // Default position X
+        //d.posY = ; // Default position Y
+        //d.resX = ; // Default Width
+        //d.resY = ; // Default Height
+        return d;
     }
 
     //Close window event

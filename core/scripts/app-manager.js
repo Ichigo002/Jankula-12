@@ -1,8 +1,8 @@
 class AppManager {
-    #app_ext_list;
+    #app_list;
 
     constructor() {
-        this.#app_ext_list = [];
+        this.#app_list = [];
 
         this.default_pos_x = 400;
         this.default_pos_y = 300;
@@ -21,76 +21,56 @@ class AppManager {
     // * ext - handle extension by app
     // * def_resX, def_resY - default resized size of window X & Y
     // * def_posX, def_posY - default position on the desktop of window X & Y
-    addApp(name_app, icon_app, style_icon, app_caller, ext=undefined, def_resX=undefined, def_resY=undefined, def_posX=undefined, def_posY=undefined) {
-        if(name_app == "" || name_app == undefined) {
-            return new ERROR("AppManager -> setDefaultAppFor(...)", "ERROR_MISSING_DATA", `Not typed name of app to set.`);
-        }
-        if(icon_app == "" || icon_app == undefined) {
-            icon_app = "default-icon";
-        }
+    addApp(app_caller) {
         if(app_caller == "" || app_caller == undefined) {
             return new ERROR("AppManager -> setDefaultAppFor(...)", "ERROR_MISSING_DATA", `Not typed app caller.`);
         }
 
-        let l_pos;
-        
-        if(ext == undefined) { // add just app
-            let i_;
-            for (let i = 0; i < this.#app_ext_list.length; i++) {
-                if(this.#app_ext_list.at(i)._name_app.toUpperCase() == name_app.toUpperCase()) {
-                    i_ = i;
-                }
-            }
+        let data = eval(`${app_caller}.getAppData();`);
 
-            if(i_ != undefined) {
-                this.#app_ext_list[i_].change(undefined, name_app, icon_app, style_icon, app_caller);
-                l_pos = i_ + 1;
-            } else {
-                l_pos = this.#app_ext_list.push(new Linker(undefined, name_app, icon_app, style_icon, app_caller));
-            }
-        } else { // add app with default extension
-            ext = ext.toUpperCase();
-            
-            let i_;
-            for (let i = 0; i < this.#app_ext_list.length; i++) {
-                if(this.#app_ext_list.at(i)._ext.toUpperCase() == ext) {
-                    i_ = i;
-                }
-            }
-            if(i_ != undefined) {
-                this.#app_ext_list[i_].change(ext, name_app, icon_app, style_icon, app_file_caller, app_caller);
-                l_pos = i_ + 1;
-            } else {
-                l_pos = this.#app_ext_list.push(new Linker(ext, name_app, style_icon, icon_app, app_caller));
-            }
+        data.posX = data.posX == undefined ? this.default_pos_x : data.posX;
+        data.posY = data.posY == undefined ? this.default_pos_y : data.posY;
+
+        data.resX = data.resX == undefined ? this.default_res_x : data.resX;
+        data.resY = data.resY == undefined ? this.default_res_y : data.resY;
+
+        data.app_caller = app_caller;
+        
+        if(data.ext_list != undefined) { // add just app
+            data.ext_list.forEach(ext => {
+                ext = ext.toUpperCase();
+            });
         }
 
-        this.#app_ext_list[l_pos-1]._posX = def_posX == undefined ? this.default_pos_x : def_posX;
-        this.#app_ext_list[l_pos-1]._posY = def_posY == undefined ? this.default_pos_y : def_posY;
-        
-        this.#app_ext_list[l_pos-1]._resX = def_resX == undefined ? this.default_res_x : def_resX;
-        this.#app_ext_list[l_pos-1]._resY = def_resY == undefined ? this.default_res_y : def_resY;
+        for (let i = 0; i < this.#app_list.length; i++) {
+            if(this.#app_list.at(i).name.toUpperCase() == data.name.toUpperCase()) {
+                return throwErr(new ERROR("AppManager -> addApp(...)", "ERROR_EXISTANCE",`Appwith name '${data.name}' has already existed.`));
+            }
+        }  
+        this.#app_list.push(data);
     }
 
     // Call app by name or extension
     callApp(search) {
         let r;
-        this.#app_ext_list.forEach(link => {
-            if(link._name_app.toUpperCase() == search.toUpperCase()) {
-                eval(`${link._app_caller}.caller(${link._posX}, ${link._posY}, ${link._resX}, ${link._resY})`);
+        this.#app_list.forEach(appd => {
+            if(appd.name.toUpperCase() == search.toUpperCase()) {
+                eval(`${appd.app_caller}.caller(${appd.posX}, ${appd.posY}, ${appd.resX}, ${appd.resY})`);
                 r = iter - 1;
             }
         });
         if(r == undefined) {
-            this.#app_ext_list.forEach(link => {
-                if(link._ext.toUpperCase() == search.toUpperCase()) {
-                    eval(`${link._app_caller}.caller(${link._posX}, ${link._posY}, ${link._resX}, ${link._resY})`);
-                    r = iter - 1;
-                }
+            this.#app_list.forEach(appd => {
+                appd.ext_list.forEach(ext => {
+                    if(ext.toUpperCase() == search.toUpperCase()) {
+                        eval(`${appd.app_caller}.caller(${appd.posX}, ${appd.posY}, ${appd.resX}, ${appd.resY})`);
+                        r = iter - 1;
+                    }
+                });
             });
         }
         if(r == undefined) {
-            r = new ERROR("AppManager -> callAppByName(...)", "ERRO_NOT_FOUND", `Cannot find app with name or extension: '${search}'`);
+            r = new ERROR("AppManager -> callApp(...)", "ERRO_NOT_FOUND", `Cannot find app with name or extension: '${search}'`);
         }
         return r;
         
@@ -103,11 +83,14 @@ class AppManager {
 
         if(f != undefined) {
             f = f.ext();
-            this.#app_ext_list.forEach(link => {
-                if(link._ext.toUpperCase() == f.toUpperCase()) {
-                    eval(`${link._app_caller}.caller(${link._posX}, ${link._posY}, ${link._resX}, ${link._resY}, ${path})`);
-                    r = iter - 1;
-                }
+
+            this.#app_list.forEach(appd => {
+                appd.forEach(ext => {
+                    if(ext.toUpperCase() == f.toUpperCase()) {
+                        eval(`${appd.app_caller}.caller(${appd.posX}, ${appd.posY}, ${appd.resX}, ${appd.resY}, ${path})`);
+                        r = iter - 1;
+                    }
+                });
             });
         }
         if(r == undefined) {
@@ -119,44 +102,46 @@ class AppManager {
 
     // Update position of app after close it
     updatePosOfApp(name_app, x, y) {
-        this.#app_ext_list.forEach(link => {
-            if(link._name_app == name_app) {
-                link._posX = x;
-                link._posY = y;
+        this.#app_list.forEach(appd => {
+            if(appd.name == name_app) {
+                appd.posX = x;
+                appd.posY = y;
             }
         });
     }
 
     // Update size of app after close it
     updateResOfApp(name_app, w, h) {
-        this.#app_ext_list.forEach(link => {
-            if(link._name_app == name_app) {
-                link._resX = w;
-                link._resY = h;
+        this.#app_list.forEach(appd => {
+            if(appd.name == name_app) {
+                appd.resX = w;
+                appd.resY = h;
             }
         });
     }
 
     // Retrive data
     __retrive__() {
-        return this.#app_ext_list;
+        return this.#app_list;
     }
 }
 
-class Linker {
-    constructor(ext, name_app, icon_app, style_icon, app_caller) {
-        this.change(ext, name_app, icon_app, style_icon, app_caller);
-    }
+class AppData { 
+    constructor(name, icon_app, style_icon, short_desc, long_desc, version="1.0.0v", ext_list=undefined, icon_file=undefined) {
+        this.name = name;
+        this.icon_app =  icon_app;
+        this.style_icon = style_icon;
+        this.short_desc = short_desc;
+        this.long_desc = long_desc;
+        this.ver = version;
+        this.ext_list = ext_list;
+        this.icon_file = icon_file;
 
-    change(ext, name_app, icon_app, style_icon, app_caller) {
-        this._ext = ext;
-        this._name_app = name_app;
-        this._icon_app = icon_app;
-        this._style_icon = style_icon;
-        this._app_caller = app_caller;
-        this._posX = undefined;
-        this._posY = undefined;
-        this._resX = undefined;
-        this._resY = undefined;
+        this.posX = undefined;
+        this.posY = undefined;
+        this.resX = undefined;
+        this.resY = undefined;
+
+        this.app_caller = undefined;
     }
 }
