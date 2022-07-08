@@ -51,6 +51,7 @@ class AppManager {
     }
 
     // Call app by name or extension
+    // returns iterator
     callApp(search) {
         let r;
         this.#app_list.forEach(appd => {

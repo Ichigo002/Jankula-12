@@ -63,6 +63,12 @@ class Win_AppManager extends Window {
         $("#win-" + this.id_win + " > .win-content").css("height", parseInt($("#win-" + this.id_win).css("height")) - 29)
     }
 
+    //OVERWRITTEN METHOD
+    duplicate() {
+        let id = app_mng.callApp(APPS_MANAGER_APP);
+        wins[id].setPosition(parseInt($("#win-" + id).css("left")) + 40, parseInt($("#win-" + id).css("top")) + 40)
+    }
+
     // Retrieve data from app manager and display it
     retriveData() {
         let data = app_mng.__retrive__();
