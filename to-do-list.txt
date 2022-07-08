@@ -11,6 +11,10 @@
 
 -->FIX:
 * FDSaver & FDOpener, doesn't work correctly
+* double go into the folder at explorer. Propably GoInto() method is called twice
+* arows doesn't run at explorer
+* duplicating window app manager content & scrollbar
 
 -->ADD:
 * add cutting text if too long to '...'
+* add easier duplicating windows. There's not updated for long time
