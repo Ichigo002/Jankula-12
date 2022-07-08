@@ -100,7 +100,7 @@ class Win_Notebook extends Window {
         /*Short Desc*/ sh_description,
         /*Long Desc*/  description,
         /*Version*/ "2.0.0v",
-        /*Ext list*/ ["txt"],
+        /*Ext list*/ ["txt", "doc", "q"],
         /*Icon File*/ "icon-file-word",
         /*Style File*/ "color: #0540b1"
         );
@@ -116,7 +116,7 @@ class Win_Notebook extends Window {
     // Open file [Menu Option]
     openFile(path, keep) {
         if(path == undefined) {
-            new FDOpener(FILE, `wins[${this.id_win}].openFile(`, ``, file_system);
+            new FDOpener(FILE, `wins[${this.id_win}].openFile(`, ``);
         } else {
             if(keep == undefined && !this.#saved && this.getTxtProperty("cnt") != "") {
                 xquestion("Unsaved document",

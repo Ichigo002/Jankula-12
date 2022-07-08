@@ -7,57 +7,42 @@ class FDOpener {
     // openType: FILE or DIR value
     // action_return_path: method must be like the pattern string: foo(  || without ')'
     // action_cancel: method: foo();
-    constructor(openType, action_return_path, action_cancel, file_system__) {
+    constructor(openType, action_return_path, action_cancel) {
+        let id = app_mng.callApp(EXPLORER_APP);
 
-        if(openType == FILE) {
-            wins.push(new Win_Explorer(500, 350, iter, file_system__, "Open File"));
-            wins[iter].setPosition(100, 100);
-
-            wins[iter].onSelectItemEvent = function(index) {
-                if(this.getPtr().getItemByIndex(this.selected_item).type() == FILE)
+        if(openType == FILE || openType == DIR) {
+            wins[id].onSelectItemEvent = function(index) {
+                if(this.getPtr().getItemByIndex(this.selected_item).type() == openType)
                     $(`#win-${this.id_win} > .win-content > .exp-dialog-bar > input`).val(this.getPtr().getItemByIndex(this.selected_item).getName());
             }
-
-            iter++;
-        } else if (openType == DIR) {
-            wins.push(new Win_Explorer(500, 350, iter, file_system__, "Open Folder"));
-            wins[iter].setPosition(100, 100);
-
-            wins[iter].onSelectItemEvent = function(index) {
-                if(this.getPtr().getItemByIndex(this.selected_item).type() == DIR)
-                    $(`#win-${this.id_win} > .win-content > .exp-dialog-bar > input`).val(this.getPtr().getItemByIndex(this.selected_item).getName());
-            }
-
-            iter++;
         } else {
             throwErr(new ERROR("FDOpener -> constructor()", "ERROR_INVALID_VALUE", `Incorrect openType. Shall be DIR or FILE`))
             return false;
         }
 
-        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button class = "q-btns-no" onclick="FDOpener.execCancelAction('`+action_cancel+`', ${iter - 1})">Cancel</button><button class='q-btns-yes' onclick="FDOpener.execAcceptAction('`+action_return_path+`', ${iter - 1}, '${openType}')">Ok</button></div><input type="text" disabled="disabled"></div>`;
+        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button class = "q-btns-no" onclick="FDOpener.execCancelAction('`+action_cancel+`', ${id})">Cancel</button><button class='q-btns-yes' onclick="FDOpener.execAcceptAction('${action_return_path}', ${id}, '${openType}')">Ok</button></div><input type="text" disabled="disabled"></div>`;
             //<select><option value="all files">All *.*</option></select>
 
-        wins[iter-1].setContent(wins[iter-1].getContent() + content);
-        wins[iter-1].onResizeEvent = function() {
+        $(`#win-${id} > .win-content`).append(content);
+        wins[id].onResizeEvent = function() {
             let h = parseInt($('#win-' + this.id_win).css("height"));
             $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h - 155);
         }
-        wins[iter-1].onResizeEvent();
+        wins[id].onResizeEvent();
 
-        $("#win-" + (iter-1) + " > .win-top > span > i.icon-maximize").remove();
-        $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
+        $("#win-" + (id) + " > .win-top > span > i.icon-maximize").remove();
+        $("#win-" + (id) + " > .win-top > span > i.icon-minimize").remove();
 
-        wins[iter-1].setKeyboardEvents();
-        wins[iter-1].setClickArrowsEvents();
+        wins[id].setClickArrowsEvents();
 
         $(window).keydown(function(e) {
-            let id = iter - 1;
-            if($('#win-' + id).css('z-index') == z_index) {
+            let _id = id;
+            if($('#win-' + _id).css('z-index') == z_index) {
                 if(e.which == 13) { //enter
-                    $('#win-' + id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-yes").trigger("onclick");
+                    $('#win-' + _id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-yes").trigger("onclick");
                 }
                 if(e.which == 27) { //escape
-                    $('#win-' + id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-no").trigger("onclick");
+                    $('#win-' + _id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-no").trigger("onclick");
                 }
             }
         });
@@ -115,35 +100,32 @@ class FDSaver {
             return -1;
         } 
 
-        wins.push(new Win_Explorer(500, 350, iter, file_system__, "Save file"));
-        wins[iter].setPosition(300, 150);
-        wins[iter]._saving_file_keeper_ = file;
-        iter++;
+        let id = app_mng.callApp(EXPLORER_APP);
+        wins[id]._saving_file_keeper_ = file;
 
-        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button class="q-btns-no" onclick="FDSaver.execCancelAction('${action_cancel}', ${iter - 1})">Cancel</button><button class="q-btns-yes" onclick="FDSaver.execAcceptAction('`+action_return_path+`', ${iter - 1}, true)">Ok</button></div><input type="text" value="${file.getName()}"></div>`;
+        let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button class="q-btns-no" onclick="FDSaver.execCancelAction('${action_cancel}', ${id})">Cancel</button><button class="q-btns-yes" onclick="FDSaver.execAcceptAction('`+action_return_path+`', ${id}, true)">Ok</button></div><input type="text" value="${file.getName()}"></div>`;
             //<select><option value="all files">All *.*</option></select>
 
-        wins[iter-1].setContent(wins[iter-1].getContent() + content);
-        wins[iter-1].onResizeEvent = function() {
+        $(`#win-${id} > .win-content`).append(content);
+        wins[id].onResizeEvent = function() {
             let h = parseInt($('#win-' + this.id_win).css("height"));
             $('#win-' + this.id_win + '> .win-content > .exp-wrapper').css("height", h - 155);
         }
-        wins[iter-1].onResizeEvent();
+        wins[id].onResizeEvent();
 
-        $("#win-" + (iter-1) + " > .win-top > span > i.icon-maximize").remove();
-        $("#win-" + (iter-1) + " > .win-top > span > i.icon-minimize").remove();
+        $("#win-" + (id) + " > .win-top > span > i.icon-maximize").remove();
+        $("#win-" + (id) + " > .win-top > span > i.icon-minimize").remove();
 
-        wins[iter-1].setKeyboardEvents();
-        wins[iter-1].setClickArrowsEvents();
+        wins[id].setClickArrowsEvents();
 
         $(window).keydown(function(e) {
-            let id = iter - 1;
-            if($('#win-' + id).css('z-index') == z_index) {
+            let _id = id;
+            if($('#win-' + _id).css('z-index') == z_index) {
                 if(e.which == 13) { //enter
-                    $('#win-' + id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-yes").trigger("onclick");
+                    $('#win-' + _id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-yes").trigger("onclick");
                 }
                 if(e.which == 27) { //escape
-                    $('#win-' + id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-no").trigger("onclick");
+                    $('#win-' + _id + " > .win-content > .exp-dialog-bar > .exp-wrapper-btns > .q-btns-no").trigger("onclick");
                 }
             }
         });
@@ -175,7 +157,7 @@ class FDSaver {
 
     // save file without any GUI in the default system file or in the chosen system.
     static saveFile(__file, path, sys) {
-        let file = new File(__file.getName(), __file.getIcon());
+        let file = new File(__file.getName());
         file.overwriteFile(__file.readFile());
 
         if(sys.existPath(path)) {

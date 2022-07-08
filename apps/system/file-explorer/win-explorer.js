@@ -132,11 +132,16 @@ class Win_Explorer extends Window {
                     wins[id].goInto();
                 }
                 if(e.which == 38) { //up arrow
-                    if(wins[id].selected_item > 0) {
+                    if(wins[id].getPtr().getBinders().length == 1) {wins[id].SelectItem(0);}
+                    if(wins[id].selected_item == undefined) { wins[id].selected_item = 0; }
+                    if(wins[id].selected_item >  0) {
                         wins[id].SelectItem(wins[id].selected_item - 1);
                     }
+                   
                 }
                 if(e.which == 40) { //down arrow
+                    if(wins[id].getPtr().getBinders().length == 1) {wins[id].SelectItem(0);}
+                    if(wins[id].selected_item == undefined) { wins[id].selected_item = 0; }
                     if(wins[id].selected_item < wins[id].items_length - 1) {
                         wins[id].SelectItem(wins[id].selected_item + 1);
                     }
@@ -295,10 +300,6 @@ class Win_Explorer extends Window {
             $('#exp-item-' + this.selected_item + '-' + this.id_win).removeClass("exp-item-selected");
         this.selected_item = index;
         this.onSelectItemEvent(index);
-
-        $('#exp-item-' + index + '-' + this.id_win).on("dblclick", function() {
-            wins[id].goInto();
-        });
     }
 
     // Make new item.
@@ -347,6 +348,9 @@ class Win_Explorer extends Window {
                         let r = this.#ptr.mkfile(_res);
                         if(ErrorHandler.check(r) && r.type() == "ERROR_MUSTN_ADDING") {
                             xerror("Couldn't create new item", "No file can be created in this directory because it is forbidden.")
+                        }
+                        if(ErrorHandler.check(r) && r.type() == "ERROR_ALREADY_EXIST_NAME") {
+                            xerror("Couldn't create new item", "File with this name has already existed in this folder.")
                         }
                         this.refresh();
                         break;
@@ -436,6 +440,14 @@ class Win_Explorer extends Window {
         }
         
         $('#win-' + this.id_win + " > .win-content > .exp-wrapper > .exp-content").html(cnt);
+
+        let id = this.id_win;
+        for (let i = 0; i < list.length; i++) {
+            $('#exp-item-' + i + '-' + id).on("dblclick", function() {
+                wins[id].goInto();
+            });
+        }
+        
     }
 
     //Create menu for specific item

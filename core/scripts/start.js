@@ -32,7 +32,7 @@ function Start() {
         setApps();
 
         app_mng.callApp(APPS_MANAGER_APP);
-        app_mng.callApp(EXPLORER_APP);
+        app_mng.callApp(NOTEBOOK_APP);
 }
 
 function setApps() {

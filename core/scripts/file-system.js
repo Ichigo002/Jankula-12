@@ -576,7 +576,7 @@ class File extends BinderObject {
     #data = "";
 
     // VALUE: name => name of new file
-    constructor(name, ico) {
+    constructor(name) {
         super(name); // calls constructor of BinderObject
 
         this.rename(name);

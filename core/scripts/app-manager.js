@@ -139,6 +139,9 @@ class AppManager {
             }
             
         });
+        if(data == undefined) {
+            return new AppData(undefined, undefined, undefined, undefined, undefined, undefined, undefined, "icon-file", "color: #b99d7b");
+        }
         return data;
     }
 }

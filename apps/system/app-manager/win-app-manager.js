@@ -34,6 +34,7 @@ class Win_AppManager extends Window {
         wins[iter].setPosition(x, y);
         wins[iter].resizeTo(rx, ry);
         iter++;
+
     }
 
     // Returns App data 
@@ -49,6 +50,8 @@ class Win_AppManager extends Window {
         /*Long Desc*/  description,
         /*Version*/ "1.4.1v"
         );
+        d.posX = 100;
+        d.posY = 100;
         return d;
     }
 

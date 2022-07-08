@@ -78,8 +78,21 @@ class Win_Properties extends Window {
     }
 
     // Set main icon in the preferences
-    setIcon(icon_class) {
+    setIcon(icon_class, style) {
         $("#win-" + this.id_win + " > .win-content > .prop-top > i").removeClass('icon-settings').addClass(icon_class);
+        let prop="", v="", m=false;
+        for (let i = 0; i < style.length; i++) {
+            if(style.at(i) == ":") {
+                m = true;
+                i++;
+            }
+            if(!m) { prop += style.at(i); }
+            if(m) { v += style.at(i); }
+            
+        }
+
+        console.log(prop, v);
+        $("#win-" + this.id_win + " > .win-content > .prop-top > i").css(prop, v);
         return this;
     }
 
@@ -106,12 +119,14 @@ class Win_Properties extends Window {
     // Display file
     displayFileProperties(_file, path) {
         this.file = _file;
-        this.setIcon(_file.getIcon());
         this.setNameProperty(_file.getName());
         if(_file.type() == FILE) {
             this.pushNewValue("Type", (_file.ext() != "")? _file.ext().toUpperCase() + " File" : _file.type());
+            this.setIcon(app_mng.getDataByExt(_file.ext()).icon_file, app_mng.getDataByExt(_file.ext()).style_file);
         } else {
             this.pushNewValue("Type", _file.type());
+            this.setIcon(_file.icon, _file.style_icon);
+
         }
 
         this.pushSeparator();
