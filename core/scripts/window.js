@@ -133,6 +133,7 @@ class Window {
         let id = this.id_win;
 
         $('#win-' + id).on("mousedown", function() {
+            console.log(id, wins[id]);
             wins[id].goTop();
         });
 
@@ -258,6 +259,8 @@ class Window {
 
         this.setPositionResizePoint();
         this.onResizeEvent();
+        $("#win-" + this.id_win + " > .win-content").css("height", parseInt($("#win-" + this.id_win).css("height")) - 29)
+
     }
 
     // Set content of window
@@ -339,6 +342,8 @@ class Window {
             this.setPositionResizePoint();
         }
         this.onResizeEvent();
+        $("#win-" + this.id_win + " > .win-content").css("height", parseInt($("#win-" + this.id_win).css("height")) - 29);
+
     }
 
     // Close the window

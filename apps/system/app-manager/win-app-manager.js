@@ -20,10 +20,7 @@ class Win_AppManager extends Window {
 
         this.setContent(cnt);
 
-        $("#win-" + this.id_win + " > .win-content").css("overflow-y", "auto");
-
         this.retriveData();
-
     }
 
     // Called by the AppManager script
@@ -61,15 +58,13 @@ class Win_AppManager extends Window {
         app_mng.updatePosOfApp(APPS_MANAGER_APP, parseInt($('#win-' + this.id_win).css('left')), parseInt($('#win-' + this.id_win).css('top')));
     }
 
-    // OVERWRITTEN EVENT
-    onResizeEvent() {
-        $("#win-" + this.id_win + " > .win-content").css("height", parseInt($("#win-" + this.id_win).css("height")) - 29)
-    }
-
     //OVERWRITTEN METHOD
     duplicate() {
         let id = app_mng.callApp(APPS_MANAGER_APP);
-        wins[id].setPosition(parseInt($("#win-" + id).css("left")) + 40, parseInt($("#win-" + id).css("top")) + 40)
+
+        wins[id].setPosition(
+            parseInt($("#win-" + this.id_win).css("left")) + 40, 
+            parseInt($("#win-" + this.id_win).css("top")) + 40);
     }
 
     // Retrieve data from app manager and display it

@@ -90,8 +90,8 @@ class Win_Explorer extends Window {
         /*Version*/ "4.1.0v",
         );
 
-        d.posX = 300;
-        d.posY = 100;
+        d.posX = 50;
+        d.posY = 430;
         return d;
     }
 
@@ -181,7 +181,7 @@ class Win_Explorer extends Window {
 
     // OVERWRITTEN EVENT
     duplicate() {
-        let id = stapp("explorer");
+        let id = app_mng.callApp(EXPLORER_APP);
     
         wins[id].setStartingPath(this.#ptr.getPath());
         wins[id].goTop();

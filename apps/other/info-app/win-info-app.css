@@ -1,0 +1,64 @@
+.info-cnt {
+    padding: 0 20px 0 10px;
+    text-align: justify;
+    font-size: 40px;
+    letter-spacing: 2px;
+    background-color: #191919;
+    color: #ffffff;
+    font-family: 'Raindrops';
+    border-radius: 0 4px 0 4px;
+}
+
+.info-main-header {
+    font-size: 50px; 
+    margin-top: 15px;
+    margin-bottom: 165px;
+    text-align: center; 
+    font-style: italic;
+    text-shadow: 2px 2px 5px #ffd6d6;
+}
+
+.info-bold {
+    font-weight: bold;
+}
+
+.info-tab {
+    margin-left: 20px;
+    width: 5px;
+    height: 5px;
+    float: left;
+}
+
+.info-name-sys {
+    color: #3e0000;
+    margin-bottom: 180px;
+    font-size: 70px;
+    font-family: 'Bombing';
+    letter-spacing: 10px;
+    text-align: center;
+    text-shadow: 0px -13px 12px rgba(253, 255, 0, 1), 
+    0px 5px 12px rgba(255, 0, 0, 1), 
+    0px 0px 12px rgb(255, 149, 0);
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+}
+
+.info-link {
+    color: #e03636;
+    text-decoration: none;
+    text-shadow: 0px 0px 8px #9f0000;
+
+    -webkit-transition: color 0.2s ease-out;
+    -moz-transition: color 0.2s ease-out;
+    -ms-transition: color 0.2s ease-out;
+    -o-transition: color 0.2s ease-out;
+    transition: color 0.2s ease-out;
+}
+
+.info-link:hover {
+    color: #ff9696;
+}

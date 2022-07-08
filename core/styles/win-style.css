@@ -15,6 +15,7 @@
     text-align: justify;
     
     color: rgb(0, 0, 0);
+    overflow-y: auto;
 }
 
 .win-top {

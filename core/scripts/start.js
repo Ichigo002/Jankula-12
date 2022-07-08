@@ -31,14 +31,19 @@ function Start() {
         basicFiles();
         setApps();
 
-        app_mng.callApp(APPS_MANAGER_APP);
+        let id = app_mng.callApp(APPS_MANAGER_APP);
+        wins[id].action_close();
+        
+        app_mng.callApp(EXPLORER_APP);
         app_mng.callApp(NOTEBOOK_APP);
+        app_mng.callApp(INFO_APP);
 }
 
 function setApps() {
+    app_mng.addApp("Win_AppManager");
     app_mng.addApp("Win_Notebook");
     app_mng.addApp("Win_Explorer");
-    app_mng.addApp("Win_AppManager");
+    app_mng.addApp("Win_InfoApp");
 }
 
 function basicFiles() {

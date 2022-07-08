@@ -54,20 +54,28 @@ class AppManager {
     // returns iterator
     callApp(search) {
         let r;
-        this.#app_list.forEach(appd => {
+        for (let i = 0; i < this.#app_list.length; i++) {
+            const appd = this.#app_list[i];
+            console.log(this.#app_list[i], appd.name.toUpperCase(),"  ==  ", search.toUpperCase(), this.#app_list.length);
             if(appd.name.toUpperCase() == search.toUpperCase()) {
                 eval(`${appd.app_caller}.caller(${appd.posX}, ${appd.posY}, ${appd.resX}, ${appd.resY})`);
                 r = iter - 1;
             }
-        });
+        }
+        //this.#app_list.forEach(appd => {
+            
+       // });
         if(r == undefined) {
+            
             this.#app_list.forEach(appd => {
-                appd.ext_list.forEach(ext => {
-                    if(ext.toUpperCase() == search.toUpperCase()) {
-                        eval(`${appd.app_caller}.caller(${appd.posX}, ${appd.posY}, ${appd.resX}, ${appd.resY})`);
-                        r = iter - 1;
-                    }
-                });
+                if(this.#app_list == undefined) {
+                    appd.ext_list.forEach(ext => {
+                        if(ext.toUpperCase() == search.toUpperCase()) {
+                            eval(`${appd.app_caller}.caller(${appd.posX}, ${appd.posY}, ${appd.resX}, ${appd.resY})`);
+                            r = iter - 1;
+                        }
+                    });
+                }
             });
         }
         if(r == undefined) {

@@ -10,6 +10,10 @@
 * complete notepad toolbar
 
 -->FIX:
+* twice creating of appManager after callApp(). If not succes then delete and created new
+* fix scrollbar notebook. Hide its
 
 -->ADD:
+* add opening files by explorer
+* add opening file in the caller(...) at Notebook!
 * add in the mkfile(...) at DirFollower error for "ERROR_ALREADY_EXIST_NAME" if name of file has already existed in the folder where will should be created file

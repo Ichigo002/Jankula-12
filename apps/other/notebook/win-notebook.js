@@ -69,6 +69,9 @@ class Win_Notebook extends Window {
         this.fontReset();
 
         this.updateTitleStatus();
+
+        $("#win-" + this.id_win + " > .win-content").css("overflow-x", "hidden");
+        $("#win-" + this.id_win + " > .win-content").css("overflow-y", "hidden");
     }
 
     // Called by the AppManager script
@@ -100,10 +103,13 @@ class Win_Notebook extends Window {
         /*Short Desc*/ sh_description,
         /*Long Desc*/  description,
         /*Version*/ "2.0.0v",
-        /*Ext list*/ ["txt", "doc", "q"],
+        /*Ext list*/ ["txt"],
         /*Icon File*/ "icon-file-word",
         /*Style File*/ "color: #0540b1"
         );
+        d.posX = 1200;
+        d.posY = 400;
+
         return d;
     }
 

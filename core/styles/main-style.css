@@ -23,6 +23,16 @@
     src: url("./../fonts/CourierPrime-Regular.ttf");
 }
 
+@font-face {
+    font-family: 'Bombing';
+    src: url("./../fonts/Bombing.ttf");
+}
+
+@font-face {
+    font-family: 'Raindrops';
+    src: url("./../fonts/Raindrops.ttf");
+}
+
 /*SCROLL BAR CSS*/
 /* width */
 ::-webkit-scrollbar {
