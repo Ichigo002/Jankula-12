@@ -32,7 +32,7 @@ class Win_InfoApp extends Window {
         <p>On the bottom of desktop you can see the taskbar, There are showed up all apps currnetly running or apps pinned to it.</p>
         <p>In the center obviously is your working area with windows.</p>
         <p>Windows are movable, so if you'd like to move window, you'll have to hold the dark bar on the top of that one. Also resizing is possible. Only need to hold and move the light-gray point on the grey edge in the right-bootom side to resize.</p>
-        <p style="color: #84ab44">This short tutorial must be for you enough because I'm to lazy to write more.</p>`;
+        <p style="color: #84ab44">This short tutorial must be enough for you because I'm to lazy to write more.</p>`;
 
         this.setContent(cnt);
 
