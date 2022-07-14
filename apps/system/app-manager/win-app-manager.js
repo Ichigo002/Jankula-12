@@ -69,7 +69,11 @@ class Win_AppManager extends Window {
 
     // Retrieve data from app manager and display it
     retriveData() {
-        let data = app_mng.__retrive__();
+        let data = [];
+        app_mng.__retrive__().forEach(e => {
+            data.push(e);
+        });
+        
         data.sort(this._sortData_);
 
         data.forEach(elem => {
