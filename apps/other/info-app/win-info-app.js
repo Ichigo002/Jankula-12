@@ -10,9 +10,31 @@ class Win_InfoApp extends Window {
         super(iter, Win_InfoApp.getAppData().name, 600, 400, Win_InfoApp.getAppData().icon_app, Win_InfoApp.getAppData().style_icon);
 
         let cnt = 
-        ``;
+        `<div class="info-main-header">Hey, Welcome in the system</div>
+        <div class="info-name-sys info-bold">JANKULA-12</div>
+        <p style="margin-bottom: 80px;">
+            <i class="icon-down-arrow" style="font-size: 21px; margin-right: -12px;"></i>
+            <span style="font-size: 35px;">However you've gotta know</span>
+            <i class="icon-down-arrow" style="font-size: 21px;"></i>
+        </p>
+        <p>System has been written only by one person <a class="info-link" href="https://naomi03.ga" target="_blank">Wiktor B.</a> and he keeps developing it. He's started making this since April 8, 2022.</p>
+        <p>Jankula-12 is free open-source system for everyone, so if you'd like to see code, you'll find it <a class="info-link" href="https://github.com/Ichigo002/Jankula-12.git" target="_blank">here</a></p>
 
-        this.setContent($("#ifno").html());
+        <p>I'm sure you've already noticed all system is enough quite inspired Windows 11 because my system is the competition. That's why Jankula 12 contains the '12' in the name</p>
+
+        <p class="info-link" style="cursor: pointer;" onclick="app_mng.callApp(APPS_MANAGER_APP);">Run Manager Run for fun!</p>
+
+        <p style="margin-bottom: 80px;">
+            <i class="icon-down-arrow" style="font-size: 21px; margin-right: -12px;"></i>
+            <span style="font-size: 35px;">Tutorial for stubborn</span>
+            <i class="icon-down-arrow" style="font-size: 21px;"></i>
+        </p>
+        <p>On the bottom of desktop you can see the taskbar, There are showed up all apps currnetly running or apps pinned to it.</p>
+        <p>In the center obviously is your working area with windows.</p>
+        <p>Windows are movable, so if you'd like to move window, you'll have to hold the dark bar on the top of that one. Also resizing is possible. Only need to hold and move the light-gray point on the grey edge in the right-bootom side to resize.</p>
+        <p style="color: #84ab44">This short tutorial must be for you enough because I'm to lazy to write more.</p>`;
+
+        this.setContent(cnt);
 
         $("#win-" + this.id_win + " > .win-content").addClass("info-cnt");
     }

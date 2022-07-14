@@ -75,6 +75,7 @@ class ContextMenu {
             }
             
             //Bottom border
+            console.log(posY + $('#cxtm').outerHeight(),"'>'", parseInt($("body").css("height")) - 245);
             if(posY + $('#cxtm').outerHeight() > parseInt($("body").css("height")) - 245) {
                 this.setActiveCorner("left-bottom");
                 $('#cxtm').css('top', posY - $('#cxtm').outerHeight() - 3);
