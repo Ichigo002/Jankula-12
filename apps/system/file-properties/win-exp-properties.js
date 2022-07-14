@@ -1,7 +1,7 @@
 class Win_Properties extends Window {
     constructor(iter) {
         super(iter, "Properties", 400, AUTO_RESIZE, 'icon-settings', 'color: #24ebff;');
-        this.setPosition(400, 430);
+        this.setPosition(500, 230);
 
         this.file;
 
@@ -91,7 +91,6 @@ class Win_Properties extends Window {
             
         }
 
-        console.log(prop, v);
         $("#win-" + this.id_win + " > .win-content > .prop-top > i").css(prop, v);
         return this;
     }
@@ -120,7 +119,22 @@ class Win_Properties extends Window {
     displayFileProperties(_file, path) {
         this.file = _file;
         this.setNameProperty(_file.getName());
+        
         if(_file.type() == FILE) {
+            let app;
+            app_mng.__retrive__().forEach(appd => {
+                if(appd.ext_list != undefined) {
+                    appd.ext_list.forEach(_ext => {
+                        if(_ext.toUpperCase() == _file.ext().toUpperCase()) {
+                            app = appd;
+                        }
+                    });
+                }
+                
+            });
+
+            this.pushNewValue("Opens with",app == undefined ? "None" : `<i class="${app.icon_app}" style="${app.style_icon} background-color: #4e4e4e; border-radius: 5px;"></i> ${app.name}`);
+
             this.pushNewValue("Type", (_file.ext() != "")? _file.ext().toUpperCase() + " File" : _file.type());
             this.setIcon(app_mng.getDataByExt(_file.ext()).icon_file, app_mng.getDataByExt(_file.ext()).style_file);
         } else {

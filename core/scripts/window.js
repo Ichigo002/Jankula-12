@@ -133,7 +133,6 @@ class Window {
         let id = this.id_win;
 
         $('#win-' + id).on("mousedown", function() {
-            console.log(id, wins[id]);
             wins[id].goTop();
         });
 

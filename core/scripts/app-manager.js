@@ -56,7 +56,6 @@ class AppManager {
         let r;
         for (let i = 0; i < this.#app_list.length; i++) {
             const appd = this.#app_list[i];
-            console.log(this.#app_list[i], appd.name.toUpperCase(),"  ==  ", search.toUpperCase(), this.#app_list.length);
             if(appd.name.toUpperCase() == search.toUpperCase()) {
                 eval(`${appd.app_caller}.caller(${appd.posX}, ${appd.posY}, ${appd.resX}, ${appd.resY})`);
                 r = iter - 1;
@@ -66,7 +65,6 @@ class AppManager {
             
        // });
         if(r == undefined) {
-            
             this.#app_list.forEach(appd => {
                 if(this.#app_list == undefined) {
                     appd.ext_list.forEach(ext => {
@@ -94,16 +92,20 @@ class AppManager {
             f = f.ext();
 
             this.#app_list.forEach(appd => {
-                appd.forEach(ext => {
-                    if(ext.toUpperCase() == f.toUpperCase()) {
-                        eval(`${appd.app_caller}.caller(${appd.posX}, ${appd.posY}, ${appd.resX}, ${appd.resY}, ${path})`);
-                        r = iter - 1;
-                    }
-                });
+                if(appd.ext_list != undefined) {
+                    appd.ext_list.forEach(_ext => {
+                        if(_ext.toUpperCase() == f.toUpperCase()) {
+                            eval(`${appd.app_caller}.caller(${appd.posX}, ${appd.posY}, ${appd.resX}, ${appd.resY}, '${path}')`);
+                            r = iter - 1;
+                        }
+                    });
+                }
+                
             });
         }
         if(r == undefined) {
-            r = new ERROR("AppManager -> openByApp(...)", "ERRO_NOT_FOUND", `Cannot find app with extension: '${f}'`);
+            // TO DO LIST FO APPS IN WHAT WAY YOU'D LIKE TO OPEN
+            r = new ERROR("AppManager -> openByApp(...)", "ERROR_NOT_FOUND", `Cannot find app with extension: '${f}'`);
         }
 
         return r;

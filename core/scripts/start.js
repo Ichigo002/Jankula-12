@@ -31,8 +31,8 @@ function Start() {
         basicFiles();
         setApps();
         
-        app_mng.callApp(APPS_MANAGER_APP);
-        //app_mng.callApp(EXPLORER_APP);
+        //app_mng.callApp(APPS_MANAGER_APP);
+        app_mng.callApp(EXPLORER_APP);
         //app_mng.callApp(NOTEBOOK_APP);
         //app_mng.callApp(INFO_APP);
 }

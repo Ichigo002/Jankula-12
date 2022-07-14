@@ -9,12 +9,15 @@ class FDOpener {
     // action_cancel: method: foo();
     constructor(openType, action_return_path, action_cancel) {
         let id = app_mng.callApp(EXPLORER_APP);
+        wins[id].disableOpenFile();
+        
 
         if(openType == FILE || openType == DIR) {
             wins[id].onSelectItemEvent = function(index) {
                 if(this.getPtr().getItemByIndex(this.selected_item).type() == openType)
                     $(`#win-${this.id_win} > .win-content > .exp-dialog-bar > input`).val(this.getPtr().getItemByIndex(this.selected_item).getName());
             }
+            wins[id].changeTitle(`Open ${openType == FILE ? 'File' : 'Folder'}`);
         } else {
             throwErr(new ERROR("FDOpener -> constructor()", "ERROR_INVALID_VALUE", `Incorrect openType. Shall be DIR or FILE`))
             return false;
@@ -30,8 +33,11 @@ class FDOpener {
         }
         wins[id].onResizeEvent();
 
-        $("#win-" + (id) + " > .win-top > span > i.icon-maximize").remove();
-        $("#win-" + (id) + " > .win-top > span > i.icon-minimize").remove();
+        $("#win-" + id + " > .win-top > span > i.icon-maximize").remove();
+        $("#win-" + id + " > .win-top > span > i.icon-minimize").remove();
+
+        $("#win-" + id + " > .win-content").css("overflow-x", "hidden");
+        $("#win-" + id + " > .win-content").css("overflow-y", "hidden");
 
         wins[id].setClickArrowsEvents();
 
@@ -99,9 +105,9 @@ class FDSaver {
             console.error("file value in the FDSaver is invalid to correctly run.");
             return -1;
         } 
-
         let id = app_mng.callApp(EXPLORER_APP);
         wins[id]._saving_file_keeper_ = file;
+        wins[id].changeTitle(`Save File`);
 
         let content = `<div class="exp-dialog-bar"><div class="exp-wrapper-btns"><button class="q-btns-no" onclick="FDSaver.execCancelAction('${action_cancel}', ${id})">Cancel</button><button class="q-btns-yes" onclick="FDSaver.execAcceptAction('`+action_return_path+`', ${id}, true)">Ok</button></div><input type="text" value="${file.getName()}"></div>`;
             //<select><option value="all files">All *.*</option></select>
@@ -113,8 +119,11 @@ class FDSaver {
         }
         wins[id].onResizeEvent();
 
-        $("#win-" + (id) + " > .win-top > span > i.icon-maximize").remove();
-        $("#win-" + (id) + " > .win-top > span > i.icon-minimize").remove();
+        $("#win-" + id + " > .win-top > span > i.icon-maximize").remove();
+        $("#win-" + id + " > .win-top > span > i.icon-minimize").remove();
+
+        $("#win-" + id + " > .win-content").css("overflow-x", "hidden");
+        $("#win-" + id + " > .win-content").css("overflow-y", "hidden");
 
         wins[id].setClickArrowsEvents();
 

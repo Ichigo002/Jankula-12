@@ -5,6 +5,7 @@ class Win_Explorer extends Window {
     #ptr;
     #_item_cxt_menus_ = [];
     #cnt_menu;
+    #dsbl_open_f
 
     constructor(iter, file_system__) {
         super(iter, Win_Explorer.getAppData().name, 600, 400, Win_Explorer.getAppData().icon_app, Win_Explorer.getAppData().style_icon);
@@ -13,6 +14,7 @@ class Win_Explorer extends Window {
         this._saving_file_keeper_ = undefined;
         this.selected_item = 0;
         this.#ptr = new DirFollower(file_system__);
+        this.#dsbl_open_f = false;
         this.items_length = 0;
 
         let newop = new MenuTemplate("Explorer Splitter Menu [New]");
@@ -418,14 +420,16 @@ class Win_Explorer extends Window {
 
             if(_t != 'folder') {
                 let appdata = app_mng.getDataByExt(_t);
-                if(appdata != undefined) {
-                    ico = appdata.icon_file;
-                    style = appdata.style_file;
-                }
+                ico = appdata.icon_file;
+                style = appdata.style_file;
+                list[i].icon = ico;
+                list[i].style_icon = style;
             } else {
-                
                 ico = list[i].icon == undefined ? "icon-folder-open" : list[i].icon;
                 style = list[i].style_icon == undefined ? "color: #ffa000" : list[i].style_icon;
+
+                list[i].icon == undefined ? list[i].icon = ico : list[i];
+                list[i].style_icon == undefined ? list[i].style_icon = style : list[i];
             }
 
             for (let i = 0; i < _t.length; i++) {
@@ -442,12 +446,25 @@ class Win_Explorer extends Window {
         $('#win-' + this.id_win + " > .win-content > .exp-wrapper > .exp-content").html(cnt);
 
         let id = this.id_win;
+        let dsbl = this.#dsbl_open_f;
         for (let i = 0; i < list.length; i++) {
+            let item = list[i];
             $('#exp-item-' + i + '-' + id).on("dblclick", function() {
-                wins[id].goInto();
-            });
+                if(item.type() == DIR) {
+                    wins[id].goInto();
+                } else {
+                    if(!dsbl) {
+                    eval("ErrorHandler.throwIf(app_mng.openByApp('"+wins[id].getPtr().getPath()+item.getName()+"'))");
+                    }
+            }
+        });
         }
         
+        
+    }
+
+    disableOpenFile() {
+        this.#dsbl_open_f = true;
     }
 
     //Create menu for specific item
@@ -455,7 +472,7 @@ class Win_Explorer extends Window {
         let menu;
         switch(item.type()) {
             case DIR:
-                menu = new MenuTemplate('Folder :: ' + item.name);
+                menu = new MenuTemplate('Folder :: ' + item.getName());
                 menu.pushNewOption("Open", 'wins['+this.id_win+'].goInto()');
                 if(item.checkAttr(CHANGEABLE_NAME)) menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
                 if(item.checkAttr(REMOVABLE)) menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
@@ -468,8 +485,8 @@ class Win_Explorer extends Window {
                 menu.pushNewOption("Properties", 'wins['+this.id_win+'].openProp()');
             break;
             case FILE:
-                menu = new MenuTemplate('File ::   ' + item.name);
-                menu.pushNewOption("Open", null);
+                menu = new MenuTemplate('File ::   ' + item.getName());
+                menu.pushNewOption("Open", "ErrorHandler.throwIf(app_mng.openByApp('"+this.#ptr.getPath()+item.getName()+"'))");
                 if(item.checkAttr(CHANGEABLE_NAME)) menu.pushNewOption("Rename", 'wins['+this.id_win+'].renameItem()');
                 if(item.checkAttr(REMOVABLE)) menu.pushNewOption("Delete", 'wins['+this.id_win+'].deleteItem()');
                 menu.pushNewSeparator();

@@ -77,16 +77,14 @@ class Win_Notebook extends Window {
     // Called by the AppManager script
     // x, y -> coordinates of window
     // rx. ry -> size of window
-    // p -> path to file // DELETE 'p' value IF you make app with no extension support
+    // p -> path to file
     static caller(x, y, rx, ry, p) {
         wins.push(new Win_Notebook(iter));
         wins[iter].setPosition(x, y);
         wins[iter].resizeTo(rx, ry);
 
         if(p != undefined) {
-            alert(p);
-            let file = file_system.readPath(p);
-            // continue using file . . .
+            wins[iter].openFile(p);
         }
         iter++;
     }
@@ -130,8 +128,8 @@ class Win_Notebook extends Window {
                 `wins[${this.id_win}].openFile("${path}", true)`, 
                 ``);
             } else {
-                //this.#last_path = path;
-                this.#curr_file = FDOpener.openFile(path,file_system);
+                //this.#last_path = path; CREATE ERROR DURING SAVING
+                this.#curr_file = FDOpener.openFile(path, file_system);
                 this.setTxtProperty("cnt", this.#curr_file.readFile());
                 this.updateTitleStatus();
             }
@@ -144,14 +142,17 @@ class Win_Notebook extends Window {
         if(this.#last_path == undefined) {
             this.saveAsFile();
         } else {
+            this.#saved = true;
             this.#curr_file.overwriteFile(this.getTxtProperty("cnt"));
             ErrorHandler.throwIf(FDSaver.saveFile(this.#curr_file, this.#last_path, file_system));
+            this.updateTitleStatus();
         }
     }
 
     // Std Save file [Menu Option]
     saveAsFile(path) {
         if(path == undefined) {
+            this.updateTitleStatus();
             this.#curr_file.overwriteFile(this.getTxtProperty("cnt"));
             new FDSaver(this.#curr_file, `wins[${this.id_win}].saveAsFile(`, ``, file_system);
         } else {
