@@ -17,7 +17,7 @@ class Win_InfoApp extends Window {
             <span style="font-size: 35px;">However you've gotta know</span>
             <i class="icon-down-arrow" style="font-size: 21px;"></i>
         </p>
-        <p>System has been written only by one person <a class="info-link" href="https://naomi03.ga" target="_blank">Wiktor B.</a> and he keeps developing it. He's started making this since April 8, 2022.</p>
+        <p>System has been written only by one person and he keeps developing it. He's started making this since April 8, 2022.</p>
         <p>Jankula-12 is free open-source system for everyone, so if you'd like to see code, you'll find it <a class="info-link" href="https://github.com/Ichigo002/Jankula-12.git" target="_blank">here</a></p>
 
         <p>I'm sure you've already noticed all system is enough quite inspired Windows 11 because my system is the competition. That's why Jankula 12 contains the '12' in the name</p>
