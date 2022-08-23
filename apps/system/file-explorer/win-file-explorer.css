@@ -101,8 +101,14 @@
 }
 
 .exp-item {
-    width: calc(100% - 7.5px);
-    height: 20px;
+    /* border-box is a very useful CSS property. */
+    /* It removes the need to have to offset a width/height with a pixel amout */
+    box-sizing: border-box;
+    
+    /* width: calc(100% - 7.5px); */
+    width: 100%;
+    min-width: max-content;
+    height: 24px;
     padding: 2px;
     padding-left: 5px;
     background-color: #fff;
@@ -117,18 +123,28 @@
 .exp-item:hover {
     background-color: #fffad6;
     border: 1.5px solid #f2c172;    
-    padding: 0.5px;
-    padding-left: 3.5px;
+    padding: 1px;
+    padding-left: 8px;
 }
 
 .exp-item-name {
     float: left;
     color: #000;
+    margin-left: 0px;
+}
+.exp-item-barinfo .exp-item-name {
+    margin-left: 10px;
+}
+.exp-item-barinfo .exp-item-date {
+    margin-right: 10px;
+}
+.exp-item-barinfo .exp-item-type {
+    margin-right: 50px;
 }
 
 .exp-item-date {
     float: right;
-    margin-right: 27px;
+    margin-right: 8px;
 }
 
 .exp-item-type {
@@ -140,7 +156,7 @@
     background-color: #fff28e !important;
     border: 1.5px solid #f7d97f !important;    
     padding: 0.5px !important;
-    padding-left: 3.5px !important;
+    padding-left: 8px !important;
 }
 
 .exp-item-ghost-select {
