@@ -9,4 +9,4 @@ But this is made by only me, so it takes plenty of time.
 ## How to run this?
 This is made fully in JS, so any web browser can being used to run it.
 1. Clone repo on your local machine
-2. 
+2. Open in main directory file `index.html`
