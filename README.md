@@ -1,6 +1,7 @@
 # Jankula-12
 Movable, clickable windows like window on the desktop!
 It is made as a joke to windows 11 
+Unfinished yet.
 
 It's was created as competition for new system Windows 11. 
 Jankula is still a new project and It needs a lot of work. 
